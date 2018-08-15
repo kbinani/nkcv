@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Electron Read Us</title>
+<script>
+	function onload() {
+		const webview = document.querySelector("webview");
+		webview.addEventListener("dom-ready", function() {
+			webview.openDevTools();
+		});
+	}
+</script>
+</head>
+<body style="width: 800px; height: 480px; margin: 0; padding: 0" onload="onload()">
+<div id="webview_container" style="width: 800px; height: 480px; border: solid 0px">
+<webview
+    id="wv"
+    src="http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
+    style="display:inline-flex; width: 800px; height: 480px"
+    nodeintegration
+    preload="./preload.js">
+</webview>
+</div>
+</body>
+</html>
