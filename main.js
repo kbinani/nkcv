@@ -11,7 +11,13 @@ app.on('window-all-closed', function() {
 });
 
 app.on('ready', function() {
-  mainWindow = new BrowserWindow({width: 800, height: 600});
+  const options = {
+    width: 800,
+    height: 480 + 200,
+    minWidth: 800,
+    minHeight: 480 + 200,
+  };
+  mainWindow = new BrowserWindow(options);
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   mainWindow.on('closed', function() {
