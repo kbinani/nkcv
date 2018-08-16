@@ -1,5 +1,6 @@
 body {
   user-select: none;
+  cursor: default;
 }
 
 .MenuItem {
@@ -40,6 +41,7 @@ body {
   background-color: #808080;
   font-family: sans-serif;
   color: #F0F0F0;
+  font-size: 14px;
 }
 
 .ThemeContainerActive {
@@ -60,4 +62,8 @@ body {
 
 .ThemeContainerBorderR {
   border-right: solid 1px #707070;
+}
+
+.ThemeContainerBorder {
+  border: solid 1px #707070;
 }

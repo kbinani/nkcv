@@ -17,11 +17,11 @@
     });
 
     webview.addEventListener("will-navigate", function(data) {
-      $("#browser_url").text(data.url);
+      $("#browser_url").val(data.url);
     });
 
     webview.addEventListener("did-navigate", function(data) {
-      $("#browser_url").text(data.url);
+      $("#browser_url").val(data.url);
     });
   }
 
@@ -81,8 +81,7 @@
         </div>
         <div id="browser_tool" class="ToolPanel">
           <div style="margin-left: 5px; display: flex;">
-            <div id="browser_url" style="flex: 1 0 auto; margin: 5px 5px 5px 5px; padding: 0px 5px 0px 5px; border: solid 1px white; line-height: 30px; cursor: default;">
-            </div>
+            <input id="browser_url" type="text" class="ThemeContainer ThemeContainerBorder" readonly="readonly" style="flex: 1 0 auto; margin: 5px 5px 5px 5px; padding: 0px 5px 0px 5px; line-height: 30px; cursor: text; display: flex;"/>
             <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; width: 30px; margin: 5px; line-height: 30px;" onclick="browserBackClicked(this)">
               ⬅
             </div>
