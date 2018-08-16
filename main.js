@@ -17,8 +17,4 @@ app.on('ready', function() {
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
-
-  mainWindow.on('resize', function() {
-    console.log("window resize")
-  });
 });
