@@ -6,6 +6,7 @@
 <link href="./style.css" rel="stylesheet"/>
 <script>
   const isDev = require('electron-is-dev');
+  window.jQuery = window.$ = require('jquery');
 
   function onload() {
     const webview = document.querySelector("webview");
@@ -15,9 +16,31 @@
       }
     });
   }
+
+  function menuItemClicked(sender) {
+    const menu_id = $(sender).attr("data-menu-id");
+
+    $("#menu_container").children().each(function() {
+      const menu = $(this);
+      if (menu.attr("data-menu-id") == menu_id) {
+        menu.addClass("ThemeContainerActive")
+      } else {
+        menu.removeClass("ThemeContainerActive");
+      }
+    });
+
+    $("#tool_container").children().each(function() {
+      const tool = $(this);
+      if (tool.attr("id") == menu_id) {
+        tool.addClass("ToolPanelActive");
+      } else {
+        tool.removeClass("ToolPanelActive");
+      }
+    });
+  }
 </script>
 </head>
-<body style="margin: 0; padding: 0; min-width: 100%; min-height: 100%" onload="onload()">
+<body style="margin: 0; padding: 0; min-width: 100%; min-height: 100%" onload="onload();">
   <div class="ThemeContainer" style="display: flex; flex-direction: column; min-width: 800px; width: 100vw; height: 100vh;">
     <div style="flex: 0 0 480px;">
       <webview
@@ -28,16 +51,21 @@
         preload="./preload.js">
       </webview>
     </div>
-    <div id="tool_container" class="ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
+    <div class="ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
       <div id="menu_container" class="ThemeContainerBorder ThemeContainerBorderR" style="flex: 0 0 100px; display: flex; flex-direction: column;">
-        <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB">
+        <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" onclick="menuItemClicked(this);" data-menu-id="browser_tool">
           ブラウザ
         </div>
-        <div class="MenuItem ThemeContainer ThemeContainerBorderB">
+        <div class="MenuItem ThemeContainer ThemeContainerBorderB" onclick="menuItemClicked(this);" data-menu-id="deck_tool">
           編成
         </div>
       </div>
-      <div style="flex: 1 1 auto;">
+      <div id="tool_container" style="flex: 1 1 auto; display: flex;">
+        <div id="browser_tool" class="ToolPanel ToolPanelActive">
+          hoge
+        </div>
+        <div id="deck_tool" class="ToolPanel">
+        </div>
       </div>
     </div>
   </div>

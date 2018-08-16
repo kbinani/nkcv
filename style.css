@@ -12,6 +12,15 @@ body {
   line-height: 40px;
 }
 
+.ToolPanel {
+  flex: 1;
+  display: none;
+}
+
+.ToolPanelActive {
+  display: block;
+}
+
 .ThemeContainer {
   background-color: #808080;
   font-family: sans-serif;
