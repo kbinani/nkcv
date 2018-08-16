@@ -15,6 +15,14 @@
         webview.openDevTools();
       }
     });
+
+    webview.addEventListener("will-navigate", function(data) {
+      $("#browser_url").text(data.url);
+    });
+
+    webview.addEventListener("did-navigate", function(data) {
+      $("#browser_url").text(data.url);
+    });
   }
 
   function menuItemClicked(sender) {
@@ -38,9 +46,17 @@
       }
     });
   }
+
+  function browserBackClicked(sender) {
+    document.querySelector("webview").goBack();
+  }
+
+  function browserReloadClicked(sender) {
+    document.querySelector("webview").reload();
+  }
 </script>
 </head>
-<body style="margin: 0; padding: 0; min-width: 100%; min-height: 100%" onload="onload();">
+<body style="margin: 0; padding: 0; min-width: 100%; min-height: 100%" onload="onload()">
   <div class="ThemeContainer" style="display: flex; flex-direction: column; min-width: 800px; width: 100vw; height: 100vh;">
     <div style="flex: 0 0 480px;">
       <webview
@@ -53,18 +69,27 @@
     </div>
     <div class="ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
       <div id="menu_container" class="ThemeContainerBorder ThemeContainerBorderR" style="flex: 0 0 100px; display: flex; flex-direction: column;">
-        <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" onclick="menuItemClicked(this);" data-menu-id="browser_tool">
-          ブラウザ
-        </div>
-        <div class="MenuItem ThemeContainer ThemeContainerBorderB" onclick="menuItemClicked(this);" data-menu-id="deck_tool">
+        <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" onclick="menuItemClicked(this)" data-menu-id="deck_tool">
           編成
+        </div>
+        <div class="MenuItem ThemeContainer ThemeContainerBorderB" onclick="menuItemClicked(this)" data-menu-id="browser_tool">
+          ブラウザ
         </div>
       </div>
       <div id="tool_container" style="flex: 1 1 auto; display: flex;">
-        <div id="browser_tool" class="ToolPanel ToolPanelActive">
-          hoge
+        <div id="deck_tool" class="ToolPanel ToolPanelActive">
         </div>
-        <div id="deck_tool" class="ToolPanel">
+        <div id="browser_tool" class="ToolPanel">
+          <div style="margin-left: 5px; display: flex;">
+            <div id="browser_url" style="flex: 1 0 auto; margin: 5px 5px 5px 5px; padding: 0px 5px 0px 5px; border: solid 1px white; line-height: 30px; cursor: default;">
+            </div>
+            <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; width: 30px; margin: 5px; line-height: 30px;" onclick="browserBackClicked(this)">
+              ⬅
+            </div>
+            <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; height: 30px; margin: 5px 10px 5px 5px; line-height: 30px;" onclick="browserReloadClicked(this)">
+              ↻
+            </div>
+          </div>
         </div>
       </div>
     </div>
