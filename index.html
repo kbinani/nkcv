@@ -67,8 +67,8 @@
         preload="./preload.js">
       </webview>
     </div>
-    <div class="ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
-      <div id="menu_container" class="ThemeContainerBorder ThemeContainerBorderR" style="flex: 0 0 100px; display: flex; flex-direction: column;">
+    <div class="ThemeContainer ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
+      <div id="menu_container" class="ThemeContainer ThemeContainerBorder ThemeContainerBorderR" style="flex: 0 0 100px; display: flex; flex-direction: column;">
         <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" onclick="menuItemClicked(this)" data-menu-id="deck_tool">
           編成
         </div>
@@ -76,7 +76,7 @@
           ブラウザ
         </div>
       </div>
-      <div id="tool_container" style="flex: 1 1 auto; display: flex;">
+      <div id="tool_container" class="ThemeContainer" style="flex: 1 1 auto; display: flex;">
         <div id="deck_tool" class="ToolPanel ToolPanelActive">
         </div>
         <div id="browser_tool" class="ToolPanel">
