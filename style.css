@@ -23,47 +23,47 @@ body {
 }
 
 .ThemeCircleButton {
-  border: solid 1px white;
+  border: solid 1px #F0F0F0;
   border-radius: 50%;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  background-color: #808080;
-  color: white;
+  background-color: #606060;
+  color: #F0F0F0;
 }
 
 .ThemeCircleButton:active {
-  background-color: #909090;
-  color: #808080;
+  background-color: #707070;
+  color: #606060;
 }
 
 .ThemeContainer {
-  background-color: #808080;
+  background-color: #606060;
   font-family: sans-serif;
   color: #F0F0F0;
   font-size: 14px;
 }
 
 .ThemeContainerActive {
-  background-color: #909090;
+  background-color: #707070;
 }
 
 .ThemeContainerBorderT {
-  border-top: solid 1px #707070;
+  border-top: solid 1px #505050;
 }
 
 .ThemeContainerBorderL {
-  border-left: solid 1px #707070;
+  border-left: solid 1px #505050;
 }
 
 .ThemeContainerBorderB {
-  border-bottom: solid 1px #707070;
+  border-bottom: solid 1px #505050;
 }
 
 .ThemeContainerBorderR {
-  border-right: solid 1px #707070;
+  border-right: solid 1px #505050;
 }
 
 .ThemeContainerBorder {
-  border: solid 1px #707070;
+  border: solid 1px #505050;
 }
