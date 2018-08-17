@@ -28,12 +28,12 @@ body {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  background-color: #606060;
+  background-color: #707070;
   color: #F0F0F0;
 }
 
 .ThemeCircleButton:active {
-  background-color: #707070;
+  background-color: #808080;
   color: #606060;
 }
 
@@ -46,6 +46,9 @@ body {
 
 .ThemeContainerActive {
   background-color: #707070;
+  font-family: sans-serif;
+  color: #F0F0F0;
+  font-size: 14px;
 }
 
 .ThemeContainerBorderT {

@@ -32,8 +32,10 @@
       const menu = $(this);
       if (menu.attr("data-menu-id") == menu_id) {
         menu.addClass("ThemeContainerActive")
+        menu.removeClass("ThemeContainerBorderR");
       } else {
         menu.removeClass("ThemeContainerActive");
+        menu.addClass("ThemeContainerBorderR");
       }
     });
 
@@ -69,20 +71,21 @@
       </webview>
     </div>
     <div class="ThemeContainer ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
-      <div id="menu_container" class="ThemeContainer ThemeContainerBorderR" style="flex: 0 0 100px; display: flex; flex-direction: column;">
+      <div id="menu_container" class="ThemeContainer" style="flex: 0 0 100px; display: flex; flex-direction: column;">
         <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" onclick="menuItemClicked(this)" data-menu-id="deck_tool">
           編成
         </div>
-        <div class="MenuItem ThemeContainer ThemeContainerBorderB" onclick="menuItemClicked(this)" data-menu-id="browser_tool">
+        <div class="MenuItem ThemeContainer ThemeContainerBorderB ThemeContainerBorderR" onclick="menuItemClicked(this)" data-menu-id="browser_tool">
           ブラウザ
         </div>
+        <div role="spacer" class="ThemeContainerBorderR" style="flex: 1 1 auto;"></div>
       </div>
       <div id="tool_container" class="ThemeContainer" style="flex: 1 1 auto; display: flex;">
-        <div id="deck_tool" class="ToolPanel ToolPanelActive">
+        <div id="deck_tool" class="ThemeContainerActive ToolPanel ToolPanelActive">
         </div>
-        <div id="browser_tool" class="ToolPanel">
+        <div id="browser_tool" class="ThemeContainerActive ToolPanel">
           <div style="margin-left: 5px; display: flex;">
-            <input id="browser_url" type="text" class="ThemeContainer ThemeContainerBorder" readonly="readonly" style="flex: 1 0 auto; margin: 5px 5px 5px 5px; padding: 0px 5px 0px 5px; line-height: 30px; cursor: text; display: flex;"/>
+            <input id="browser_url" type="text" class="ThemeContainerActive ThemeContainerBorder" readonly="readonly" style="flex: 1 0 auto; margin: 5px 5px 5px 5px; padding: 0px 5px 0px 5px; line-height: 30px; cursor: text; display: flex;"/>
             <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; width: 30px; margin: 5px; line-height: 30px;" onclick="browserBackClicked(this)">
               ⬅
             </div>
