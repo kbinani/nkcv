@@ -26,10 +26,10 @@ app.on('ready', function() {
   });
 
   const options = {
-    width: 800,
-    height: 480 + 200,
-    minWidth: 800,
-    minHeight: 480 + 200,
+    width: 1200,
+    height: 720 + 200,
+    minWidth: 1200,
+    minHeight: 720 + 200,
   };
   mainWindow = new BrowserWindow(options);
   mainWindow.loadURL('file://' + __dirname + '/index.html');
