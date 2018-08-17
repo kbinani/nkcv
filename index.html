@@ -7,10 +7,14 @@
 <script>
   const isDev = require('electron-is-dev');
   window.jQuery = window.$ = require('jquery');
+  const width = 1200;
+  const height = 720;
+  const scale = 0.75;
 
   function onload() {
     const webview = document.querySelector("webview");
     webview.addEventListener("dom-ready", function() {
+      updateScale(scale);
       if (isDev) {
         webview.openDevTools();
       }
@@ -56,11 +60,20 @@
   function browserReloadClicked(sender) {
     document.querySelector("webview").reload();
   }
+
+  function updateScale(scale) {
+    const webview = document.querySelector("webview");
+    webview.setZoomFactor(scale);
+    $("#container").css("min-width", (width * scale) + "px");
+    $("#webview_container").css("flex", "0 0 " + (height * scale) + "px");
+    $("#wv").css("width", (width * scale) + "px");
+    $("#wv").css("height", (height * scale) + "px");
+  }
 </script>
 </head>
 <body style="margin: 0; padding: 0; min-width: 100%; min-height: 100%" onload="onload()">
-  <div class="ThemeContainer" style="display: flex; flex-direction: column; min-width: 1200px; width: 100vw; height: 100vh;">
-    <div style="flex: 0 0 720px;">
+  <div id="container" class="ThemeContainer" style="display: flex; flex-direction: column; min-width: 1200px; width: 100vw; height: 100vh;">
+    <div id="webview_container" style="flex: 0 0 720px;">
       <webview
         id="wv"
         src="http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
