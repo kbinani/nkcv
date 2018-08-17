@@ -64,11 +64,12 @@
         src="http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
         style="width: 800px; height: 480px; margin: auto;"
         nodeintegration
+        partition="persist:electron-study"
         preload="./preload.js">
       </webview>
     </div>
     <div class="ThemeContainer ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
-      <div id="menu_container" class="ThemeContainer ThemeContainerBorder ThemeContainerBorderR" style="flex: 0 0 100px; display: flex; flex-direction: column;">
+      <div id="menu_container" class="ThemeContainer ThemeContainerBorderR" style="flex: 0 0 100px; display: flex; flex-direction: column;">
         <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" onclick="menuItemClicked(this)" data-menu-id="deck_tool">
           編成
         </div>
