@@ -9,12 +9,12 @@
   window.jQuery = window.$ = require('jquery');
   const width = 1200;
   const height = 720;
-  const scale = 0.75;
+  var scale = 1;
 
   function onload() {
     const webview = document.querySelector("webview");
     webview.addEventListener("dom-ready", function() {
-      updateScale(scale);
+      applyScale();
       if (isDev) {
         webview.openDevTools();
       }
@@ -61,7 +61,12 @@
     document.querySelector("webview").reload();
   }
 
-  function updateScale(scale) {
+  function updateScale(s) {
+    scale = s;
+    applyScale();
+  }
+
+  function applyScale() {
     const webview = document.querySelector("webview");
     webview.setZoomFactor(scale);
     $("#container").css("min-width", (width * scale) + "px");

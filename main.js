@@ -32,7 +32,22 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow(options);
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
+  mainWindow.webContents.on('dom-ready', function() {
+    updateScale(0.75);
+  });
+
   mainWindow.on('closed', function() {
     mainWindow = null;
   });
 });
+
+
+function updateScale(scale) {
+  if (!mainWindow) {
+    return;
+  }
+  const width = 1200;
+  const height = 720;
+  mainWindow.setMinimumSize(width * scale, height * scale);
+  mainWindow.webContents.executeJavaScript('updateScale(' + scale + ')');
+}
