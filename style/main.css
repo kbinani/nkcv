@@ -19,5 +19,9 @@ body {
 }
 
 .ToolPanelActive {
-  display: block;
+  display: flex;
+}
+
+.DeckShipCell {
+  height: 40px;
 }
