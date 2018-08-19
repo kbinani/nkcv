@@ -8,6 +8,8 @@
 <script>
   const isDev = require('electron-is-dev');
   window.jQuery = window.$ = require('jquery');
+  const {ipcRenderer} = require('electron');
+
   const width = 1200;
   const height = 720;
   var scale = 1;
@@ -75,6 +77,10 @@
     $("#wv").css("width", (width * scale) + "px");
     $("#wv").css("height", (height * scale) + "px");
   }
+
+  ipcRenderer.on('port', function(event, port) {
+    //TODO:
+  });
 </script>
 </head>
 <body style="margin: 0; padding: 0; min-width: 100%; min-height: 100%" onload="onload()">

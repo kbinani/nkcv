@@ -2,7 +2,8 @@
 
 const electron = require('electron'),
       find_free_port = require('find-free-port'),
-      HTTPProxy = require(__dirname + '/src/HTTPProxy.js');
+      HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
+      Port = require(__dirname + '/src/Port.js');
 const {app, BrowserWindow, session} = require('electron');
 
 var mainWindow = null;
@@ -38,6 +39,10 @@ app.on('ready', function() {
 
   mainWindow.on('closed', function() {
     mainWindow = null;
+  });
+
+  Port.addObserver(function(port) {
+    mainWindow.webContents.send('port', port);
   });
 });
 
