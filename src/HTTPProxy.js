@@ -2,13 +2,24 @@
 
 const http = require('http'),
       url = require('url'),
-      net = require('net');
+      net = require('net'),
+      zlib = require('zlib');
 
 function HTTPProxy() {
 
 }
 
 const _ = HTTPProxy;
+
+const handlers = {};
+
+_.on = function(event, handler) {
+  if (event in handlers) {
+    handlers[event].push(handler);
+  } else {
+    handlers[event] = [handler];
+  }
+};
 
 _.launch = function(port) {
   var server = http.createServer(function onCliReq(cliReq, cliRes) {
@@ -30,10 +41,65 @@ _.launch = function(port) {
       headers: cliReq.headers,
       agent: cliSoc.$agent
     };
+
+    const kcsapiIndex = cliReq.url.indexOf("/kcsapi/");
+
     var self = this;
     var svrReq = http.request(options, function onSvrRes(svrRes) {
       cliRes.writeHead(svrRes.statusCode, svrRes.headers);
       svrRes.pipe(cliRes);
+      if (kcsapiIndex >= 0) {
+        var api = cliReq.url.substring(kcsapiIndex + "/kcsapi/".length);
+        var isGzip = false;
+        for (var header in svrRes.headers) {
+          if (header.toLowerCase() === "content-encoding" && svrRes.headers[header].toLowerCase() === "gzip") {
+            isGzip = true;
+            break;
+          }
+        }
+        var data = null;
+        svrRes.on('data', function(chunk) {
+          if (data == null) {
+            data = chunk;
+          } else {
+            data = Buffer.concat([data, chunk]);
+          }
+        });
+        svrRes.on('end', function() {
+          try {
+            if (isGzip) {
+              zlib.gunzip(data, function(error, result) {
+                if (error) {
+                  console.log("error=" + error);
+                }
+                var json = result.toString();
+                if (json.indexOf("svdata=") === 0) {
+                  json = json.substring("svdata=".length);
+                }
+                if (api in handlers) {
+                  const callbacks = handlers[api];
+                  for (var i = 0; i < callbacks.length; i++) {
+                    callbacks[i](json);
+                  }
+                }
+              });
+            } else {
+              var json = data.toString();
+              if (json.indexOf("svdata=") === 0) {
+                json = json.substring("svdata=".length);
+              }
+              if (api in handlers) {
+                const callbacks = handlers[api];
+                for (var i = 0; i < callbacks.length; i++) {
+                  callbacks[i](json);
+                }
+              }
+            }
+          } catch (e) {
+            console.trace(e);
+          }
+        });
+      }
     });
     cliReq.pipe(svrReq);
     svrReq.on('error', function onSvrReqErr(err) {
