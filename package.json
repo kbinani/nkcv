@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "electron-is-dev": "^0.3.0",
+    "find-free-port": "^2.0.0",
     "jquery": "^3.3.1"
   }
 }
