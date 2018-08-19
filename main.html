@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+<meta charset="UTF-8">
+<title>electron-study</title>
+<link href="./style/main.css" rel="stylesheet"/>
+<link href="./style/theme/default.css" rel="stylesheet"/>
+<script src="./main.js"></script>
+</head>
+<body style="margin: 0; padding: 0; min-width: 100%; min-height: 100%" onload="onload()">
+  <div id="container" class="ThemeContainer" style="display: flex; flex-direction: column; min-width: 1200px; width: 100vw; height: 100vh;">
+    <div id="webview_container" style="flex: 0 0 720px;">
+      <webview
+        id="wv"
+        src="http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
+        style="width: 1200px; height: 720px; margin: auto;"
+        nodeintegration
+        partition="persist:electron-study"
+        preload="./preload.js">
+      </webview>
+    </div>
+    <div class="ThemeContainer ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
+      <div id="menu_container" class="ThemeContainer" style="flex: 0 0 100px; display: flex; flex-direction: column;">
+        <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" onclick="menuItemClicked(this)" data-menu-id="deck_tool">
+          編成
+        </div>
+        <div class="MenuItem ThemeContainer ThemeContainerBorderB ThemeContainerBorderR" onclick="menuItemClicked(this)" data-menu-id="browser_tool">
+          ブラウザ
+        </div>
+        <div role="spacer" class="ThemeContainerBorderR" style="flex: 1 1 auto;"></div>
+      </div>
+      <div id="tool_container" class="ThemeContainer" style="flex: 1 1 auto; display: flex;">
+        <div id="deck_tool" class="ThemeContainerActive ToolPanel ToolPanelActive" style="flex-direction: column; padding: 5px;">
+          <div class="ThemeContainerActive" style="flex: 0 0 30px; display: flex;">
+            <div style="flex: 1 1 auto;"></div>
+            <div style="flex: 1 1 auto;"></div>
+            <div style="flex: 1 1 auto;"></div>
+            <div style="flex: 1 1 auto;"></div>
+          </div>
+          <table id="deck_0_ships" class="ThemeContainerActive" style="flex: 1 1 auto; border-collapse: collapse; width: 100%;" cellpadding="0" cellpadding="0" border="0">
+          </table>
+        </div>
+        <div id="browser_tool" class="ThemeContainerActive ToolPanel">
+          <div style="flex: 1 1 auto; margin-left: 5px; display: flex;">
+            <input id="browser_url" type="text" class="ThemeContainerActive ThemeContainerBorder" readonly="readonly" style="flex: 1 0 auto; margin: 5px 5px 5px 5px; padding: 0px 5px 0px 5px; height: 30px; line-height: 30px; cursor: text; display: flex;"/>
+            <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; width: 30px; margin: 5px; line-height: 30px;" onclick="browserBackClicked(this)">
+              ⬅
+            </div>
+            <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; height: 30px; margin: 5px 10px 5px 5px; line-height: 30px;" onclick="browserReloadClicked(this)">
+              ↻
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
