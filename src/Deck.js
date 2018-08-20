@@ -13,12 +13,6 @@ function Deck(data, port) {
     }
     return port.ship(id);
   }).filter(function(it) { return it != null; });
-  for (var i = 0; i < ships.length; i++) {
-    const id = ships[i];
-    if (id < 0) {
-      break;
-    }
-  }
 }
 
 Deck.prototype.name = function() {

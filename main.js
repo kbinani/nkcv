@@ -76,15 +76,19 @@ ipcRenderer.on('port', function(event, data) {
   const portData = data['port'];
   const port = new Port(portData, masterData);
 
+  const kanji = ['一', '二', '三', '四'];
   for (var i = 0; i < port.decks.length; i++) {
     const deck = port.decks[i];
     const container = $('#deck_' + i + '_ships');
     container.empty();
-    for (var i = 0; i < deck.ships.length; i++) {
-      const ship = deck.ships[i];
+    for (var j = 0; j < deck.ships.length; j++) {
+      const ship = deck.ships[j];
       const html = createDeckShipCell(ship.id());
       container.append(html);
     }
+
+    const name = deck.name();
+    $('#deck_' + i + '_menu').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
   }
 
   updateShipStatus(port.ships);
@@ -171,4 +175,26 @@ function createDeckShipCell(ship_id) {
       </td>\
     </tr>';
     return template.replace(/\{ship_id\}/g, ship_id);
+}
+
+function deckMenuClicked(index) {
+  for (var i = 0; i < 4; i++) {
+    const id = '#deck_' + i + '_ships';
+    const menuId = '#deck_' + i + '_menu';
+    if (i == index) {
+      $(id).removeClass('DeckTable');
+      $(id).addClass('DeckTableActive');
+
+      $(menuId).removeClass('ThemeContainer');
+      $(menuId).addClass('ThemeContainerActive');
+      $(menuId).removeClass('ThemeContainerBorderB');
+    } else {
+      $(id).addClass('DeckTable');
+      $(id).removeClass('DeckTableActive');
+
+      $(menuId).removeClass('ThemeContainerActive');
+      $(menuId).addClass('ThemeContainer');
+      $(menuId).addClass('ThemeContainerBorderB');
+    }
+  }
 }

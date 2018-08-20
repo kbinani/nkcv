@@ -29,3 +29,11 @@ html::-webkit-scrollbar {
 .DeckShipCell {
   height: 40px;
 }
+
+.DeckTable {
+  display: none;
+}
+
+.DeckTableActive {
+  display: block;
+}
