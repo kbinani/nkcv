@@ -2,6 +2,7 @@
 
 const electron = require('electron'),
       find_free_port = require('find-free-port'),
+      os = require('os'),
       HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js');
@@ -31,6 +32,7 @@ app.on('ready', function() {
     height: 720 + 200,
     minWidth: 1200,
     minHeight: 720 + 200,
+    useContentSize: true,
   };
   mainWindow = new BrowserWindow(options);
   mainWindow.loadURL('file://' + __dirname + '/main.html');
@@ -57,8 +59,9 @@ function updateScale(scale) {
   if (!mainWindow) {
     return;
   }
+  const scrollBarSize = os.platform() == 'win32' ? 16 : 0;
   const width = 1200;
   const height = 720;
-  mainWindow.setMinimumSize(width * scale, height * scale);
+  mainWindow.setMinimumSize(width * scale + scrollBarSize, height * scale + scrollBarSize);
   mainWindow.webContents.executeJavaScript('updateScale(' + scale + ')');
 }

@@ -3,6 +3,10 @@ body {
   cursor: default;
 }
 
+html::-webkit-scrollbar {
+  display: none;
+}
+
 .MenuItem {
   flex: 0 0 40px;
   text-align: center;
