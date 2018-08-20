@@ -149,8 +149,8 @@ function createDeckShipCell(ship_id) {
       <td style="padding: 5px;" nowrap>\
         <div style="display: flex; flex-direction: column;">\
           <div style="flex: 1 1 auto; display: flex;">\
-            <div id="ship_{ship_id}_cond_icon" style="flex: 0 0 auto; width: 15px; height: 15px; background-color: white; margin-right: 5px;"></div>\
-            <div id="ship_{ship_id}_cond" style="flex: 1 1 auto;">49</div>\
+            <div id="ship_{ship_id}_cond_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: white; margin: auto;"></div>\
+            <div id="ship_{ship_id}_cond" style="flex: 1 1 auto; margin-left: 5px;">49</div>\
           </div>\
           <div>condition</div>\
         </div>\
