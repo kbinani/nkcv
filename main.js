@@ -116,6 +116,8 @@ function updateShipStatus(ships) {
     const bull = ship.bull();
     $('#ship_' + id + '_bull_percentage').css('width', (bull.value() * 100) + '%');
     $('#ship_' + id + '_bull_percentage').css('background-color', barColor(bull));
+
+    $('#ship_' + id + '_type').html(ship.type());
   });
 }
 
@@ -126,7 +128,7 @@ function barColor(rat) {
 function createDeckShipCell(ship_id) {
   const template = '\
     <tr class="DeckShipCell ThemeContainerBorderB">\
-      <td id="ship_{ship_id}_type" style="padding: 5px;" nowrap>艦種</td>\
+      <td id="ship_{ship_id}_type" style="padding: 5px; font-size: 12px;" nowrap>艦種</td>\
       <td id="ship_{ship_id}_name" style="padding: 5px; font-size: 20px;" nowrap>艦名</td>\
       <td style="padding: 5px;" nowrap>\
         <div style="display: flex; flex-direction: column;">\
