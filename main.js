@@ -155,11 +155,11 @@ function createDeckShipCell(ship_id) {
       </td>\
       <td style="padding: 5px;" nowrap>\
         <div style="display: flex; flex-direction: column;">\
-          <div style="flex: 0 0 auto; width: 80px; height: 8px; background-color: white;">\
+          <div style="flex: 0 0 auto; width: 60px; height: 8px; background-color: white;">\
             <div id="ship_{ship_id}_fuel_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>\
           </div>\
           <div style="flex: 0 0 auto; height: 5px;"></div>\
-          <div style="flex: 0 0 auto; width: 80px; height: 8px; background-color: white;">\
+          <div style="flex: 0 0 auto; width: 60px; height: 8px; background-color: white;">\
             <div id="ship_{ship_id}_bull_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>\
           </div>\
         </div>\
