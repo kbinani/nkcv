@@ -21,10 +21,10 @@
     </div>
     <div class="ThemeContainer ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex">
       <div id="menu_container" class="ThemeContainer" style="flex: 0 0 100px; display: flex; flex-direction: column;">
-        <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" onclick="menuItemClicked(this)" data-menu-id="deck_tool">
+        <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" style="cursor: default;" onclick="menuItemClicked(this)" data-menu-id="deck_tool">
           編成
         </div>
-        <div class="MenuItem ThemeContainer ThemeContainerBorderB ThemeContainerBorderR" onclick="menuItemClicked(this)" data-menu-id="browser_tool">
+        <div class="MenuItem ThemeContainer ThemeContainerBorderB ThemeContainerBorderR" style="cursor: pointer;" onclick="menuItemClicked(this)" data-menu-id="browser_tool">
           ブラウザ
         </div>
         <div role="spacer" class="ThemeContainerBorderR" style="flex: 1 1 auto;"></div>
@@ -32,7 +32,7 @@
       <div id="tool_container" class="ThemeContainer" style="flex: 1 1 auto; display: flex;">
         <div id="deck_tool" class="ThemeContainerActive ToolPanel ToolPanelActive" style="flex-direction: column;">
           <div class="ThemeContainerActive" style="flex: 0 0 30px; display: flex;">
-            <div id="deck_0_menu" class="ThemeContainerActive ThemeContainerBorderR" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: pointer;" onclick="deckMenuClicked(0)">第一艦隊</div>
+            <div id="deck_0_menu" class="ThemeContainerActive ThemeContainerBorderR" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: default;" onclick="deckMenuClicked(0)">第一艦隊</div>
             <div id="deck_1_menu" class="ThemeContainer ThemeContainerBorderR ThemeContainerBorderB" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: pointer;" onclick="deckMenuClicked(1)">第二艦隊</div>
             <div id="deck_2_menu" class="ThemeContainer ThemeContainerBorderR ThemeContainerBorderB" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: pointer;" onclick="deckMenuClicked(2)">第三艦隊</div>
             <div id="deck_3_menu" class="ThemeContainer ThemeContainerBorderB" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: pointer;" onclick="deckMenuClicked(3)">第四艦隊</div>

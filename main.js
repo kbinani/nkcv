@@ -33,9 +33,11 @@ function menuItemClicked(sender) {
     if (menu.attr("data-menu-id") == menu_id) {
       menu.addClass("ThemeContainerActive")
       menu.removeClass("ThemeContainerBorderR");
+      menu.css('cursor', 'default');
     } else {
       menu.removeClass("ThemeContainerActive");
       menu.addClass("ThemeContainerBorderR");
+      menu.css('cursor', 'pointer');
     }
   });
 
@@ -188,6 +190,7 @@ function deckMenuClicked(index) {
       $(menuId).removeClass('ThemeContainer');
       $(menuId).addClass('ThemeContainerActive');
       $(menuId).removeClass('ThemeContainerBorderB');
+      $(menuId).css('cursor', 'default');
     } else {
       $(id).addClass('DeckTable');
       $(id).removeClass('DeckTableActive');
@@ -195,6 +198,7 @@ function deckMenuClicked(index) {
       $(menuId).removeClass('ThemeContainerActive');
       $(menuId).addClass('ThemeContainer');
       $(menuId).addClass('ThemeContainerBorderB');
+      $(menuId).css('cursor', 'pointer');
     }
   }
 }
