@@ -1,14 +1,14 @@
 'use strict;'
 
-const HTTPProxy = require(__dirname + '/HTTPProxy.js'),
-      MasterDataAccessor = require(__dirname + '/MasterDataAccessor.js'),
+const Master = require(__dirname + '/Master.js'),
       Ship = require(__dirname + '/Ship.js'),
       Deck = require(__dirname + '/Deck.js'),
       _ = require('lodash');
+const {ipcRenderer} = require('electron');
 
-function Port(data, masterData) {
+function Port(data, master) {
   this._data = data;
-  this._master = new MasterDataAccessor(masterData);
+  this._master = master;
 
   const ships = _.get(data, ['api_data', 'api_ship'], []);
   const self = this;
@@ -36,11 +36,14 @@ Port.prototype.ship = function(ship_id) {
 var maxObserverId = -1;
 const observers = {};
 
-HTTPProxy.on('api_port/port', function(data) {
-  for (var key in observers) {
-    observers[key](JSON.parse(data));
-  }
-});
+if (ipcRenderer) {
+  ipcRenderer.on('api_port/port', function(event, data) {
+    for (var key in observers) {
+      const port = new Port(JSON.parse(data), Master.shared);
+      observers[key](port);
+    }
+  });
+}
 
 Port.addObserver = function(callback) {
   maxObserverId++;

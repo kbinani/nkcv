@@ -11,14 +11,10 @@ function HTTPProxy() {
 
 const _ = HTTPProxy;
 
-const handlers = {};
+const handlers = [];
 
-_.on = function(event, handler) {
-  if (event in handlers) {
-    handlers[event].push(handler);
-  } else {
-    handlers[event] = [handler];
-  }
+_.addObserver = function(callback) {
+  handlers.push(callback);
 };
 
 _.launch = function(port) {
@@ -76,24 +72,18 @@ _.launch = function(port) {
                 if (json.indexOf("svdata=") === 0) {
                   json = json.substring("svdata=".length);
                 }
-                if (api in handlers) {
-                  const callbacks = handlers[api];
-                  for (var i = 0; i < callbacks.length; i++) {
-                    callbacks[i](json);
-                  }
-                }
+                handlers.forEach(function(callback) {
+                  callback(api, json);
+                });
               });
             } else {
               var json = data.toString();
               if (json.indexOf("svdata=") === 0) {
                 json = json.substring("svdata=".length);
               }
-              if (api in handlers) {
-                const callbacks = handlers[api];
-                for (var i = 0; i < callbacks.length; i++) {
-                  callbacks[i](json);
-                }
-              }
+              handlers.forEach(function(callback) {
+                callback(api, json);
+              });
             }
           } catch (e) {
             console.trace(e);

@@ -45,12 +45,8 @@ app.on('ready', function() {
     mainWindow = null;
   });
 
-  Port.addObserver(function(port) {
-    const message = {
-      'master': Master.shared.data(),
-      'port': port,
-    };
-    mainWindow.webContents.send('port', message);
+  HTTPProxy.addObserver(function(api, data) {
+    mainWindow.webContents.send(api, data);
   });
 });
 

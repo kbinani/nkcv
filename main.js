@@ -23,6 +23,25 @@ function onload() {
   webview.addEventListener("did-navigate", function(data) {
     $("#browser_url").val(data.url);
   });
+
+  Port.addObserver(function(port) {
+    const kanji = ['一', '二', '三', '四'];
+    for (var i = 0; i < port.decks.length; i++) {
+      const deck = port.decks[i];
+      const container = $('#deck_' + i + '_ships');
+      container.empty();
+      for (var j = 0; j < deck.ships.length; j++) {
+        const ship = deck.ships[j];
+        const html = createDeckShipCell(ship.id());
+        container.append(html);
+      }
+
+      const name = deck.name();
+      $('#deck_' + i + '_menu').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
+    }
+
+    updateShipStatus(port.ships);
+  });
 }
 
 function menuItemClicked(sender) {
@@ -72,29 +91,6 @@ function applyScale() {
   $("#wv").css("width", (width * scale) + "px");
   $("#wv").css("height", (height * scale) + "px");
 }
-
-ipcRenderer.on('port', function(event, data) {
-  const masterData = data['master'];
-  const portData = data['port'];
-  const port = new Port(portData, masterData);
-
-  const kanji = ['一', '二', '三', '四'];
-  for (var i = 0; i < port.decks.length; i++) {
-    const deck = port.decks[i];
-    const container = $('#deck_' + i + '_ships');
-    container.empty();
-    for (var j = 0; j < deck.ships.length; j++) {
-      const ship = deck.ships[j];
-      const html = createDeckShipCell(ship.id());
-      container.append(html);
-    }
-
-    const name = deck.name();
-    $('#deck_' + i + '_menu').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
-  }
-
-  updateShipStatus(port.ships);
-});
 
 function updateShipStatus(ships) {
   ships.forEach(function(ship) {
