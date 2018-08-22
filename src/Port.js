@@ -14,7 +14,7 @@ function Port(data, master) {
   const self = this;
   this.ships = ships.map(function(data) {
     const mst_id = _.get(data, ['api_ship_id'], -1);
-    const mst = self._master.getShipMaster(mst_id);
+    const mst = self._master.ships[mst_id];
     if (mst == null) {
       return null;
     }

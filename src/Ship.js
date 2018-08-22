@@ -1,7 +1,8 @@
 'use strict;'
 
 const _ = require('lodash'),
-      Rat = require(__dirname + '/Rat.js');
+      Rat = require(__dirname + '/Rat.js'),
+      SlotitemList = require(__dirname + '/SlotitemList.js');
 
 function Ship(data, master_data) {
   this._data = data;
@@ -78,6 +79,16 @@ Ship.prototype.type = function() {
   } else {
     return "" + stype;
   }
+};
+
+Ship.prototype.slotitems = function() {
+  const items = _.get(this._data, ['api_slot'], []);
+  return items.map(function(it) {
+    if (it <= 0) {
+      return null;
+    }
+    return SlotitemList.shared.slotitem(it);
+  }).filter(function(it) { return it != null; });
 };
 
 module.exports = Ship;

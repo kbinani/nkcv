@@ -120,6 +120,14 @@ function updateShipStatus(ships) {
     $('#ship_' + id + '_bull_percentage').css('background-color', barColor(bull));
 
     $('#ship_' + id + '_type').html(ship.type());
+
+    const slotitems = ship.slotitems();
+    slotitems.forEach(function(it) {
+      const slotitemCell = createDeckShipSlotitemCell(it.id());
+      $('#ship_' + id + '_slotitem').append(slotitemCell);
+    });
+
+    updateSlotitemStatus(slotitems);
   });
 }
 
@@ -179,7 +187,9 @@ function createDeckShipCell(ship_id) {
 
 function updateSlotitemStatus(slotitems) {
   slotitems.forEach(function(slotitem) {
-
+    const id = slotitem.id();
+    const element = $('#slotitem_' + id + '_icon');
+    element.attr('title', slotitem.name());
   });
 }
 
