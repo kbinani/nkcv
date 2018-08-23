@@ -190,11 +190,12 @@ function updateSlotitemStatus(slotitems) {
     const id = slotitem.id();
     const element = $('#slotitem_' + id + '_icon');
     element.attr('title', slotitem.name());
+    element.css('background-image', "url('img/" + slotitem.type() + ".svg')");
   });
 }
 
 function createDeckShipSlotitemCell(slotitem_id) {
-  const template = '<div title="12.7cm連装砲" id="slotitem_{slotitem_id}_icon" style="flex: 0 0 30px; width: 30px; height: 30px; background-image: url(\'img/main_canon_light.png\'); background-size: contain; background-repeat: no-repeat;background-position: 50%;"></div>';
+  const template = '<div title="12.7cm連装砲" id="slotitem_{slotitem_id}_icon" style="flex: 0 0 30px; width: 30px; height: 30px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat;background-position: 50%; margin-left: 2px; margin-right: 2px;"></div>';
   return template.replace(/\{slotitem_id\}/g, slotitem_id);
 }
 
