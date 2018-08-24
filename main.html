@@ -21,13 +21,17 @@
     </div>
     <div class="ThemeContainer ThemeContainerBorderT" style="flex: 1 1 auto; min-height: 200px; display: flex; flex-direction: column;">
       <div class="ThemeContainer" style="flex: 0 0 50px; display: flex;">
-        <div style="display: flex; flex-direction: column;">
+        <div style="flex: 0 0 auto; display: flex; flex-direction: column;">
           <div style="flex: 1 1 auto;"><span id="user_name" class="FontLarge" style="margin: 5px;"></span><span id="user_rank" class="FontLarge" style="margin: 5px;">新米少佐</span></div>
           <div style="flex: 1 1 auto;"><span id="user_comment" style="margin: 5px;"></span></div>
         </div>
-        <div style="display: flex; flex-direction: column; margin-left: 25px;">
+        <div style="flex: 0 0 auto; display: flex; flex-direction: column; margin-left: 25px;">
           <div style="flex: 1 1 auto;">司令部 Lv.<span id="user_level" class="FontLarge">1</span></div>
           <div style="flex: 1 1 auto;">Next: <span id="user_next_exp">0</span> exp.</div>
+        </div>
+        <div style="flex: 1 1 auto;"><!-- spacer --></div>
+        <div style="flex: 0 0 auto; width: 50px;">
+          <div id="mute_button" class="ThemeCircleButton" style="vertical-align: middle; width: 40px; height: 40px; margin: 5px; background-image: url('img/baseline-volume_up-24px.svg'); background-repeat: no-repeat; background-position: 50%;" onclick="toggleMute(this)"></div>
         </div>
       </div>
       <div class="ThemeContainer ThemeContainerBorderT" style="flex: 1 1 auto; display: flex;">

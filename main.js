@@ -227,3 +227,14 @@ function deckMenuClicked(index) {
     }
   }
 }
+
+function toggleMute(sender) {
+  const webview = document.querySelector("webview");
+  const mute = !webview.isAudioMuted();
+  webview.setAudioMuted(mute);
+  if (mute) {
+    $('#mute_button').css('background-image', "url('img/baseline-volume_off-24px.svg')");
+  } else {
+    $('#mute_button').css('background-image', "url('img/baseline-volume_up-24px.svg')");
+  }
+}
