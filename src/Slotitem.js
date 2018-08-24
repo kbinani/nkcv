@@ -34,7 +34,7 @@ Slotitem.prototype.type = function() {
     14: "emergency_repair",
     15: "anti_aircraft_gun",
     16: "high_angle_gun",
-    17: "anti_submarine_weapon", // 爆雷投射機
+    17: "depth_charge", // 爆雷投射機
     18: "sonar",
     19: "engine_equipment",
     20: "landing_craft", // 上陸用舟艇
