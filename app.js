@@ -3,11 +3,14 @@
 const electron = require('electron'),
       find_free_port = require('find-free-port'),
       os = require('os'),
+      fs = require('fs'),
+      path = require('path'),
+      strftime = require('strftime'),
       HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js');
 
-const {app, BrowserWindow, session} = require('electron');
+const {app, BrowserWindow, session, ipcMain} = require('electron');
 
 var mainWindow = null;
 
@@ -50,6 +53,14 @@ app.on('ready', function() {
   });
 });
 
+ipcMain.on('app.screenshot', function(event, data) {
+  const now = new Date();
+  const filename = app.getName() + '_' + strftime('%Y%m%d-%H%M%S-%L', now) + '.png';
+  const fullpath = path.join(app.getPath('pictures'), filename);
+  const stream = fs.createWriteStream(fullpath);
+  stream.write(data);
+  stream.end();
+});
 
 function updateScale(scale) {
   if (!mainWindow) {

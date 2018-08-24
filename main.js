@@ -1,6 +1,6 @@
 const isDev = require('electron-is-dev');
 window.jQuery = window.$ = require('jquery');
-const {ipcRenderer} = require('electron');
+const {ipcMain, ipcRenderer, screen} = require('electron');
 const Port = require('./src/Port.js');
 
 const width = 1200;
@@ -237,4 +237,14 @@ function toggleMute(sender) {
   } else {
     $('#mute_button').css('background-image', "url('img/baseline-volume_up-24px.svg')");
   }
+}
+
+function takeScreenshot(sender) {
+  const webview = document.querySelector("webview");
+  const screenScale = screen.getPrimaryDisplay().scaleFactor;
+  const totalScale = screenScale;
+  const rect = {x: 0, y: 0, width: width * totalScale, height: height * totalScale};
+  webview.capturePage(rect, function(image) {
+    ipcRenderer.send('app.screenshot', image.resize({width: width}).toPNG());
+  });
 }

@@ -13,6 +13,7 @@
     "electron-is-dev": "^0.3.0",
     "find-free-port": "^2.0.0",
     "jquery": "^3.3.1",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "strftime": "^0.10.0"
   }
 }
