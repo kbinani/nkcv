@@ -1,6 +1,7 @@
 body {
   user-select: none;
   cursor: default;
+  font-size: 12px;
 }
 
 html::-webkit-scrollbar {
@@ -35,4 +36,12 @@ html::-webkit-scrollbar {
 
 .DeckTableActive {
   display: block;
+}
+
+.FontNormal {
+  font-size: 12px;
+}
+
+.FontLarge {
+  font-size: 20px;
 }

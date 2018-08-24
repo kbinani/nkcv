@@ -41,6 +41,11 @@ function onload() {
     }
 
     updateShipStatus(port.ships);
+
+    $('#user_name').html(port.nickname());
+    $('#user_level').html(port.level());
+    $('#user_comment').html(port.comment());
+    $('#user_rank').html(port.rank());
   });
 }
 
@@ -138,8 +143,8 @@ function barColor(rat) {
 function createDeckShipCell(ship_id) {
   const template = '\
     <tr class="DeckShipCell ThemeContainerBorderB">\
-      <td id="ship_{ship_id}_type" style="padding: 5px; font-size: 12px;" nowrap>艦種</td>\
-      <td id="ship_{ship_id}_name" style="padding: 5px; font-size: 20px;" nowrap>艦名</td>\
+      <td id="ship_{ship_id}_type" class="FontNormal" style="padding: 5px;" nowrap>艦種</td>\
+      <td id="ship_{ship_id}_name" class="FontLarge" style="padding: 5px;" nowrap>艦名</td>\
       <td style="padding: 5px;" nowrap>\
         <div style="display: flex; flex-direction: column;">\
           <div style="flex: 1 1 auto;">Lv. <span id="ship_{ship_id}_level">1</span></div>\
