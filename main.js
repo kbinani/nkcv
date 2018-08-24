@@ -195,7 +195,7 @@ function updateSlotitemStatus(slotitems) {
 }
 
 function createDeckShipSlotitemCell(slotitem_id) {
-  const template = '<div title="12.7cm連装砲" id="slotitem_{slotitem_id}_icon" style="flex: 0 0 30px; width: 30px; height: 30px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat;background-position: 50%; margin-left: 2px; margin-right: 2px;"></div>';
+  const template = '<div title="12.7cm連装砲" id="slotitem_{slotitem_id}_icon" style="flex: 0 0 30px; width: 30px; height: 30px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;"></div>';
   return template.replace(/\{slotitem_id\}/g, slotitem_id);
 }
 
