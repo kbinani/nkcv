@@ -1,0 +1,5 @@
+body {
+  user-select: none;
+  cursor: default;
+  font-size: 12px;
+}

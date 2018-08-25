@@ -1,12 +1,15 @@
 const isDev = require('electron-is-dev');
 window.jQuery = window.$ = require('jquery');
-const {ipcMain, ipcRenderer, screen} = require('electron');
-const Port = require('./src/Port.js');
+const {ipcRenderer, screen} = require('electron');
+const Port = require('./src/Port.js'),
+      Master = require('./src/Master.js'),
+      DataStorage = require('./src/DataStorage.js');
 const sprintf = require('sprintf');
 
 const width = 1200;
 const height = 720;
 var scale = 1;
+const storage = new DataStorage();
 
 function onload() {
   const webview = document.querySelector("webview");
@@ -25,9 +28,17 @@ function onload() {
     $("#browser_url").val(data.url);
   });
 
-  Port.addObserver(function(port) {
+  storage.on('port', function(port) {
     updateDeckStatus(port.decks);
     updateShipStatus(port.ships);
+    port.ships.forEach(function(ship) {
+      const slotitems = ship.slotitems();
+      slotitems.forEach(function(it) {
+        const slotitemCell = createDeckShipSlotitemCell(it.id());
+        $('#ship_' + ship.id() + '_slotitem').append(slotitemCell);
+      });
+      updateSlotitemStatus(slotitems);
+    });
 
     $('#user_name').html(port.nickname());
     $('#user_level').html(port.level());
@@ -47,21 +58,7 @@ function onload() {
         $(this).removeClass('CountdownLabel');
         $(this).html('');
       } else {
-        var label = "";
-        var seconds = Math.floor(remaining / 1000);
-        const h = Math.floor(seconds / 3600);
-        if (h > 0) {
-          label += h + ':';
-        }
-        seconds -= h * 3600;
-        const m = Math.floor(seconds / 60);
-        const s = seconds - m * 60;
-        if (label == '') {
-          label += m + ':';
-        } else {
-          label += sprintf('%02d:', m);
-        }
-        label += sprintf('%02d', s);
+        const label = timeLabel(remaining);
         $(this).html(label);
       }
     });
@@ -149,49 +146,6 @@ function applyScale() {
   $("#wv").css("height", (height * scale) + "px");
 }
 
-function updateShipStatus(ships) {
-  ships.forEach(function(ship) {
-    const id = ship.id();
-    $('#ship_' + id + '_level').html(ship.level());
-    $('#ship_' + id + '_name').html(ship.name());
-
-    const hp = ship.hp();
-    $('#ship_' + id + '_hp_numerator').html(hp.numerator());
-    $('#ship_' + id + '_hp_denominator').html(hp.denominator());
-    $('#ship_' + id + '_hp_percentage').css('width', (hp.value() * 100) + '%');
-    $('#ship_' + id + '_hp_percentage').css('background-color', barColor(hp));
-
-    const cond = ship.cond();
-    $('#ship_' + id + '_cond').html(ship.cond());
-    const condIconColor = cond > 49 ? 'yellow' : 'white';
-    $('#ship_' + id + '_cond_icon').css('background-color', condIconColor);
-
-    $('#ship_' + id + '_next_exp').html(ship.next_exp());
-
-    const fuel = ship.fuel();
-    $('#ship_' + id + '_fuel_percentage').css('width', (fuel.value() * 100) + '%');
-    $('#ship_' + id + '_fuel_percentage').css('background-color', barColor(fuel));
-
-    const bull = ship.bull();
-    $('#ship_' + id + '_bull_percentage').css('width', (bull.value() * 100) + '%');
-    $('#ship_' + id + '_bull_percentage').css('background-color', barColor(bull));
-
-    $('#ship_' + id + '_type').html(ship.type());
-
-    const slotitems = ship.slotitems();
-    slotitems.forEach(function(it) {
-      const slotitemCell = createDeckShipSlotitemCell(it.id());
-      $('#ship_' + id + '_slotitem').append(slotitemCell);
-    });
-
-    updateSlotitemStatus(slotitems);
-  });
-}
-
-function barColor(rat) {
-  return rat.value() >= 0.75 ? '#0f0' : (rat.value() >= 0.5 ? 'yellow' : (rat.value() >= 0.25 ? 'orange' : 'red'));
-}
-
 function createDeckShipCell(ship_id) {
   const template = '\
     <tr class="DeckShipCell ThemeContainerBorderB">\
@@ -240,15 +194,6 @@ function createDeckShipCell(ship_id) {
       <td style="padding: 5px; overflow: hidden;" width="99999"></td>\
     </tr>';
     return template.replace(/\{ship_id\}/g, ship_id);
-}
-
-function updateSlotitemStatus(slotitems) {
-  slotitems.forEach(function(slotitem) {
-    const id = slotitem.id();
-    const element = $('#slotitem_' + id + '_icon');
-    element.attr('title', slotitem.name());
-    element.css('background-image', "url('img/" + slotitem.type() + ".svg')");
-  });
 }
 
 function createDeckShipSlotitemCell(slotitem_id) {

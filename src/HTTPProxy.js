@@ -11,11 +11,24 @@ function HTTPProxy() {
 
 const _ = HTTPProxy;
 
-const handlers = [];
+const observers = {};
+var maxObserverId = -1;
 
 _.addObserver = function(callback) {
-  handlers.push(callback);
+  maxObserverId++;
+  observers[maxObserverId] = callback;
+  return maxObserverId;
 };
+
+_.removeObserver = function(key) {
+  observers[key] = null;
+};
+
+function handle(api, data) {
+  for (var key in observers) {
+    observers[key](api, data);
+  }
+}
 
 _.launch = function(port) {
   var server = http.createServer(function onCliReq(cliReq, cliRes) {
@@ -72,18 +85,14 @@ _.launch = function(port) {
                 if (json.indexOf("svdata=") === 0) {
                   json = json.substring("svdata=".length);
                 }
-                handlers.forEach(function(callback) {
-                  callback(api, json);
-                });
+                handle(api, json);
               });
             } else {
               var json = data.toString();
               if (json.indexOf("svdata=") === 0) {
                 json = json.substring("svdata=".length);
               }
-              handlers.forEach(function(callback) {
-                callback(api, json);
-              });
+              handle(api, json);
             }
           } catch (e) {
             console.trace(e);

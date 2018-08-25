@@ -6,19 +6,19 @@ const Master = require(__dirname + '/Master.js'),
       _ = require('lodash');
 const {ipcRenderer} = require('electron');
 
-function Port(data, master) {
+function Port(data, storage) {
   this._data = data;
-  this._master = master;
+  this._storage = storage;
 
   const ships = _.get(data, ['api_data', 'api_ship'], []);
   const self = this;
   this.ships = ships.map(function(data) {
     const mst_id = _.get(data, ['api_ship_id'], -1);
-    const mst = self._master.ships[mst_id];
+    const mst = self._storage.master.ships[mst_id];
     if (mst == null) {
       return null;
     }
-    return new Ship(data, mst);
+    return new Ship(data, mst, self._storage);
   }).filter(function(it) { return it != null; });
 
   const decks = _.get(data, ['api_data', 'api_deck_port'], []);
@@ -60,24 +60,6 @@ Port.prototype.rank = function() {
     10: '新米少佐',
   };
   return _.get(mapping, [rank], '新米少佐');
-};
-
-var maxObserverId = -1;
-const observers = {};
-
-if (ipcRenderer) {
-  ipcRenderer.on('api_port/port', function(event, data) {
-    for (var key in observers) {
-      const port = new Port(JSON.parse(data), Master.shared);
-      observers[key](port);
-    }
-  });
-}
-
-Port.addObserver = function(callback) {
-  maxObserverId++;
-  observers[maxObserverId] = callback;
-  return maxObserverId;
 };
 
 module.exports = Port;

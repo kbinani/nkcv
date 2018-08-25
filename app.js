@@ -14,6 +14,8 @@ const {app, BrowserWindow, session, ipcMain} = require('electron');
 
 var mainWindow = null;
 var shipWindow = null;
+const mandatoryApiData = ['api_start2/getData', 'api_get_member/require_info', 'api_port/port'];
+var mandatoryData = {};
 
 app.on('window-all-closed', function() {
   app.quit();
@@ -42,6 +44,12 @@ app.on('ready', function() {
   mainWindow.loadURL('file://' + __dirname + '/main.html');
 
   mainWindow.webContents.on('dom-ready', function() {
+    for (var key in mandatoryData) {
+      const data = mandatoryData[key];
+      if (data.length > 0) {
+        mainWindow.webContents.send(key, data);
+      }
+    }
     updateScale(0.75);
   });
 
@@ -50,7 +58,15 @@ app.on('ready', function() {
   });
 
   HTTPProxy.addObserver(function(api, data) {
-    mainWindow.webContents.send(api, data);
+    if (mandatoryApiData.indexOf(api) >= 0) {
+      mandatoryData[api] = data;
+    }
+    if (mainWindow) {
+      mainWindow.webContents.send(api, data);
+    }
+    if (shipWindow) {
+      shipWindow.webContents.send(api, data);
+    }
   });
 });
 
@@ -85,6 +101,15 @@ function openShipList() {
   }
   shipWindow = new BrowserWindow({useContentSize: true});
   shipWindow.loadURL('file://' + __dirname + '/ships.html');
+
+  shipWindow.webContents.on('dom-ready', function() {
+    for (var key in mandatoryData) {
+      const data = mandatoryData[key];
+      if (data.length > 0) {
+        shipWindow.webContents.send(key, data);
+      }
+    }
+  });
 
   shipWindow.on('closed', function() {
     shipWindow = null;
