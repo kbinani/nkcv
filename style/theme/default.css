@@ -13,6 +13,20 @@
   color: #606060;
 }
 
+.ThemeRectButton {
+  border: solid 1px #F0F0F0;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #707070;
+  color: #F0F0F0;
+}
+
+.ThemeRectButton:active {
+  background-color: #808080;
+  color: #606060;
+}
+
 .ThemeContainer {
   background-color: #606060;
   font-family: sans-serif;

@@ -13,6 +13,7 @@ const electron = require('electron'),
 const {app, BrowserWindow, session, ipcMain} = require('electron');
 
 var mainWindow = null;
+var shipWindow = null;
 
 app.on('window-all-closed', function() {
   app.quit();
@@ -62,6 +63,10 @@ ipcMain.on('app.screenshot', function(event, data) {
   stream.end();
 });
 
+ipcMain.on('app.openShipList', function(event, data) {
+  openShipList();
+});
+
 function updateScale(scale) {
   if (!mainWindow) {
     return;
@@ -71,4 +76,17 @@ function updateScale(scale) {
   const height = 720;
   mainWindow.setMinimumSize(width * scale + scrollBarSize, height * scale + scrollBarSize);
   mainWindow.webContents.executeJavaScript('updateScale(' + scale + ')');
+}
+
+function openShipList() {
+  if (shipWindow != null) {
+    shipWindow.show();
+    return;
+  }
+  shipWindow = new BrowserWindow({useContentSize: true});
+  shipWindow.loadURL('file://' + __dirname + '/ships.html');
+
+  shipWindow.on('closed', function() {
+    shipWindow = null;
+  });
 }

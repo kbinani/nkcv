@@ -300,3 +300,7 @@ function takeScreenshot(sender) {
     ipcRenderer.send('app.screenshot', image.resize({width: width}).toPNG());
   });
 }
+
+function showShipList(sender) {
+  ipcRenderer.send('app.openShipList');
+}
