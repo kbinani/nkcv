@@ -2,6 +2,7 @@ const isDev = require('electron-is-dev');
 window.jQuery = window.$ = require('jquery');
 const {ipcMain, ipcRenderer, screen} = require('electron');
 const Port = require('./src/Port.js');
+const sprintf = require('sprintf');
 
 const width = 1200;
 const height = 720;
@@ -25,21 +26,7 @@ function onload() {
   });
 
   Port.addObserver(function(port) {
-    const kanji = ['一', '二', '三', '四'];
-    for (var i = 0; i < port.decks.length; i++) {
-      const deck = port.decks[i];
-      const container = $('#deck_' + i + '_ships');
-      container.empty();
-      for (var j = 0; j < deck.ships.length; j++) {
-        const ship = deck.ships[j];
-        const html = createDeckShipCell(ship.id());
-        container.append(html);
-      }
-
-      const name = deck.name();
-      $('#deck_' + i + '_menu').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
-    }
-
+    updateDeckStatus(port.decks);
     updateShipStatus(port.ships);
 
     $('#user_name').html(port.nickname());
@@ -47,6 +34,71 @@ function onload() {
     $('#user_comment').html(port.comment());
     $('#user_rank').html(port.rank());
   });
+
+  setInterval(function() {
+    const now = new Date();
+    $('.CountdownLabel').each(function() {
+      const finish = $(this).attr('data-timer-finish');
+      if (!finish) {
+        return;
+      }
+      const remaining = finish - now.getTime();
+      if (remaining <= 0) {
+        $(this).removeClass('CountdownLabel');
+        $(this).html('');
+      } else {
+        var label = "";
+        var seconds = Math.floor(remaining / 1000);
+        const h = Math.floor(seconds / 3600);
+        if (h > 0) {
+          label += h + ':';
+        }
+        seconds -= h * 3600;
+        const m = Math.floor(seconds / 60);
+        const s = seconds - m * 60;
+        if (label == '') {
+          label += m + ':';
+        } else {
+          label += sprintf('%02d:', m);
+        }
+        label += sprintf('%02d', s);
+        $(this).html(label);
+      }
+    });
+  }, 1000);
+}
+
+function updateDeckStatus(decks) {
+  const kanji = ['一', '二', '三', '四'];
+  for (var i = 0; i < decks.length; i++) {
+    const deck = decks[i];
+    const container = $('#deck_' + i + '_ships');
+    container.empty();
+    for (var j = 0; j < deck.ships.length; j++) {
+      const ship = deck.ships[j];
+      const html = createDeckShipCell(ship.id());
+      container.append(html);
+    }
+
+    const name = deck.name();
+    $('#deck_' + i + '_title').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
+
+    const mission_finish_time = deck.mission_finish_time();
+    var color = "";
+    if (mission_finish_time) {
+      color = 'blue';
+      $('#deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
+      $('#deck_' + i + '_countdown').addClass('CountdownLabel');
+    } else {
+      if (deck.is_ready_to_sally()) {
+        color = '#00CC00';
+      } else {
+        color = 'orange';
+      }
+      $('#deck_' + i + '_countdown').removeClass('CountdownLabel');
+    }
+    $('#deck_' + i + '_icon').css('background-color', color);
+  }
 }
 
 function menuItemClicked(sender) {

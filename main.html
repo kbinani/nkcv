@@ -50,10 +50,30 @@
         <div id="tool_container" class="ThemeContainer" style="flex: 1 1 auto; display: flex;">
           <div id="deck_tool" class="ThemeContainerActive ToolPanel ToolPanelActive" style="flex-direction: column;">
             <div class="ThemeContainerActive" style="flex: 0 0 30px; display: flex;">
-              <div id="deck_0_menu" class="ThemeContainerActive ThemeContainerBorderR" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: default;" onclick="deckMenuClicked(0)">第一艦隊</div>
-              <div id="deck_1_menu" class="ThemeContainer ThemeContainerBorderR ThemeContainerBorderB" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: pointer;" onclick="deckMenuClicked(1)">第二艦隊</div>
-              <div id="deck_2_menu" class="ThemeContainer ThemeContainerBorderR ThemeContainerBorderB" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: pointer;" onclick="deckMenuClicked(2)">第三艦隊</div>
-              <div id="deck_3_menu" class="ThemeContainer ThemeContainerBorderB" style="flex: 1 1 auto; padding: 5px; line-height: 20px; cursor: pointer;" onclick="deckMenuClicked(3)">第四艦隊</div>
+              <div id="deck_0_menu" class="ThemeContainerActive ThemeContainerBorderR"                 style="flex: 1 1 auto; cursor: default; display: flex;" onclick="deckMenuClicked(0)">
+                <div id="deck_0_icon" style="flex: 0 0 16px; width: 16px; height: 16px; margin: 8px; line-height: 30px; background-color: transparent;"></div>
+                <div style="flex: 1 1 auto; margin: 7px 8px 9px 0px;">
+                  <span id="deck_0_title"></span><span id="deck_0_countdown" style="margin-left: 10px;"></span>
+                </div>
+              </div>
+              <div id="deck_1_menu" class="ThemeContainer ThemeContainerBorderR ThemeContainerBorderB" style="flex: 1 1 auto; cursor: pointer; display: flex;" onclick="deckMenuClicked(1)">
+                <div id="deck_1_icon" style="flex: 0 0 16px; width: 16px; height: 16px; margin: 8px; line-height: 30px; background-color: transparent;"></div>
+                <div style="flex: 1 1 auto; margin: 7px 8px 9px 0px;">
+                  <span id="deck_1_title"></span><span id="deck_1_countdown" style="margin-left: 10px;"></span>
+                </div>
+              </div>
+              <div id="deck_2_menu" class="ThemeContainer ThemeContainerBorderR ThemeContainerBorderB" style="flex: 1 1 auto; cursor: pointer; display: flex;" onclick="deckMenuClicked(2)">
+                <div id="deck_2_icon" style="flex: 0 0 16px; width: 16px; height: 16px; margin: 8px; line-height: 30px; background-color: transparent;"></div>
+                <div style="flex: 1 1 auto; margin: 7px 8px 9px 0px;">
+                  <span id="deck_2_title"></span><span id="deck_2_countdown" style="margin-left: 10px;"></span>
+                </div>
+              </div>
+              <div id="deck_3_menu" class="ThemeContainer ThemeContainerBorderB"                       style="flex: 1 1 auto; cursor: pointer; display: flex;" onclick="deckMenuClicked(3)">
+                <div id="deck_3_icon" style="flex: 0 0 16px; width: 16px; height: 16px; margin: 8px; line-height: 30px; background-color: transparent;"></div>
+                <div style="flex: 1 1 auto; margin: 7px 8px 9px 0px;">
+                  <span id="deck_3_title"></span><span id="deck_3_countdown" style="margin-left: 10px;"></span>
+                </div>
+              </div>
             </div>
             <table id="deck_0_ships" class="DeckTableActive ThemeContainerActive" style="flex: 1 1 auto; border-collapse: collapse; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
             <table id="deck_1_ships" class="DeckTable ThemeContainerActive" style="flex: 1 1 auto; border-collapse: collapse; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
