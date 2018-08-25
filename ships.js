@@ -47,7 +47,7 @@ function replace(ships) {
 
 function createShipCell(index, ship) {
   const template = '\
-    <tr class="ThemeTable">\
+    <tr class="ThemeTable" style="height: 30px;">\
       <td nowrap>{index}</td>\
       <td nowrap>{ship_id}</td>\
       <td nowrap><span id="ship_{ship_id}_type"></span></td>\
