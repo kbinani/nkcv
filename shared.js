@@ -25,7 +25,7 @@ function updateShipStatus(ships) {
     $('#ship_' + id + '_bull_percentage').css('width', (bull.value() * 100) + '%');
     $('#ship_' + id + '_bull_percentage').css('background-color', barColor(bull));
 
-    $('#ship_' + id + '_type').html(ship.type());
+    $('#ship_' + id + '_type').html(ship.type().toString());
 
     $('#ship_' + id + '_karyoku').html(ship.karyoku().numerator());
     $('#ship_' + id + '_raisou').html(ship.raisou().numerator());
