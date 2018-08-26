@@ -1,4 +1,3 @@
-const isDev = require('electron-is-dev');
 window.jQuery = window.$ = require('jquery');
 const {ipcRenderer, screen} = require('electron');
 const Port = require('./src/Port.js'),
@@ -15,9 +14,6 @@ function onload() {
   const webview = document.querySelector("webview");
   webview.addEventListener("dom-ready", function() {
     applyScale();
-    if (isDev) {
-      webview.openDevTools();
-    }
   });
 
   webview.addEventListener("will-navigate", function(data) {
