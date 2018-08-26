@@ -18,7 +18,7 @@ function onload() {
   const choices = $('#ship_type_choices');
   const template = `
     <label for="ship_type_{id}" style="height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap;">
-      <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()"/><span id="ship_type_{id}_label">{name}</span>
+      <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label">{name}</span>
     </label>`
   ShipType.allCases().forEach(function(type) {
     const element = template.replace(/\{id\}/g, type.value())
