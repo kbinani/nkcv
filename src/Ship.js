@@ -105,8 +105,10 @@ Ship.prototype.soku = function() {
   const mapping = {
     5: '低速',
     10: '高速',
+    15: '高速+',
+    20: '最速',
   };
-  return _.get(mapping, [value], value);
+  return _.get(mapping, [value], '不明(' + value + ')');
 };
 
 Ship.prototype.repair_seconds = function() {
