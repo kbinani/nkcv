@@ -102,6 +102,7 @@ function openShipList() {
   const options = {
     useContentSize: true,
     parent: mainWindow,
+    width: 1026,
   };
   shipWindow = new BrowserWindow(options);
   shipWindow.loadURL('file://' + __dirname + '/ships.html');

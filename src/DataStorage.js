@@ -20,6 +20,12 @@ function DataStorage() {
   const self = this;
   ipcRenderer.on('api_port/port', function(event, data) {
     const port = new Port(JSON.parse(data), self);
+    port.decks.forEach(function(deck) {
+      const mission_finish_time = deck.mission_finish_time();
+      deck.ships.forEach(function(ship) {
+        ship.set_mission(mission_finish_time > 0);
+      });
+    });
     self.emit('port', port);
   });
 

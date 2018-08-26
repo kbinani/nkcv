@@ -82,14 +82,136 @@ function sort(ships) {
 }
 
 function filter(ships) {
+  const filters = [];
+
+  // 艦種
   const included = ShipType.allCases().filter(function(type) {
     return $('#ship_type_' + type.value()).prop('checked');
   }).map(function(type) {
     return type.value();
   });
-  return ships.filter(function(ship) {
+  filters.push(function(ship) {
     return included.indexOf(ship.type().value()) >= 0;
   });
+
+  // レベル
+  const level = $("input[name='filter_level']:checked").val();
+  switch (level) {
+    case '2_or_grater':
+      filters.push(function(ship) {
+        return ship.level() >= 2;
+      });
+      break;
+    case '1':
+      filters.push(function(ship) {
+        return ship.level() == 1;
+      });
+      break;
+  }
+
+  // 速力
+  const soku_list = [];
+  const checked = $("input[name='filter_soku']:checked");
+  checked.each(function(index) {
+    const element = $(checked[index]);
+    soku_list.push(parseInt(element.val(), 10));
+  });
+  filters.push(function(ship) {
+    return soku_list.indexOf(ship.soku().value()) >= 0;
+  });
+
+  // 損傷
+  const damage = $("input[name='filter_damage']:checked").val();
+  switch (damage) {
+    case 'damaged':
+      filters.push(function(ship) {
+        const hp = ship.hp();
+        return hp.numerator() < hp.denominator();
+      });
+      break;
+    case 'non_damaged':
+      filters.push(function(ship) {
+        const hp = ship.hp();
+        return hp.numerator() == hp.denominator();
+      });
+      break;
+  }
+
+  // ロック
+  const locked = $("input[name='filter_lock']:checked").val();
+  switch (locked) {
+    case 'locked':
+      filters.push(function(ship) {
+        return ship.locked();
+      });
+      break;
+    case 'non_locked':
+      filters.push(function(ship) {
+        return !ship.locked();
+      });
+      break;
+  }
+
+  // 改造状態
+  const upgraded = $("input[name='filter_upgrade']:checked").val();
+  switch (upgraded) {
+    case 'upgraded':
+      filters.push(function(ship) {
+        return ship.after_level() == 0;
+      });
+      break;
+    case 'non_upgraded':
+      filters.push(function(ship) {
+        return ship.after_level() > 0;
+      });
+      break;
+  }
+
+  // cond
+  const cond = $("input[name='filter_cond']:checked").val();
+  switch (cond) {
+    case '50_or_grater':
+      filters.push(function(ship) {
+        return ship.cond() >= 50;
+      });
+      break;
+    case 'lower_than_50':
+      filters.push(function(ship) {
+        return ship.cond() < 50;
+      });
+      break;
+  }
+
+  // 遠征
+  const mission = $("input[name='filter_mission']");
+  if (mission.prop('checked')) {
+    filters.push(function(ship) {
+      return !ship.is_mission();
+    });
+  }
+
+  // 近代化改修
+  const remodel = $("input[name='filter_remodel']:checked").val();
+  switch (remodel) {
+    case 'remodelled':
+      filters.push(function(ship) {
+        return ship.remodel_completed();
+      });
+      break;
+    case 'non_remodelled':
+      filters.push(function(ship) {
+        return !ship.remodel_completed();
+      });
+      break;
+  }
+
+  var result = ships;
+
+  filters.forEach(function(by) {
+    result = result.filter(by);
+  });
+
+  return result;
 }
 
 function createShipCell(index, ship) {

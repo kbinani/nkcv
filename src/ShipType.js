@@ -30,7 +30,7 @@ const mapping = {
 };
 
 ShipType.prototype.toString = function() {
-  return _.get(mapping, [this._raw], 'Unknown(' + this._raw + ')');
+  return _.get(mapping, [this._raw], '不明(' + this._raw + ')');
 };
 
 ShipType.prototype.value = function() {

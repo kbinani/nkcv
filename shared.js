@@ -35,7 +35,7 @@ function updateShipStatus(ships) {
     $('#ship_' + id + '_sakuteki').html(ship.sakuteki().numerator());
     $('#ship_' + id + '_taisen').html(ship.taisen().numerator());
 
-    $('#ship_' + id + '_soku').html(ship.soku());
+    $('#ship_' + id + '_soku').html(ship.soku().toString());
     const repair_seconds = ship.repair_seconds();
     if (repair_seconds > 0) {
       $('#ship_' + id + '_repair').html(timeLabel(repair_seconds));
