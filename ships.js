@@ -46,6 +46,16 @@ function shipTypeCheckboxClicked() {
   update();
 }
 
+function selectShipType(types) {
+  $('#ship_type_all').prop('checked', false);
+  ShipType.allCases().forEach(function(type) {
+    const checkbox = $('#ship_type_' + type.value());
+    const check = types.indexOf(type.value()) >= 0;
+    checkbox.prop('checked', check);
+  });
+  update();
+}
+
 function update() {
   const filtered = filter(_ships);
   const sorted = sort(filtered);

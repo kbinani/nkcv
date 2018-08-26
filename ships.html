@@ -10,8 +10,8 @@
 </head>
 <body class="ThemeContainer" style="margin: 0; padding: 0; width: 100vw; height: 100vh;" onload="onload()">
   <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden;">
-    <div style="flex: 0 0 auto; border: solid 1px #888; margin: 10px 10px 5px 10px;">
-      <div id="ship_type_choices" style="padding: 5px;">
+    <div style="flex: 0 0 auto; border: solid 1px #888; margin: 10px 10px 5px 10px; display: flex; flex-direction: column;">
+      <div id="ship_type_choices" style="flex: 1 1 auto; padding: 5px;">
         艦種:
         <br/>
         <span style="height: 25px; line-height: 25px; margin-right: 10px;">
@@ -20,6 +20,15 @@
           </label>
         </span>
         <br/>
+      </div>
+      <div style="flex: 1 1 auto; display: flex;">
+        <div class="ThemeRectButton ThemeContainerBorderT ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([2])">駆逐艦</div>
+        <div class="ThemeRectButton ThemeContainerBorderT ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([3, 4])">軽巡・雷巡</div>
+        <div class="ThemeRectButton ThemeContainerBorderT ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([5, 6])">重巡・航巡</div>
+        <div class="ThemeRectButton ThemeContainerBorderT ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([8, 9, 10])">戦艦</div>
+        <div class="ThemeRectButton ThemeContainerBorderT ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([7, 11, 18])">空母</div>
+        <div class="ThemeRectButton ThemeContainerBorderT ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([13, 14])">潜水艦</div>
+        <div class="ThemeRectButton ThemeContainerBorderT ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([6, 10])">航戦・航巡</div>
       </div>
     </div>
     <div style="flex: 0 0 auto; border: solid 1px #888; margin: 5px 10px 5px 10px;">
