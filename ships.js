@@ -11,8 +11,9 @@ const storage = new DataStorage();
 
 function onload() {
   storage.on('port', function(port) {
-    _ships = port.ships;
+    _ships = sort(port.ships);
     update();
+    applyFilter();
   });
 
   const choices = $('#ship_type_choices');
@@ -33,7 +34,7 @@ function toggleAll() {
     const checkbox = $('#ship_type_' + type.value());
     checkbox.prop('checked', checked);
   });
-  update();
+  applyFilter();
 }
 
 function shipTypeCheckboxClicked() {
@@ -43,7 +44,7 @@ function shipTypeCheckboxClicked() {
     allchecked &= checkbox.prop('checked');
   });
   $('#ship_type_all').prop('checked', allchecked);
-  update();
+  applyFilter();
 }
 
 function selectShipType(types) {
@@ -53,13 +54,10 @@ function selectShipType(types) {
     const check = types.indexOf(type.value()) >= 0;
     checkbox.prop('checked', check);
   });
-  update();
+  applyFilter();
 }
 
 function update() {
-  const filtered = filter(_ships);
-  const sorted = sort(filtered);
-
   const tbody = $('#ship_table');
   tbody.children().each(function() {
     const id = $(this).attr('id');
@@ -70,7 +68,7 @@ function update() {
   });
 
   var index = 1;
-  sorted.forEach(function(ship) {
+  _ships.forEach(function(ship) {
     const element = createShipCell(index, ship);
     tbody.append(element);
     index++;
@@ -93,7 +91,7 @@ function sort(ships) {
   return ships;
 }
 
-function filter(ships) {
+function applyFilter() {
   const filters = [];
 
   // 艦種
@@ -217,18 +215,34 @@ function filter(ships) {
       break;
   }
 
-  var result = ships;
-
-  filters.forEach(function(by) {
-    result = result.filter(by);
+  var row_index = 0;
+  _ships.forEach(function(ship) {
+    var visible = true;
+    for (var i = 0; i < filters.length; i++) {
+      const by = filters[i];
+      if (by(ship) === false) {
+        visible = false;
+        break;
+      }
+    }
+    const row = $('#ship_' + ship.id() + '_row');
+    row.css('display', visible ? 'table-row' : 'none');
+    if (visible) {
+      row_index++;
+      if (row_index % 2 == 0) {
+        row.addClass('ThemeTableRowEven');
+        row.removeClass('ThemeTableRowOdd');
+      } else {
+        row.addClass('ThemeTableRowOdd');
+        row.removeClass('ThemeTableRowEven');
+      }
+    }
   });
-
-  return result;
 }
 
 function createShipCell(index, ship) {
   const template = '\
-    <div class="ThemeTableRow" style="display: table-row;">\
+    <div id="ship_{ship_id}_row" class="ThemeTableRow" style="display: table-row;">\
       <div class="ThemeTableCell">{index}</div>\
       <div class="ThemeTableCell">{ship_id}</div>\
       <div class="ThemeTableCell"><span id="ship_{ship_id}_type"></span></div>\

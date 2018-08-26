@@ -76,14 +76,12 @@
   height: 25px;
 }
 
-div.ThemeTableRow:nth-child(even) {
+.ThemeTableRowEven {
   background-color: #666;
-  border-bottom: solid 1px #777;
 }
 
-div.ThemeTableRow:nth-child(odd) {
+.ThemeTableRowOdd {
   background-color: #555;
-  border-bottom: solid 1px #777;
 }
 
 .ThemeTableCell {

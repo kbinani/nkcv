@@ -36,54 +36,54 @@
         <tr>
           <td align="right" nowrap>レベル:</td>
           <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_level" checked="checked" value="any" onchange="update()">すべて</label>
-            <label><input type="radio" name="filter_level" value="2_or_grater" onchange="update()">Lv.2以上</label>
-            <label><input type="radio" name="filter_level" value="1" onchange="update()">Lv.1</label>
+            <label><input type="radio" name="filter_level" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+            <label><input type="radio" name="filter_level" value="2_or_grater" onchange="applyFilter()">Lv.2以上</label>
+            <label><input type="radio" name="filter_level" value="1" onchange="applyFilter()">Lv.1</label>
           </td>
           <td align="right" nowrap>速力:</td>
           <td width="33.3%" nowrap>
-            <label><input type="checkbox" name="filter_soku" checked="checked" value="20" onchange="update()">最速</label>
-            <label><input type="checkbox" name="filter_soku" checked="checked" value="15" onchange="update()">高速+</label>
-            <label><input type="checkbox" name="filter_soku" checked="checked" value="10" onchange="update()">高速</label>
-            <label><input type="checkbox" name="filter_soku" checked="checked" value="5" onchange="update()">低速</label>
+            <label><input type="checkbox" name="filter_soku" checked="checked" value="20" onchange="applyFilter()">最速</label>
+            <label><input type="checkbox" name="filter_soku" checked="checked" value="15" onchange="applyFilter()">高速+</label>
+            <label><input type="checkbox" name="filter_soku" checked="checked" value="10" onchange="applyFilter()">高速</label>
+            <label><input type="checkbox" name="filter_soku" checked="checked" value="5" onchange="applyFilter()">低速</label>
           </td>
           <td align="right" nowrap>損傷:</td>
           <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_damage" checked="checked" value="any" onchange="update()">すべて</label>
-            <label><input type="radio" name="filter_damage" value="damaged" onchange="update()">あり</label>
-            <label><input type="radio" name="filter_damage" value="non_damaged" onchange="update()">なし</label>
+            <label><input type="radio" name="filter_damage" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+            <label><input type="radio" name="filter_damage" value="damaged" onchange="applyFilter()">あり</label>
+            <label><input type="radio" name="filter_damage" value="non_damaged" onchange="applyFilter()">なし</label>
           </td>
         </tr>
         <tr>
           <td align="right" nowrap>ロック:</td>
           <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_lock" checked="checked" value="any" onchange="update()">すべて</label>
-            <label><input type="radio" name="filter_lock" value="locked" onchange="update()">している</label>
-            <label><input type="radio" name="filter_lock" value="non_locked" onchange="update()">していない</label>
+            <label><input type="radio" name="filter_lock" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+            <label><input type="radio" name="filter_lock" value="locked" onchange="applyFilter()">している</label>
+            <label><input type="radio" name="filter_lock" value="non_locked" onchange="applyFilter()">していない</label>
           </td>
           <td align="right" nowrap>改造:</td>
           <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_upgrade" checked="checked" value="any" onchange="update()">すべて</label>
-            <label><input type="radio" name="filter_upgrade" value="upgraded" onchange="update()">改造完了</label>
-            <label><input type="radio" name="filter_upgrade" value="non_upgraded" onchange="update()">改造未完</label>
+            <label><input type="radio" name="filter_upgrade" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+            <label><input type="radio" name="filter_upgrade" value="upgraded" onchange="applyFilter()">改造完了</label>
+            <label><input type="radio" name="filter_upgrade" value="non_upgraded" onchange="applyFilter()">改造未完</label>
           </td>
           <td align="right" nowrap>cond:</td>
           <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_cond" checked="checked" value="any" onchange="update()">すべて</label>
-            <label><input type="radio" name="filter_cond" value="50_or_grater" onchange="update()">50以上</label>
-            <label><input type="radio" name="filter_cond" value="lower_than_50" onchange="update()">50未満</label>
+            <label><input type="radio" name="filter_cond" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+            <label><input type="radio" name="filter_cond" value="50_or_grater" onchange="applyFilter()">50以上</label>
+            <label><input type="radio" name="filter_cond" value="lower_than_50" onchange="applyFilter()">50未満</label>
           </td>
         </tr>
         <tr>
           <td align="right" nowrap>遠征:</td>
           <td width="33.3%" nowrap>
-            <label><input type="checkbox" name="filter_mission" checked="checked" onchange="update()">遠征中の艦を除外する</label>
+            <label><input type="checkbox" name="filter_mission" checked="checked" onchange="applyFilter()">遠征中の艦を除外する</label>
           </td>
           <td align="right" nowrap>近代化改修:</td>
           <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_remodel" checked="checked" value="any" onchange="update()">すべて</label>
-            <label><input type="radio" name="filter_remodel" value="remodelled" onchange="update()">改修完了</label>
-            <label><input type="radio" name="filter_remodel" value="non_remodelled" onchange="update()">改修未完</label>
+            <label><input type="radio" name="filter_remodel" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+            <label><input type="radio" name="filter_remodel" value="remodelled" onchange="applyFilter()">改修完了</label>
+            <label><input type="radio" name="filter_remodel" value="non_remodelled" onchange="applyFilter()">改修未完</label>
           </td>
         </tr>
       </table>
