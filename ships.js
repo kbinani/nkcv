@@ -66,11 +66,9 @@ function update() {
     $(this).remove();
   });
 
-  var index = 1;
   _ships.forEach(function(ship) {
-    const element = createShipCell(index, ship);
+    const element = createShipCell(ship);
     tbody.append(element);
-    index++;
 
     const slotitems = ship.slotitems();
     const slotitem_container = $('#ship_' + ship.id() + '_slotitem');
@@ -232,6 +230,7 @@ function applyFilter() {
         row.removeClass('ThemeTableRowEven');
       }
     }
+    $('#ship_' + ship.id() + '_index').html(row_index);
   });
 }
 
@@ -248,10 +247,10 @@ function applySort() {
   applyFilter();
 }
 
-function createShipCell(index, ship) {
+function createShipCell(ship) {
   const template = '\
     <div id="ship_{ship_id}_row" class="ThemeTableRow" style="display: table-row;">\
-      <div class="ThemeTableCell">{index}</div>\
+      <div class="ThemeTableCell"><span id="ship_{ship_id}_index"></span></div>\
       <div class="ThemeTableCell">{ship_id}</div>\
       <div class="ThemeTableCell"><span id="ship_{ship_id}_type"></span></div>\
       <div class="ThemeTableCell"><span id="ship_{ship_id}_name"></span></div>\
@@ -269,8 +268,7 @@ function createShipCell(index, ship) {
       <div class="ThemeTableCell"><span id="ship_{ship_id}_repair"></span></div>\
       <div class="ThemeTableCell" id="ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>\
     </div>';
-  return template.replace(/\{index\}/g, index)
-                 .replace(/\{ship_id\}/g, ship.id());
+  return template.replace(/\{ship_id\}/g, ship.id());
 }
 
 function createSlotitemCell(slotitem_id) {
