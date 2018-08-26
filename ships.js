@@ -50,7 +50,7 @@ function update() {
   const filtered = filter(_ships);
   const sorted = sort(filtered);
 
-  const tbody = $('#ship_table').children().first();
+  const tbody = $('#ship_table');
   tbody.children().each(function() {
     if ($(this).attr('id') == 'ship_table_header') {
       return;
