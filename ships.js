@@ -11,9 +11,8 @@ const storage = new DataStorage();
 
 function onload() {
   storage.on('port', function(port) {
-    _ships = sort(port.ships);
+    _ships = port.ships;
     update();
-    applyFilter();
   });
 
   const choices = $('#ship_type_choices');
@@ -84,11 +83,7 @@ function update() {
   });
 
   updateShipStatus(_ships);
-}
-
-function sort(ships) {
-  //TODO
-  return ships;
+  applySort();
 }
 
 function applyFilter() {
@@ -238,6 +233,19 @@ function applyFilter() {
       }
     }
   });
+}
+
+function applySort() {
+  const sorted = _ships.sort(function(a, b) {
+    return b.exp() - a.exp();
+  });
+  const container = $('#ship_table');
+  sorted.forEach(function(ship) {
+    const row = $('#ship_' + ship.id() + '_row');
+    container.append(row);
+  });
+
+  applyFilter();
 }
 
 function createShipCell(index, ship) {

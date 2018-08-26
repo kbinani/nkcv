@@ -38,6 +38,10 @@ Ship.prototype.cond = function() {
   return _.get(this._data, ['api_cond'], 0);
 };
 
+Ship.prototype.exp = function() {
+  return _.get(this._data, ['api_exp', 0], 0);
+};
+
 Ship.prototype.next_exp = function() {
   return _.get(this._data, ['api_exp', 1], 0);
 };
