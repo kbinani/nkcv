@@ -101,7 +101,6 @@ function openShipList() {
   }
   const options = {
     useContentSize: true,
-    parent: mainWindow,
     width: 1026,
   };
   shipWindow = new BrowserWindow(options);
