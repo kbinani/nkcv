@@ -99,7 +99,11 @@ function openShipList() {
     shipWindow.show();
     return;
   }
-  shipWindow = new BrowserWindow({useContentSize: true});
+  const options = {
+    useContentSize: true,
+    parent: mainWindow,
+  };
+  shipWindow = new BrowserWindow(options);
   shipWindow.loadURL('file://' + __dirname + '/ships.html');
 
   shipWindow.webContents.on('dom-ready', function() {
