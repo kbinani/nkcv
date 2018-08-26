@@ -39,7 +39,7 @@ ShipType.prototype.value = function() {
 
 ShipType.allCases = function() {
   return Object.keys(mapping).map(function(raw) {
-    return new ShipType(raw);
+    return new ShipType(parseInt(raw, 10));
   });
 };
 

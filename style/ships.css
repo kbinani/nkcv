@@ -3,3 +3,7 @@ body {
   cursor: default;
   font-size: 12px;
 }
+
+label, input[type='checkbox'] {
+    cursor: pointer;
+}

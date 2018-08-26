@@ -8,29 +8,44 @@
 <script src="./shared.js"></script>
 <script src="./ships.js"></script>
 </head>
-<body style="margin: 0; padding: 0;" onload="onload()">
-  <div class="ThemeContainer" style="display: flex; width: 100%; height: 100%;">
-    <table id="ship_table" style="flex: 1 1 auto; border-collapse: collapse; width: 100%;">
-      <tr id="ship_table_header">
-        <td class="ThemeTableHeader" nowrap></td>
-        <td class="ThemeTableHeader" nowrap>ID<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>艦種<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>艦名<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>レベル<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>cond<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>火力<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>雷装<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>対空<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>装甲<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>運<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>索敵<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>対潜<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>速力<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>出撃海域<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>修復時間<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-        <td class="ThemeTableHeader" nowrap>装備<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
-      </tr>
-    </table>
+<body style="margin: 0; padding: 0; min-width: 100%; min-height: 100%;" onload="onload()">
+  <div class="ThemeContainer" style="display: flex; min-height: 100vh; min-width: 100vw; flex-direction: column;">
+    <div class="ThemeContainer" style="flex: 0 0 auto; padding: 10px;">
+      <div id="ship_type_choices" style="border: solid 1px #888; padding: 5px;">
+        艦種:
+        <br/>
+        <span style="height: 25px; line-height: 25px; margin-right: 10px;">
+          <label for="ship_type_all">
+            <input id="ship_type_all" type="checkbox" onclick="toggleAll()"/>全て選択
+          </label>
+        </span>
+        <br/>
+      </div>
+    </div>
+    <div class="ThemeContainer" style="flex: 0 0 auto; padding: 10px;">
+      <table id="ship_table" style="border-collapse: collapse; border: solid 1px #888;">
+        <tr id="ship_table_header">
+          <td class="ThemeTableHeader" nowrap></td>
+          <td class="ThemeTableHeader" nowrap>ID<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>艦種<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>艦名<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>レベル<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>cond<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>火力<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>雷装<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>対空<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>装甲<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>運<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>索敵<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>対潜<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>速力<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>出撃海域<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>修復時間<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+          <td class="ThemeTableHeader" nowrap>装備<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></td>
+        </tr>
+      </table>
+    </div>
+    <div style="flex: 1 0 auto;"><!-- spacer --></div>
   </div>
 </body>
 </html>

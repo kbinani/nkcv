@@ -1,9 +1,9 @@
-const isDev = require('electron-is-dev');
 window.jQuery = window.$ = require('jquery');
 const {ipcRenderer, screen} = require('electron');
 const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
-      DataStorage = require('./src/DataStorage.js');
+      DataStorage = require('./src/DataStorage.js'),
+      ShipType = require('./src/ShipType.js');
 const sprintf = require('sprintf');
 
 var _ships = [];
@@ -11,12 +11,44 @@ const storage = new DataStorage();
 
 function onload() {
   storage.on('port', function(port) {
-    replace(port.ships);
+    _ships = port.ships;
+    update();
+  });
+
+  const choices = $('#ship_type_choices');
+  const template = `
+    <label for="ship_type_{id}" style="height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap;">
+      <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()"/><span id="ship_type_{id}_label">{name}</span>
+    </label>`
+  ShipType.allCases().forEach(function(type) {
+    const element = template.replace(/\{id\}/g, type.value())
+                            .replace(/\{name\}/g, type.toString());
+    choices.append(element);
   });
 }
 
-function replace(ships) {
-  _ships = ships;
+function toggleAll() {
+  const checked = $('#ship_type_all').prop('checked');
+  ShipType.allCases().forEach(function(type) {
+    const checkbox = $('#ship_type_' + type.value());
+    checkbox.prop('checked', checked);
+  });
+  update();
+}
+
+function shipTypeCheckboxClicked() {
+  var allchecked = true;
+  ShipType.allCases().forEach(function(type) {
+    const checkbox = $('#ship_type_' + type.value());
+    allchecked &= checkbox.prop('checked');
+  });
+  $('#ship_type_all').prop('checked', allchecked);
+  update();
+}
+
+function update() {
+  const filtered = filter(_ships);
+  const sorted = sort(filtered);
 
   const tbody = $('#ship_table').children().first();
   tbody.children().each(function() {
@@ -27,7 +59,7 @@ function replace(ships) {
   });
 
   var index = 1;
-  _ships.forEach(function(ship) {
+  sorted.forEach(function(ship) {
     const element = createShipCell(index, ship);
     tbody.append(element);
     index++;
@@ -36,13 +68,28 @@ function replace(ships) {
     const slotitem_container = $('#ship_' + ship.id() + '_slotitem');
     slotitem_container.empty();
     slotitems.forEach(function(slotitem) {
-      console.log(slotitem.name());
       slotitem_container.append(createSlotitemCell(slotitem.id()));
     });
     updateSlotitemStatus(slotitems);
   });
 
   updateShipStatus(_ships);
+}
+
+function sort(ships) {
+  //TODO
+  return ships;
+}
+
+function filter(ships) {
+  const included = ShipType.allCases().filter(function(type) {
+    return $('#ship_type_' + type.value()).prop('checked');
+  }).map(function(type) {
+    return type.value();
+  });
+  return ships.filter(function(ship) {
+    return included.indexOf(ship.type().value()) >= 0;
+  });
 }
 
 function createShipCell(index, ship) {
