@@ -92,22 +92,101 @@
       <div id="ship_table" style="display: table; min-width: 100%;">
         <div id="ship_table_header" style="display: table-row;">
           <div class="ThemeTableHeader"></div>
-          <div class="ThemeTableHeader">ID<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">艦種<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">艦名<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">レベル<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">cond<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">火力<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">雷装<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">対空<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">装甲<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">運<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">索敵<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">対潜<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">速力<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">出撃海域<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">修復時間<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
-          <div class="ThemeTableHeader">装備<span class="TableHeaderSortOrder"></span><span class="TableHeaderSortType"></span></div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">ID</div>
+              <div id="sort_order_id" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">艦種</div>
+              <div id="sort_order_type" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">艦名</div>
+              <div id="sort_order_name" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">レベル</div>
+              <div id="sort_order_level" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">cond</div>
+              <div id="sort_order_cond" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">火力</div>
+              <div id="sort_order_karyoku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">雷装</div>
+              <div id="sort_order_raisou" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">対空</div>
+              <div id="sort_order_taiku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">装甲</div>
+              <div id="sort_order_soukou" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">運</div>
+              <div id="sort_order_lucky" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">索敵</div>
+              <div id="sort_order_sakuteki" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">対潜</div>
+              <div id="sort_order_taisen" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">速力</div>
+              <div id="sort_order_soku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">出撃海域</div>
+              <div id="sort_order_sally_area" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">修復時間</div>
+              <div id="sort_order_repair_time" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+            </div>
+          </div>
+          <div class="ThemeTableHeader">
+            <div style="display: flex;">
+              <div class="TableHeaderKey" style="flex: 0 0 auto;">装備</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

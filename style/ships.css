@@ -7,3 +7,24 @@ body {
 label, input[type='checkbox'] {
     cursor: pointer;
 }
+
+.TableHeaderSortOrder {
+  height: 13px;
+  min-width: 11px;
+  line-height: 13px;
+  font-size: 10px;
+  border-radius: 2px;
+  border: solid 1px #777;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
+  padding: 2px;
+  background-color: #444;
+  color: #777;
+}
+
+.TableHeaderKey {
+  padding-top: 2px;
+}

@@ -4,10 +4,31 @@ const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
       DataStorage = require('./src/DataStorage.js'),
       ShipType = require('./src/ShipType.js');
-const sprintf = require('sprintf');
+const sprintf = require('sprintf'),
+      _ = require('lodash');
 
 var _ships = [];
 const storage = new DataStorage();
+const sort_order_key = [
+  'id',
+  'type',
+  'name',
+  'level',
+  'cond',
+  'karyoku',
+  'raisou',
+  'taiku',
+  'soukou',
+  'lucky',
+  'sakuteki',
+  'taisen',
+  'soku',
+  'sally_area',
+  'repair_time',
+];
+const sort_order = [
+  // {'key': 'id', 'order': 'ascending'}
+];
 
 function onload() {
   storage.on('port', function(port) {
@@ -235,13 +256,62 @@ function applyFilter() {
 }
 
 function applySort() {
-  const sorted = _ships.sort(function(a, b) {
-    return b.exp() - a.exp();
+  sort_order.splice(0, sort_order.length);
+  sort_order.push({'key': 'level', 'order': 'ascending'});
+
+  var filters = [];
+
+  const filter_templates = {
+    'level': function(a, b) { return a.exp() - b.exp(); },
+    'name': function(a, b) { return a.name().localeCompare(b.name()); },
+    'cond': function(a, b) { return a.cond() - b.cond(); },
+    'karyoku': function(a, b) { return a.karyoku().numerator() - b.karyoku().numerator(); },
+    'raisou': function(a, b) { return a.raisou().numerator() - b.raisou().numerator(); },
+    'taiku': function(a, b) { return a.taiku().numerator() - b.taiku().numerator(); },
+    'soukou': function(a, b) { return a.soukou().numerator() - b.soukou().numerator(); },
+    'lucky': function(a, b) { return a.lucky().numerator() - b.lucky().numerator(); },
+    'sakuteki': function(a, b) { return a.sakuteki().numerator() - b.sakuteki().numerator(); },
+    'taisen': function(a, b) { return a.taisen().numerator() - b.taisen().numerator(); },
+    'soku': function(a, b) { return a.soku().value() - b.soku().value(); },
+    //TODO: sally_area
+    'repair_time': function(a, b) { return a.repair_seconds() - b.repair_seconds(); },
+  };
+
+  for (var i = sort_order.length - 1; i >= 0; i--) {
+    const it = sort_order[i];
+    const key = it.key;
+    const is_descending = it.order == 'descending';
+    const func = filter_templates[key];
+    if (!func) {
+      console.log('filter func not defined for key:' + key);
+      continue;
+    }
+    if (is_descending) {
+      filters.push(function(a, b) { return func(b, a); });
+    } else {
+      filters.push(func);
+    }
+  }
+
+  var sorted = _ships;
+  filters.forEach(function(func) {
+    sorted = sorted.sort(func);
   });
   const container = $('#ship_table');
   sorted.forEach(function(ship) {
     const row = $('#ship_' + ship.id() + '_row');
     container.append(row);
+  });
+
+  sort_order_key.forEach(key => {
+    unsetSortOrder($('#sort_order_' + key));
+  });
+  var index = 1;
+  sort_order.forEach(function(it) {
+    const key = it.key;
+    const is_descending = it.order == 'descending';
+    setSortOrder($('#sort_order_' + key), index, is_descending);
+    index++;
   });
 
   applyFilter();
@@ -274,4 +344,17 @@ function createShipCell(ship) {
 function createSlotitemCell(slotitem_id) {
   const template = '<div title="12.7cm連装砲" id="slotitem_{slotitem_id}_icon" style="flex: 0 0 21px; width: 21px; height: 21px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin: 2px 2px 0px 0px;"></div>';
   return template.replace(/\{slotitem_id\}/g, slotitem_id);
+}
+
+function unsetSortOrder($element) {
+    $element.css('display', 'none');
+}
+
+function setSortOrder($element, order_index, is_descending) {
+  if (order_index < 0) {
+    unsetSortOrder($element);
+  } else {
+    $element.css('display', 'block');
+    $element.html(order_index + (is_descending ? "▼" : "▲"));
+  }
 }
