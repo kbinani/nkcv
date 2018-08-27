@@ -295,7 +295,9 @@ function applySort() {
       filters.push(func);
     }
   }
+
   if (!id_key_included) {
+    // Array.sort は stable でないので, id を優先順位最低のソートキーとしています.
     filters.splice(0, 0, filter_templates['id']);
   }
 
