@@ -115,7 +115,8 @@ function openShipList() {
     }
   });
 
-  shipWindow.on('closed', function() {
-    shipWindow = null;
+  shipWindow.on('close', function(event) {
+    event.preventDefault();
+    shipWindow.hide();
   });
 }
