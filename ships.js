@@ -27,7 +27,7 @@ const sort_order_key = [
   'repair_time',
 ];
 const sort_order = [
-  // {'key': 'id', 'order': 'ascending'}
+  {'key': 'level', 'order': 'ascending'},
 ];
 
 function onload() {
@@ -256,12 +256,11 @@ function applyFilter() {
 }
 
 function applySort() {
-  sort_order.splice(0, sort_order.length);
-  sort_order.push({'key': 'level', 'order': 'ascending'});
-
   var filters = [];
 
   const filter_templates = {
+    'id': function(a, b) { return a.id() - b.id(); },
+    'type': function(a, b) { return a.type().value() - b.type().value(); },
     'level': function(a, b) { return a.exp() - b.exp(); },
     'name': function(a, b) { return a.name().localeCompare(b.name()); },
     'cond': function(a, b) { return a.cond() - b.cond(); },
@@ -277,9 +276,13 @@ function applySort() {
     'repair_time': function(a, b) { return a.repair_seconds() - b.repair_seconds(); },
   };
 
+  var id_key_included = false;
   for (var i = sort_order.length - 1; i >= 0; i--) {
     const it = sort_order[i];
     const key = it.key;
+    if (key == 'id') {
+      id_key_included = true;
+    }
     const is_descending = it.order == 'descending';
     const func = filter_templates[key];
     if (!func) {
@@ -291,6 +294,9 @@ function applySort() {
     } else {
       filters.push(func);
     }
+  }
+  if (!id_key_included) {
+    filters.splice(0, 0, filter_templates['id']);
   }
 
   var sorted = _ships;
@@ -357,4 +363,24 @@ function setSortOrder($element, order_index, is_descending) {
     $element.css('display', 'block');
     $element.html(order_index + (is_descending ? "▼" : "▲"));
   }
+}
+
+function resetSortOrder() {
+  sort_order.splice(0, sort_order.length);
+  applySort();
+}
+
+function sortOrderClicked(key) {
+  const index = _.findIndex(sort_order, function(it) { return it.key == key; });
+  if (index >= 0) {
+    const existing = sort_order[index];
+    if (existing.order == 'ascending') {
+      sort_order[index].order = 'descending';
+    } else {
+      sort_order[index].order = 'ascending';
+    }
+  } else {
+    sort_order.push({'key': key, 'order': 'ascending'});
+  }
+  applySort();
 }
