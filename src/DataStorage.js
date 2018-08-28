@@ -78,7 +78,10 @@ function DataStorage() {
         }
       }
     } else {
-      if (to_ship_id == -1) {
+      if (to_ship_id == -2) {
+        // 随伴艦一括解除
+        deck.ships.splice(1, deck.ships.length - 1);
+      } else if (to_ship_id == -1) {
         // はずす
         deck.ships.splice(ship_index, 1);
       } else {
