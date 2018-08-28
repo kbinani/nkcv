@@ -27,8 +27,9 @@ const sort_order_key = [
   'repair_time',
 ];
 const sort_order = [
-  {'key': 'level', 'order': 'ascending'},
+  {'key': 'level', 'is_descending': false},
 ];
+var sort_order_inverted = false;
 
 function onload() {
   storage.on('port', function(port) {
@@ -283,7 +284,7 @@ function applySort() {
     if (key == 'id') {
       id_key_included = true;
     }
-    const is_descending = it.order == 'descending';
+    const is_descending = it.is_descending === true;
     const func = filter_templates[key];
     if (!func) {
       console.log('filter func not defined for key:' + key);
@@ -298,7 +299,12 @@ function applySort() {
 
   if (!id_key_included) {
     // Array.sort は stable でないので, id を優先順位最低のソートキーとしています.
-    filters.push(filter_templates['id']);
+    const func = filter_templates['id'];
+    if (sort_order_inverted) {
+      filters.push((a, b) => func(b, a));
+    } else {
+      filters.push(func);
+    }
   }
 
   const sorted = _ships.sort((a, b) => {
@@ -323,7 +329,7 @@ function applySort() {
   var index = 1;
   sort_order.forEach(function(it) {
     const key = it.key;
-    const is_descending = it.order == 'descending';
+    const is_descending = it.is_descending === true;
     setSortOrder($('#sort_order_' + key), index, is_descending);
     index++;
   });
@@ -375,6 +381,13 @@ function setSortOrder($element, order_index, is_descending) {
 
 function resetSortOrder() {
   sort_order.splice(0, sort_order.length);
+  sort_order_inverted = false;
+  applySort();
+}
+
+function invertSortOrder() {
+  sort_order.forEach((it) => it.is_descending = !it.is_descending);
+  sort_order_inverted = !sort_order_inverted;
   applySort();
 }
 
@@ -382,13 +395,9 @@ function sortOrderClicked(key) {
   const index = _.findIndex(sort_order, function(it) { return it.key == key; });
   if (index >= 0) {
     const existing = sort_order[index];
-    if (existing.order == 'ascending') {
-      sort_order[index].order = 'descending';
-    } else {
-      sort_order[index].order = 'ascending';
-    }
+    existing.is_descending = !existing.is_descending;
   } else {
-    sort_order.push({'key': key, 'order': 'ascending'});
+    sort_order.push({'key': key, 'is_descending': false});
   }
   applySort();
 }
