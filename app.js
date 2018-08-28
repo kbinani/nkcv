@@ -16,6 +16,7 @@ var mainWindow = null;
 var shipWindow = null;
 const mandatoryApiData = ['api_start2/getData', 'api_get_member/require_info', 'api_port/port'];
 var mandatoryData = {};
+var mainWindowClosed = false;
 
 app.on('window-all-closed', function() {
   app.quit();
@@ -54,6 +55,10 @@ app.on('ready', function() {
   });
 
   mainWindow.on('closed', function() {
+    mainWindowClosed = true;
+    if (shipWindow) {
+      shipWindow.close();
+    }
     mainWindow = null;
   });
 
@@ -116,6 +121,9 @@ function openShipList() {
   });
 
   shipWindow.on('close', function(event) {
+    if (mainWindowClosed) {
+      return;
+    }
     event.preventDefault();
     shipWindow.hide();
   });
