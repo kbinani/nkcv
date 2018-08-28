@@ -397,7 +397,11 @@ function sortOrderClicked(key) {
     const existing = sort_order[index];
     existing.is_descending = !existing.is_descending;
   } else {
-    sort_order.push({'key': key, 'is_descending': false});
+    if (sort_order.length == 0 && key == 'id') {
+      sort_order.push({'key': key, 'is_descending': true});
+    } else {
+      sort_order.push({'key': key, 'is_descending': false});
+    }
   }
   applySort();
 }
