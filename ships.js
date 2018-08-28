@@ -277,7 +277,7 @@ function applySort() {
   };
 
   var id_key_included = false;
-  for (var i = sort_order.length - 1; i >= 0; i--) {
+  for (var i = 0; i < sort_order.length; i++) {
     const it = sort_order[i];
     const key = it.key;
     if (key == 'id') {
@@ -298,12 +298,18 @@ function applySort() {
 
   if (!id_key_included) {
     // Array.sort は stable でないので, id を優先順位最低のソートキーとしています.
-    filters.splice(0, 0, filter_templates['id']);
+    filters.push(filter_templates['id']);
   }
 
-  var sorted = _ships;
-  filters.forEach(function(func) {
-    sorted = sorted.sort(func);
+  const sorted = _ships.sort((a, b) => {
+    for (var i = 0; i < filters.length; i++) {
+      const compare = filters[i];
+      const result = compare(a, b);
+      if (result != 0) {
+        return result;
+      }
+    }
+    return 0;
   });
   const container = $('#ship_table');
   sorted.forEach(function(ship) {
