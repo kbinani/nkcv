@@ -13,7 +13,7 @@ function Master() {
   this.slotitems = {};
 
   const self = this;
-  ipcRenderer.on('api_start2/getData', function(event, data) {
+  ipcRenderer.on('api_start2/getData', function(event, data, request_body) {
     const changed = self._last != data;
     if (changed) {
       const json = JSON.parse(data);

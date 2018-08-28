@@ -18,7 +18,7 @@ function DataStorage() {
   this.slotitems = new SlotitemList();
 
   const self = this;
-  ipcRenderer.on('api_port/port', function(event, data) {
+  ipcRenderer.on('api_port/port', function(event, data, request_body) {
     const port = new Port(JSON.parse(data), self);
     port.decks.forEach(function(deck) {
       const mission_finish_time = deck.mission_finish_time();
@@ -29,7 +29,7 @@ function DataStorage() {
     self.emit('port', port);
   });
 
-  ipcRenderer.on('api_get_member/require_info', function(event, data) {
+  ipcRenderer.on('api_get_member/require_info', function(event, data, request_body) {
     const json = JSON.parse(data);
     const slot_items = _.get(json, ['api_data', 'api_slot_item'], []);
     const list = slot_items.map(function(d) {

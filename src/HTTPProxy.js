@@ -3,7 +3,11 @@
 const http = require('http'),
       url = require('url'),
       net = require('net'),
-      zlib = require('zlib');
+      zlib = require('zlib'),
+      is_dev = require('electron-is-dev'),
+      mkdirp = require('mkdirp'),
+      path = require('path'),
+      fs = require('fs');
 
 function HTTPProxy() {
 
@@ -24,9 +28,27 @@ _.removeObserver = function(key) {
   observers[key] = null;
 };
 
-function handle(api, data) {
+function handle(api, data, request_body) {
   for (var key in observers) {
-    observers[key](api, data);
+    observers[key](api, data, request_body);
+  }
+  if (is_dev) {
+    console.log(api);
+    const json = JSON.parse(data);
+    const log = {
+      'request': request_body,
+      'response': json,
+    };
+    const file = path.join(path.dirname(__dirname), 'api_log', api + '.json');
+    mkdirp(path.dirname(file), (err) => {
+      if (err) {
+        console.trace(err)
+        return;
+      }
+      const stream = fs.createWriteStream(file);
+      stream.write(JSON.stringify(log, null, 2));
+      stream.end();
+    });
   }
 }
 
@@ -52,6 +74,8 @@ _.launch = function(port) {
     };
 
     const kcsapiIndex = cliReq.url.indexOf("/kcsapi/");
+
+    var request_body = null;
 
     var self = this;
     var svrReq = http.request(options, function onSvrRes(svrRes) {
@@ -85,14 +109,14 @@ _.launch = function(port) {
                 if (json.indexOf("svdata=") === 0) {
                   json = json.substring("svdata=".length);
                 }
-                handle(api, json);
+                handle(api, json, request_body);
               });
             } else {
               var json = data.toString();
               if (json.indexOf("svdata=") === 0) {
                 json = json.substring("svdata=".length);
               }
-              handle(api, json);
+              handle(api, json, request_body);
             }
           } catch (e) {
             console.trace(e);
@@ -100,7 +124,22 @@ _.launch = function(port) {
         });
       }
     });
-    cliReq.pipe(svrReq);
+    cliReq.on('data', (data) => {
+      if (request_body == null) {
+        request_body = data;
+      } else {
+        request_body += data;
+      }
+      svrReq.write(data);
+    });
+    cliReq.on('end', () => {
+      if (request_body == null) {
+        request_body = '';
+      } else {
+        request_body = '' + request_body;
+      }
+      svrReq.end();
+    });
     svrReq.on('error', function onSvrReqErr(err) {
       cliRes.writeHead(400, err.message, {'content-type': 'text/html'});
       cliRes.end('<h1>' + err.message + '<br/>' + cliReq.url + '</h1>');

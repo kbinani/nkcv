@@ -48,7 +48,7 @@ app.on('ready', function() {
     for (var key in mandatoryData) {
       const data = mandatoryData[key];
       if (data.length > 0) {
-        mainWindow.webContents.send(key, data);
+        mainWindow.webContents.send(key, data, '');
       }
     }
     updateScale(0.75);
@@ -62,15 +62,15 @@ app.on('ready', function() {
     mainWindow = null;
   });
 
-  HTTPProxy.addObserver(function(api, data) {
+  HTTPProxy.addObserver(function(api, data, request_body) {
     if (mandatoryApiData.indexOf(api) >= 0) {
       mandatoryData[api] = data;
     }
     if (mainWindow) {
-      mainWindow.webContents.send(api, data);
+      mainWindow.webContents.send(api, data, request_body);
     }
     if (shipWindow) {
-      shipWindow.webContents.send(api, data);
+      shipWindow.webContents.send(api, data, request_body);
     }
   });
 });
