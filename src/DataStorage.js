@@ -103,6 +103,25 @@ function DataStorage() {
     }
     self.emit('port', port);
   });
+
+  ipcRenderer.on('api_req_hensei/preset_select', function(api, response, request) {
+    const port = self.port;
+    if (!port) {
+      return;
+    }
+    const params = new URLSearchParams(request);
+    const deck_index = parseInt(params.get('api_deck_id'), 10) - 1;
+    const json = JSON.parse(response);
+    const ship_id_list = _.get(json, ['api_data', 'api_ship'], []);
+    if (deck_index < 0 || port.decks.length <= deck_index) {
+      return;
+    }
+    const deck = port.decks[deck_index];
+    deck.ships = ship_id_list.filter((id) => id > 0)
+                             .map((id) => port.ship(id))
+                             .filter((ship) => ship != null);
+    self.emit('port', port);
+  });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);
