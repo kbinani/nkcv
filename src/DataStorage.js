@@ -130,6 +130,31 @@ function DataStorage() {
   ipcRenderer.on('api_get_member/ship_deck', (api, response, request) => {
     self.handle_get_member_ship_deck(response);
   });
+
+  ipcRenderer.on('api_req_hokyu/charge', (api, response, request) => {
+    const port = self.port;
+    if (!port) {
+      return;
+    }
+    const json = JSON.parse(response);
+    const ship_list = _.get(json, ['api_data', 'api_ship'], []);
+    ship_list.forEach((data) => {
+      const id = _.get(data, ['api_id'], -1);
+      const ship = port.ship(id);
+      if (!ship) {
+        return;
+      }
+      const fuel = _.get(data, ['api_fuel'], -1);
+      if (fuel >= 0) {
+        ship.set_fuel(fuel);
+      }
+      const bull = _.get(data, ['api_bull'], -1);
+      if (bull >= 0) {
+        ship.set_bull(bull);
+      }
+    });
+    self.emit('port', port);
+  });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);

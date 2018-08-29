@@ -52,10 +52,18 @@ Ship.prototype.fuel = function() {
   return new Rat(fuel, fuel_max);
 };
 
+Ship.prototype.set_fuel = function(fuel) {
+  _.set(this._data, ['api_fuel'], fuel);
+};
+
 Ship.prototype.bull = function() {
   const bull = _.get(this._data, ['api_bull'], 0);
   const bull_max = _.get(this._master_data, ['api_bull_max'], 0);
   return new Rat(bull, bull_max);
+};
+
+Ship.prototype.set_bull =  function(bull) {
+  _.set(this._data, ['api_bull'], bull);
 };
 
 Ship.prototype.karyoku = function() {
