@@ -62,4 +62,29 @@ Port.prototype.rank = function() {
   return _.get(mapping, [rank], '新米少佐');
 };
 
+Port.prototype.destroy_ship = function(ship_id, destroy_slotitems) {
+  const ship_index = _.findIndex(this.ships, (it) => it.id() == ship_id);
+  if (ship_index < 0) {
+    return;
+  }
+  const self = this;
+  const ship = this.ships[ship_index];
+  if (destroy_slotitems) {
+    ship.slotitems().forEach((slotitem) => {
+      const index = _.findIndex(self.slotitems, (it) => it.id() == slotitem.id());
+      if (index >= 0) {
+        self.slotitems.splice(index, 1);
+      }
+    });
+  }
+  this.ships.splice(ship_index, 1);
+  this.decks.forEach((deck) => {
+    const index = _.findIndex(deck.ships, (it) => it.id() == ship_id);
+    if (index < 0) {
+      return;
+    }
+    deck.ships.splice(index, 1);
+  });
+};
+
 module.exports = Port;

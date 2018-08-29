@@ -188,6 +188,20 @@ function DataStorage() {
     });
     self.emit('port', port);
   });
+
+  ipcRenderer.on('api_req_kousyou/destroyship', (api, response, request) => {
+    const port = self.port;
+    if (!port) {
+      return;
+    }
+    const params = new URLSearchParams(request);
+    const ship_id_list = params.get('api_ship_id').split(',').map((it) => parseInt(it, 10));
+    const destroy_slotitems = parseInt(params.get('api_slot_dest_flag'), 10) == 1;
+    ship_id_list.forEach((ship_id) => {
+      port.destroy_ship(ship_id, destroy_slotitems);
+    });
+    self.emit('port', port);
+  });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);
