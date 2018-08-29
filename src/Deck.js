@@ -5,6 +5,7 @@ const _ = require('lodash');
 function Deck(data, port) {
   this._data = data;
   this._port = port;
+  this.in_combat = false;
 
   const ships = _.get(data, ['api_ship'], []);
   this.ships = ships.map(function(id) {

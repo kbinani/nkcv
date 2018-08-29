@@ -83,7 +83,9 @@ function updateDeckStatus(decks) {
       $('#deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
       $('#deck_' + i + '_countdown').addClass('CountdownLabel');
     } else {
-      if (deck.is_ready_to_sally()) {
+      if (deck.in_combat) {
+        color = 'red';
+      } else if (deck.is_ready_to_sally()) {
         color = '#00CC00';
       } else {
         color = 'orange';
