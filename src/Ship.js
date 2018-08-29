@@ -163,4 +163,8 @@ Ship.prototype.remodel_completed = function() {
     taisen.value() >= 1;
 };
 
+Ship.prototype.update = function(data) {
+  this._data = data;
+};
+
 module.exports = Ship;

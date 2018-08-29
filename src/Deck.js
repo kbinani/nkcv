@@ -53,4 +53,8 @@ Deck.prototype.is_ready_to_sally = function() {
   return true;
 };
 
+Deck.prototype.update = function(data) {
+  this._data = data;
+};
+
 module.exports = Deck;
