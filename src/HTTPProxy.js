@@ -36,6 +36,7 @@ function handle(api, data, request_body) {
     console.log(api);
     const json = JSON.parse(data);
     const log = {
+      'api': api,
       'request': request_body,
       'response': json,
     };
