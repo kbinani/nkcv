@@ -202,6 +202,20 @@ function DataStorage() {
     });
     self.emit('port', port);
   });
+
+  ipcRenderer.on('api_get_member/slot_item', (api, response, request) => {
+    const json = JSON.parse(response);
+    const list = _.get(json, ['api_data'], []);
+    const slotitems = list.map((data) => {
+      const mst_id = _.get(data, ['api_slotitem_id'], -1);
+      if (mst_id < 0) {
+        return null;
+      }
+      const mst = self.master.slotitems[mst_id];
+      return new Slotitem(data, mst);
+    }).filter((it) => it != null);
+    self.slotitems.replace(slotitems);
+  });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);
