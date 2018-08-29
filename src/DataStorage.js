@@ -155,6 +155,21 @@ function DataStorage() {
     });
     self.emit('port', port);
   });
+
+  ipcRenderer.on('api_req_map/start', (api, response, request) => {
+    const port = self.port;
+    if (!port) {
+      return;
+    }
+    const params = new URLSearchParams(request);
+    const deck_index = parseInt(params.get('api_deck_id'), 10) - 1;
+    if (deck_index < 0 || port.decks.length <= deck_index) {
+      return;
+    }
+    const deck = port.decks[deck_index];
+    deck.in_combat = true;
+    self.emit('port', port);
+  });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);
