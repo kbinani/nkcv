@@ -170,6 +170,24 @@ function DataStorage() {
     deck.in_combat = true;
     self.emit('port', port);
   });
+
+  ipcRenderer.on('api_get_member/deck', (api, response, request) => {
+    const port = self.port;
+    if (!port) {
+      return;
+    }
+    const json = JSON.parse(response);
+    const list = _.get(json, ['api_data'], []);
+    list.forEach((data) => {
+      const deck_index = _.get(data, ['api_id'], -1) - 1;
+      if (deck_index < 0 || port.decks.length <= deck_index) {
+        return;
+      }
+      const deck = port.decks[deck_index];
+      deck.update(data);
+    });
+    self.emit('port', port);
+  });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);
