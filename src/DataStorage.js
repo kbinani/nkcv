@@ -124,39 +124,47 @@ function DataStorage() {
   });
 
   ipcRenderer.on('api_get_member/ship3', (api, response, request) => {
-    const port = self.port;
-    if (!port) {
-      return;
-    }
-    const json = JSON.parse(response);
+    self.handle_get_member_ship_deck(response);
+  });
 
-    const ship_data_list = _.get(json, ['api_data', 'api_ship_data'], []);
-    ship_data_list.forEach((data) => {
-      const id = _.get(data, ['api_id'], -1);
-      if (id < 0) {
-        return;
-      }
-      const ship = port.ship(id);
-      if (!ship) {
-        return;
-      }
-      ship.update(data);
-    });
-
-    const deck_data_list = _.get(json, ['api_data', 'api_deck_data'], []);
-    deck_data_list.forEach((data) => {
-      const index = _.get(data, ['api_id'], -1) - 1;
-      if (index < 0 || port.decks.length <= index) {
-        return;
-      }
-      const deck = port.decks[index];
-      deck.update(data);
-    });
-
-    self.emit('port', port);
+  ipcRenderer.on('api_get_member/ship_deck', (api, response, request) => {
+    self.handle_get_member_ship_deck(response);
   });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);
+
+DataStorage.prototype.handle_get_member_ship_deck = function(response) {
+  const port = this.port;
+  if (!port) {
+    return;
+  }
+  const json = JSON.parse(response);
+
+  const ship_data_list = _.get(json, ['api_data', 'api_ship_data'], []);
+  ship_data_list.forEach((data) => {
+    const id = _.get(data, ['api_id'], -1);
+    if (id < 0) {
+      return;
+    }
+    const ship = port.ship(id);
+    if (!ship) {
+      return;
+    }
+    ship.update(data);
+  });
+
+  const deck_data_list = _.get(json, ['api_data', 'api_deck_data'], []);
+  deck_data_list.forEach((data) => {
+    const index = _.get(data, ['api_id'], -1) - 1;
+    if (index < 0 || port.decks.length <= index) {
+      return;
+    }
+    const deck = port.decks[index];
+    deck.update(data);
+  });
+
+  this.emit('port', port);
+};
 
 module.exports = DataStorage;
