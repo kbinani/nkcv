@@ -75,6 +75,19 @@ function DataStorage() {
         const ship = port.ship(to_ship_id);
         if (ship) {
           deck.ships.push(ship);
+
+          // 選んだ艦娘が別の艦隊に含まれていたら取り除く
+          for (var i = 0; i < port.decks.length; i++) {
+            if (i == deck_index - 1) {
+              continue;
+            }
+            const d = port.decks[i];
+            const j = _.findIndex(d.ships, (it) => it.id() == to_ship_id);
+            if (j >= 0) {
+              d.ships.splice(j, 1);
+              break;
+            }
+          }
         }
       }
     } else {
@@ -97,6 +110,19 @@ function DataStorage() {
           const ship = port.ship(to_ship_id);
           if (ship) {
             deck.ships[ship_index] = ship;
+          }
+
+          // 選んだ艦娘が別の艦隊に含まれていたら交換する
+          for (var i = 0; i < port.decks.length; i++) {
+            if (i == deck_index - 1) {
+              continue;
+            }
+            const d = port.decks[i];
+            const j = _.findIndex(d.ships, (it) => it.id() == to_ship_id);
+            if (j >= 0) {
+              d.ships[j] = from_ship;
+              break;
+            }
           }
         }
       }
