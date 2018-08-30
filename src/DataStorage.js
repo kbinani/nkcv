@@ -242,6 +242,21 @@ function DataStorage() {
     }).filter((it) => it != null);
     self.slotitems.replace(slotitems);
   });
+
+  ipcRenderer.on('api_req_practice/battle', (api, response, request) => {
+    const port = self.port;
+    if (!port) {
+      return;
+    }
+    const params = new URLSearchParams(request);
+    const deck_id = parseInt(params.get('api_deck_id'), 10);
+    if (deck_id <= 0 || port.decks.length < deck_id) {
+      return;
+    }
+    const deck = port.decks[deck_id - 1];
+    deck.in_combat = true;
+    self.emit('port', port);
+  });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);
