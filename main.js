@@ -74,14 +74,14 @@ function updateDeckStatus(decks) {
     }
 
     const name = deck.name();
-    $('#deck_' + i + '_title').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
+    $('.deck_' + i + '_title').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
 
     const mission_finish_time = deck.mission_finish_time();
     var color = "";
     if (mission_finish_time) {
       color = 'blue';
-      $('#deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
-      $('#deck_' + i + '_countdown').addClass('CountdownLabel');
+      $('.deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
+      $('.deck_' + i + '_countdown').addClass('CountdownLabel');
     } else {
       if (deck.in_combat) {
         color = 'red';
@@ -90,9 +90,9 @@ function updateDeckStatus(decks) {
       } else {
         color = 'orange';
       }
-      $('#deck_' + i + '_countdown').removeClass('CountdownLabel');
+      $('.deck_' + i + '_countdown').removeClass('CountdownLabel');
     }
-    $('#deck_' + i + '_icon').css('background-color', color);
+    $('.deck_' + i + '_icon').css('background-color', color);
   }
 }
 
@@ -246,4 +246,25 @@ function takeScreenshot(sender) {
 
 function showShipList(sender) {
   ipcRenderer.send('app.openShipList');
+}
+
+function generalDeckMenuClicked(index) {
+  for (var i = 0; i < 4; i++) {
+    const $panel = $('#general_deck_' + i);
+    const $menu = $('#general_deck_menu_' + i);
+
+    if (i == index) {
+      $panel.css('display', 'flex');
+      $menu.removeClass('ThemeContainer');
+      $menu.addClass('ThemeContainerActive');
+      $menu.removeClass('ThemeContainerBorderB');
+      $menu.css('cursor', 'default');
+    } else {
+      $panel.css('display', 'none');
+      $menu.removeClass('ThemeContainerActive');
+      $menu.addClass('ThemeContainer');
+      $menu.addClass('ThemeContainerBorderB');
+      $menu.css('cursor', 'pointer');
+    }
+  }
 }
