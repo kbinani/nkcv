@@ -8,7 +8,8 @@ const SlotitemList = require(__dirname + '/SlotitemList.js'),
       Port = require(__dirname + '/Port.js'),
       Master = require(__dirname + '/Master.js'),
       Slotitem = require(__dirname + '/Slotitem.js'),
-      QuestList = require(__dirname + '/QuestList.js');
+      QuestList = require(__dirname + '/QuestList.js'),
+      KDock = require(__dirname + '/KDock.js');
 
 function DataStorage() {
   EventEmitter.call(this);
@@ -69,6 +70,10 @@ function DataStorage() {
       return new Slotitem(d, mst);
     });
     self.slotitems.replace(list);
+
+    const kdock_data = _.get(json, ['api_data', 'api_kdock'], []);
+    const kdock = new KDock(kdock_data, self.master);
+    self.emit('kdock', kdock);
   });
 
   ipcRenderer.on('api_get_member/slot_item', (api, response, request) => {

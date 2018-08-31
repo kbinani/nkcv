@@ -68,6 +68,35 @@ function onload() {
     }
   });
 
+  storage.on('kdock', (kdock) => {
+    const ships = kdock.ships();
+    for (var i = 0; i < ships.length; i++) {
+      const ship = ships[i];
+      const $container = $('#general_kdock_' + i);
+      const state = ship.state();
+      if (state == -1) {
+        $container.html('<div style="height: 25px;">ロックされています</div>');
+      } else if (state == 0) {
+        $container.html('<div style="height: 25px;">未使用</div>');
+      } else {
+        const template = `
+          <div style="display: flex; height: 25px;">
+            <div style="flex: 1 1 auto;">{name}</div>
+            <div class="{class}" style="flex: 1 1 auto; text-alignment: right;" data-timer-finish="{complete}">{label}</div>
+          </div>
+        `;
+        const complete = ship.complete_time();
+        const cls = complete <= 0 ? '' : 'CountdownLabel';
+        const label = complete <= 0 ? '完成' : timeLabel(complete);
+        const html = template.replace(/\{name\}/g, ship.name())
+                             .replace(/\{complete\}/g, complete)
+                             .replace(/\{label\}/g, label)
+                             .replace(/\{class\}/g, cls);
+        $container.html(html);
+      }
+    }
+  });
+
   setInterval(function() {
     const now = new Date();
     $('.CountdownLabel').each(function() {

@@ -39,6 +39,19 @@ function Master() {
   });
 }
 
+Master.prototype.ship = function(mst_id) {
+  const data = this._last;
+  if (!data) {
+    return;
+  }
+  const json = JSON.parse(data);
+  const ships = _.get(json, ['api_data', 'api_mst_ship'], []);
+  return _.find(ships, (mst) => {
+    const id = _.get(mst, ['api_id'], -1);
+    return id == mst_id;
+  });
+};
+
 Master.prototype.data = function() {
   if (this._last == null) {
     return {};
