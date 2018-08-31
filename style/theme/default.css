@@ -61,26 +61,6 @@
   border: solid 1px #505050;
 }
 
-.ThemeContainerThickBorderT {
-  border-top: solid 2px #505050;
-}
-
-.ThemeContainerThickBorderL {
-  border-left: solid 2px #505050;
-}
-
-.ThemeContainerThickBorderB {
-  border-bottom: solid 2px #505050;
-}
-
-.ThemeContainerThickBorderR {
-  border-right: solid 2px #505050;
-}
-
-.ThemeContainerThickBorder {
-  border: solid 2px #505050;
-}
-
 .ThemeTableHeader {
   background-color: #333;
   cursor: pointer;

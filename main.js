@@ -76,12 +76,12 @@ function onload() {
       const $container = $('#general_kdock_' + i);
       const state = ship.state();
       if (state == -1) {
-        $container.html('<div style="height: 25px;">ロックされています</div>');
+        $container.html('<div style="height: 20px;">ロックされています</div>');
       } else if (state == 0) {
-        $container.html('<div style="height: 25px;">未使用</div>');
+        $container.html('<div style="height: 20px;">未使用</div>');
       } else {
         const template = `
-          <div style="display: flex; height: 25px;">
+          <div style="display: flex; height: 20px;">
             <div style="flex: 1 1 auto;">{name}</div>
             <div class="{class}" style="flex: 1 1 auto; text-alignment: right;" data-timer-finish="{complete}" data-timer-complete-message="完成">{label}</div>
           </div>
