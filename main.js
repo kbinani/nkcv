@@ -62,6 +62,7 @@ function onload() {
       const quest = list[i];
       const $item = $('.quest_' + quest.no() + '_title');
       $item.html(quest.title());
+      $item.attr('title', quest.detail().replace(/<br>/g, '\n'));
       if (i > 0) {
         $item.css('padding-top', '5px');
       }
