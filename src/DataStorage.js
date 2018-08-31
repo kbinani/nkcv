@@ -15,7 +15,7 @@ function DataStorage() {
   if (!ipcRenderer) {
     throw "DataStorage should construct on Renderer process";
   }
-  this.master = new Master(ipcRenderer);
+  this.master = new Master();
   this.slotitems = new SlotitemList();
   this.port = null;
 
