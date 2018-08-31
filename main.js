@@ -147,6 +147,7 @@ function updateDeckStatus(decks) {
     if (mission_finish_time) {
       color = 'blue';
       $('.deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
+      $('.deck_' + i + '_countdown').attr('data-timer-complete-message', '帰還');
       $('.deck_' + i + '_countdown').addClass('CountdownLabel');
     } else {
       if (deck.in_combat) {
