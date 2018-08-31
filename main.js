@@ -42,6 +42,32 @@ function onload() {
     $('#user_rank').html(port.rank());
   });
 
+  storage.on('questlist', (questlist) => {
+    const $container = $('#general_quest');
+    $container.empty();
+    const template = `
+      <div class="quest_{no}_title" style="overflow: hidden;"></div>
+    `;
+    const list = questlist.get().filter((quest) => {
+      const state = quest.state();
+      return state == 2 || state == 3;
+    });
+
+    list.forEach((quest) => {
+      const html = template.replace(/{no}/g, quest.no());
+      $container.append(html);
+    });
+
+    for (var i = 0; i < list.length; i++) {
+      const quest = list[i];
+      const $item = $('.quest_' + quest.no() + '_title');
+      $item.html(quest.title());
+      if (i > 0) {
+        $item.css('padding-top', '5px');
+      }
+    }
+  });
+
   setInterval(function() {
     const now = new Date();
     $('.CountdownLabel').each(function() {

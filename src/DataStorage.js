@@ -7,7 +7,8 @@ const {URLSearchParams} = require('url');
 const SlotitemList = require(__dirname + '/SlotitemList.js'),
       Port = require(__dirname + '/Port.js'),
       Master = require(__dirname + '/Master.js'),
-      Slotitem = require(__dirname + '/Slotitem.js');
+      Slotitem = require(__dirname + '/Slotitem.js'),
+      QuestList = require(__dirname + '/QuestList.js');
 
 function DataStorage() {
   EventEmitter.call(this);
@@ -18,6 +19,7 @@ function DataStorage() {
   this.master = new Master();
   this.slotitems = new SlotitemList();
   this.port = null;
+  this.questlist = null;
 
   const self = this;
 
@@ -81,6 +83,15 @@ function DataStorage() {
     }).filter((it) => it != null);
     self.slotitems.replace(slotitems);
   });
+
+  ipcRenderer.on('api_get_member/questlist', (api, response, request) => {
+    const json = JSON.parse(response);
+    if (self.questlist == null) {
+      self.questlist = new QuestList();
+    }
+    self.questlist.update(json);
+    self.notify_questlist();
+  });
 }
 
 DataStorage.prototype = Object.create(EventEmitter.prototype);
@@ -88,6 +99,12 @@ DataStorage.prototype = Object.create(EventEmitter.prototype);
 DataStorage.prototype.notify_port = function() {
   if (this.port) {
     this.emit('port', this.port);
+  }
+};
+
+DataStorage.prototype.notify_questlist = function() {
+  if (this.questlist) {
+    this.emit('questlist', this.questlist);
   }
 };
 
