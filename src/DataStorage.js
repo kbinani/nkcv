@@ -92,37 +92,20 @@ DataStorage.prototype.notify_port = function() {
 };
 
 DataStorage.prototype.handle = function(api, params, response, port) {
+  const func_name = 'handle_' + api.substring(4).replace(/\//g, '_');
+  const func = this[func_name];
+
+  if (typeof(func) == 'function') {
+    func.call(this, params, response, port);
+    return;
+  }
+
   switch (api) {
-    case 'api_req_hensei/change':
-      this.handle_req_hensei_change(params, response, port);
-      break;
-    case 'api_req_hensei/preset_select':
-      this.handle_req_hensei_preset_select(params, response, port);
-      break;
     case 'api_get_member/ship3':
-    case 'api_get_member/ship_deck':
       this.handle_get_member_ship_deck(params, response, port);
       break;
-    case 'api_req_hokyu/charge':
-      this.handle_req_hokyu_charge(params, response, port);
-      break;
-    case 'api_req_map/start':
-      this.handle_req_map_start(params, response, port);
-      break;
-    case 'api_get_member/deck':
-      this.handle_get_member_deck(params, response, port);
-      break;
-    case 'api_req_kousyou/destroyship':
-      this.handle_req_kousyou_destroyship(params, response, port);
-      break;
-    case 'api_req_practice/battle':
-      this.handle_req_practice_battle(params, response, port);
-      break;
-    case 'api_req_kaisou/slot_deprive':
-      this.handle_req_kaisou_slot_deprive(params, response, port);
-      break;
-    case 'api_req_kaisou/slot_exchange_index':
-      this.handle_req_kaisou_slot_exchange_index(params, response, port);
+    default:
+      console.trace('api not handled: api=' + api);
       break;
   }
 };
