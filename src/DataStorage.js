@@ -97,7 +97,8 @@ DataStorage.prototype.handle = function(api, params, response, port) {
     case 'api_req_hensei/preset_select':
       this.handle_req_hensei_preset_select(params, response, port);
       break;
-    case 'api_get_member/ship3', 'api_get_member/ship_deck':
+    case 'api_get_member/ship3':
+    case 'api_get_member/ship_deck':
       this.handle_get_member_ship_deck(params, response, port);
       break;
     case 'api_req_hokyu/charge':
