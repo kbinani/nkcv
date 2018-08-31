@@ -20,6 +20,10 @@ Deck.prototype.name = function() {
   return _.get(this._data, ['api_name'], '');
 };
 
+Deck.prototype.set_name = function(name) {
+  _.set(this._data, ['api_name'], name);
+};
+
 Deck.prototype.mission_finish_time = function() {
   const time = _.get(this._data, ['api_mission', 2], 0);
   if (time == 0) {

@@ -35,6 +35,7 @@ function DataStorage() {
     'api_req_practice/battle',
     'api_req_kaisou/slot_deprive',
     'api_req_kaisou/slot_exchange_index',
+    'api_req_member/updatedeckname',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -339,6 +340,17 @@ DataStorage.prototype.handle_req_kaisou_slot_exchange_index = function(params, r
     return;
   }
   ship.update_slot(slot);
+  this.notify_port();
+};
+
+DataStorage.prototype.handle_req_member_updatedeckname = function(params, response, port) {
+  const deck_id = parseInt(params.get('api_deck_id'), 10);
+  if (deck_id <= 0 || port.decks.length < deck_id) {
+    return;
+  }
+  const deck = port.decks[deck_id - 1];
+  const name = params.get('api_name');
+  deck.set_name(name);
   this.notify_port();
 };
 
