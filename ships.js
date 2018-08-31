@@ -93,7 +93,7 @@ function update() {
     tbody.append(element);
 
     const slotitems = ship.slotitems();
-    const slotitem_container = $('#ship_' + ship.id() + '_slotitem');
+    const slotitem_container = $('.ship_' + ship.id() + '_slotitem');
     slotitem_container.empty();
     slotitem_container.css('display', slotitems.length == 0 ? 'auto' : 'flex');
     slotitems.forEach(function(slotitem) {
@@ -340,29 +340,29 @@ function applySort() {
 function createShipCell(ship) {
   const template = '\
     <div id="ship_{ship_id}_row" class="ThemeTableRow" style="display: table-row;">\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_index"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_index"></span></div>\
       <div class="ThemeTableCell">{ship_id}</div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_type"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_name"></span></div>\
-      <div class="ThemeTableCell">Lv. <span id="ship_{ship_id}_level"></span> Next: <span id="ship_{ship_id}_next_exp"></span></div>\
-      <div class="ThemeTableCell"><div id="ship_{ship_id}_cond_icon"></div><span id="ship_{ship_id}_cond"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_karyoku"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_raisou"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_taiku"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_soukou"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_lucky"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_sakuteki"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_taisen"></span></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_soku"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_type"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_name"></span></div>\
+      <div class="ThemeTableCell">Lv. <span class="ship_{ship_id}_level"></span> Next: <span class="ship_{ship_id}_next_exp"></span></div>\
+      <div class="ThemeTableCell"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_karyoku"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_raisou"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_taiku"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_soukou"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_lucky"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_sakuteki"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_taisen"></span></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_soku"></span></div>\
       <div class="ThemeTableCell"><!-- 出撃海域 --></div>\
-      <div class="ThemeTableCell"><span id="ship_{ship_id}_repair"></span></div>\
-      <div class="ThemeTableCell" id="ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>\
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_repair"></span></div>\
+      <div class="ThemeTableCell ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>\
     </div>';
   return template.replace(/\{ship_id\}/g, ship.id());
 }
 
 function createSlotitemCell(slotitem_id) {
-  const template = '<div title="12.7cm連装砲" id="slotitem_{slotitem_id}_icon" style="flex: 0 0 21px; width: 21px; height: 21px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin: 2px 2px 0px 0px;"></div>';
+  const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 21px; width: 21px; height: 21px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin: 2px 2px 0px 0px;"></div>';
   return template.replace(/\{slotitem_id\}/g, slotitem_id);
 }
 

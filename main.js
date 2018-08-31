@@ -31,7 +31,7 @@ function onload() {
       const slotitems = ship.slotitems();
       slotitems.forEach(function(it) {
         const slotitemCell = createDeckShipSlotitemCell(it.id());
-        $('#ship_' + ship.id() + '_slotitem').append(slotitemCell);
+        $('.ship_' + ship.id() + '_slotitem').append(slotitemCell);
       });
       updateSlotitemStatus(slotitems);
     });
@@ -147,29 +147,29 @@ function applyScale() {
 function createDeckShipCell(ship_id) {
   const template = '\
     <tr class="DeckShipCell ThemeContainerBorderB">\
-      <td id="ship_{ship_id}_type" class="FontNormal" style="padding: 5px;" nowrap>艦種</td>\
-      <td id="ship_{ship_id}_name" class="FontLarge" style="padding: 5px;" nowrap>艦名</td>\
+      <td class="ship_{ship_id}_type FontNormal" style="padding: 5px;" nowrap>艦種</td>\
+      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap>艦名</td>\
       <td style="padding: 5px;" nowrap>\
         <div style="display: flex; flex-direction: column;">\
-          <div style="flex: 1 1 auto;">Lv. <span id="ship_{ship_id}_level">1</span></div>\
-          <div style="flex: 1 1 auto;">Next: <span id="ship_{ship_id}_next_exp">100</span></div>\
+          <div style="flex: 1 1 auto;">Lv. <span class="ship_{ship_id}_level">1</span></div>\
+          <div style="flex: 1 1 auto;">Next: <span class="ship_{ship_id}_next_exp">100</span></div>\
         </div>\
       </td>\
       <td style="padding: 5px;" nowrap>\
         <div style="display: flex; flex-direction: column;">\
-          <div style="flex: 1 1 auto;">HP: <span id="ship_{ship_id}_hp_numerator">999</span> / <span id="ship_{ship_id}_hp_denominator">999</span></div>\
+          <div style="flex: 1 1 auto;">HP: <span class="ship_{ship_id}_hp_numerator">999</span> / <span class="ship_{ship_id}_hp_denominator">999</span></div>\
           <div style="flex: 0 0 5px;"></div>\
           <div style="flex: 1 1 auto; display: flex;">\
             <div style="flex: 1 1 auto; height: 8px; width: 60px; background-color: white;">\
-              <div id="ship_{ship_id}_hp_percentage" style="height: 8px; width: 50%; background-color: blue;"></div></div>\
+              <div class="ship_{ship_id}_hp_percentage" style="height: 8px; width: 50%; background-color: blue;"></div></div>\
           </div>\
         </div>\
       </td>\
       <td style="padding: 5px;" nowrap>\
         <div style="display: flex; flex-direction: column;">\
           <div style="flex: 1 1 auto; display: flex;">\
-            <div id="ship_{ship_id}_cond_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: white; margin: auto;"></div>\
-            <div id="ship_{ship_id}_cond" style="flex: 1 1 auto; margin-left: 5px;">49</div>\
+            <div class="ship_{ship_id}_cond_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: white; margin: auto;"></div>\
+            <div class="ship_{ship_id}_cond" style="flex: 1 1 auto; margin-left: 5px;">49</div>\
           </div>\
           <div>condition</div>\
         </div>\
@@ -177,16 +177,16 @@ function createDeckShipCell(ship_id) {
       <td style="padding: 5px;" nowrap>\
         <div style="display: flex; flex-direction: column;">\
           <div style="flex: 0 0 auto; width: 60px; height: 8px; background-color: white;">\
-            <div id="ship_{ship_id}_fuel_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>\
+            <div class="ship_{ship_id}_fuel_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>\
           </div>\
           <div style="flex: 0 0 auto; height: 5px;"></div>\
           <div style="flex: 0 0 auto; width: 60px; height: 8px; background-color: white;">\
-            <div id="ship_{ship_id}_bull_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>\
+            <div class="ship_{ship_id}_bull_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>\
           </div>\
         </div>\
       </td>\
       <td style="padding: 5px; overflow: hidden;">\
-        <div id="ship_{ship_id}_slotitem" style="display: flex;">\
+        <div class="ship_{ship_id}_slotitem" style="display: flex;">\
         </div>\
       </td>\
       <td style="padding: 5px; overflow: hidden;" width="99999"></td>\
@@ -195,7 +195,7 @@ function createDeckShipCell(ship_id) {
 }
 
 function createDeckShipSlotitemCell(slotitem_id) {
-  const template = '<div title="12.7cm連装砲" id="slotitem_{slotitem_id}_icon" style="flex: 0 0 30px; width: 30px; height: 30px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;"></div>';
+  const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 30px; width: 30px; height: 30px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;"></div>';
   return template.replace(/\{slotitem_id\}/g, slotitem_id);
 }
 
