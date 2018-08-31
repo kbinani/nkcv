@@ -175,4 +175,8 @@ Ship.prototype.update = function(data) {
   this._data = data;
 };
 
+Ship.prototype.update_slot = function(data) {
+  _.set(this._data, ['api_slot'], data);
+};
+
 module.exports = Ship;

@@ -32,6 +32,7 @@ function DataStorage() {
     'api_req_kousyou/destroyship',
     'api_req_practice/battle',
     'api_req_kaisou/slot_deprive',
+    'api_req_kaisou/slot_exchange_index',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -119,6 +120,9 @@ DataStorage.prototype.handle = function(api, params, response, port) {
       break;
     case 'api_req_kaisou/slot_deprive':
       this.handle_req_kaisou_slot_deprive(params, response, port);
+      break;
+    case 'api_req_kaisou/slot_exchange_index':
+      this.handle_req_kaisou_slot_exchange_index(params, response, port);
       break;
   }
 };
@@ -321,6 +325,20 @@ DataStorage.prototype.handle_req_kaisou_slot_deprive = function(params, response
     ship.update(data);
   });
 
+  this.notify_port();
+};
+
+DataStorage.prototype.handle_req_kaisou_slot_exchange_index = function(params, response, port) {
+  const ship_id = parseInt(params.get('api_id'), 10);
+  const ship = port.ship(ship_id);
+  if (!ship) {
+    return;
+  }
+  const slot = _.get(response, ['api_data', 'api_slot'], null);
+  if (!slot) {
+    return;
+  }
+  ship.update_slot(slot);
   this.notify_port();
 };
 
