@@ -82,12 +82,12 @@ function onload() {
         const template = `
           <div style="display: flex; height: 25px;">
             <div style="flex: 1 1 auto;">{name}</div>
-            <div class="{class}" style="flex: 1 1 auto; text-alignment: right;" data-timer-finish="{complete}">{label}</div>
+            <div class="{class}" style="flex: 1 1 auto; text-alignment: right;" data-timer-finish="{complete}" data-timer-complete-message="完成">{label}</div>
           </div>
         `;
-        const complete = ship.complete_time();
-        const cls = complete <= 0 ? '' : 'CountdownLabel';
-        const label = complete <= 0 ? '完成' : timeLabel(complete);
+        const complete = ship.complete_time().getTime();
+        const cls = (complete <= 0) ? '' : 'CountdownLabel';
+        const label = (complete <= 0) ? '完成' : '';
         const html = template.replace(/\{name\}/g, ship.name())
                              .replace(/\{complete\}/g, complete)
                              .replace(/\{label\}/g, label)
@@ -107,7 +107,12 @@ function onload() {
       const remaining = finish - now.getTime();
       if (remaining <= 0) {
         $(this).removeClass('CountdownLabel');
-        $(this).html('');
+        const label = $(this).attr('data-timer-complete-message');
+        if (label) {
+          $(this).html(label);
+        } else {
+          $(this).html('');
+        }
       } else {
         const label = timeLabel(remaining);
         $(this).html(label);

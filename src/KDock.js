@@ -18,7 +18,8 @@ KDockShip.prototype.name = function() {
 };
 
 KDockShip.prototype.complete_time = function() {
-  return _.get(this._data, ['api_complete_time'], 0);
+  const ms = _.get(this._data, ['api_complete_time'], 0);
+  return new Date(ms);
 };
 
 KDockShip.prototype.state = function() {
@@ -30,6 +31,12 @@ KDock.prototype.ships = function() {
   return this._data.map((data) => {
     return new KDockShip(data, self._master);
   });
+};
+
+KDock.prototype.complete = function(index) {
+  _.set(this._data, [index, 'api_complete_time'], 0);
+  _.set(this._data, [index, 'api_complete_time_str'], '0');
+  _.set(this._data, [index, 'api_state'], 3);
 };
 
 module.exports = KDock;

@@ -9,7 +9,8 @@ const SlotitemList = require(__dirname + '/SlotitemList.js'),
       Master = require(__dirname + '/Master.js'),
       Slotitem = require(__dirname + '/Slotitem.js'),
       QuestList = require(__dirname + '/QuestList.js'),
-      KDock = require(__dirname + '/KDock.js');
+      KDock = require(__dirname + '/KDock.js'),
+      Ship = require(__dirname + '/Ship.js');
 
 function DataStorage() {
   EventEmitter.call(this);
@@ -21,6 +22,7 @@ function DataStorage() {
   this.slotitems = new SlotitemList();
   this.port = null;
   this.questlist = null;
+  this.kdock = null;
 
   const self = this;
 
@@ -73,6 +75,7 @@ function DataStorage() {
 
     const kdock_data = _.get(json, ['api_data', 'api_kdock'], []);
     const kdock = new KDock(kdock_data, self.master);
+    self.kdock = kdock;
     self.emit('kdock', kdock);
   });
 
@@ -97,6 +100,51 @@ function DataStorage() {
     }
     self.questlist.update(json);
     self.notify_questlist();
+  });
+
+  ipcRenderer.on('api_req_kousyou/getship', (api, response, request) => {
+    const json = JSON.parse(response);
+    const kdock_data = _.get(json, ['api_data', 'api_kdock'], []);
+    const kdock = new KDock(kdock_data, self.master);
+    self.kdock = kdock;
+    self.emit('kdock', kdock);
+
+    const port = self.port;
+    if (!port) {
+      return;
+    }
+    const ship_data = _.get(json, ['api_data', 'api_ship'], null);
+    if (!ship_data) {
+      return;
+    }
+    const ship_id = _.get(ship_data, ['api_ship_id'], -1);
+    const ship_master = self.master.ship(ship_id);
+    if (!ship_master) {
+      return;
+    }
+    const ship = new Ship(ship_data, ship_master, self);
+    port.ships.push(ship);
+    self.notify_port();
+  });
+
+  ipcRenderer.on('api_get_member/kdock', (api, response, request) => {
+    const json = JSON.parse(response);
+    const kdock_data = _.get(json, ['api_data'], []);
+    const kdock = new KDock(kdock_data, self.master);
+    self.kdock = kdock;
+    self.emit('kdock', kdock);
+  });
+
+  ipcRenderer.on('api_req_kousyou/createship_speedchange', (api, response, request) => {
+    const params = new URLSearchParams(request);
+    const dock_id = parseInt(params.get('api_kdock_id'), 10);
+    const kdock = self.kdock;
+    if (!kdock) {
+      return;
+    }
+    kdock.complete(dock_id - 1);
+    self.kdock = kdock;
+    self.emit('kdock', kdock);
   });
 }
 
