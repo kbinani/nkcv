@@ -45,6 +45,31 @@ function updateShipStatus(ships) {
   });
 }
 
+function shipToString(ship) {
+  const json = {
+    // 'id': ship.id(),
+    'level': ship.level(),
+    // 'name': ship.name(),
+    'hp': ship.hp().toString(),
+    'cond': ship.cond(),
+    'next_exp': ship.next_exp(),
+    'fuel': ship.fuel().toString(),
+    'bull': ship.bull().toString(),
+    // 'type': ship.type().value(),
+    'karyoku': ship.karyoku().toString(),
+    'raisou': ship.raisou().toString(),
+    'taiku': ship.taiku().toString(),
+    'soukou': ship.soukou().toString(),
+    'lucky': ship.lucky().toString(),
+    'sakuteki': ship.sakuteki().toString(),
+    'taisen': ship.taisen().toString(),
+    'soku': ship.soku().value(),
+    'repair': ship.repair_seconds(),
+    'slotitems': ship.slotitems().map((slotitem) => slotitem.id()).join(','),
+  };
+  return JSON.stringify(json);
+};
+
 function updateSlotitemStatus(slotitems) {
   slotitems.forEach(function(slotitem) {
     const id = slotitem.id();

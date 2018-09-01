@@ -13,6 +13,12 @@ function Ship(data, master_data, storage) {
   this._is_mission = false;
 }
 
+Ship.prototype.clone = function() {
+  const ship = new Ship(this._data, this._master_data, this._storage);
+  ship._is_mission = this._is_mission;
+  return ship;
+};
+
 Ship.prototype.id = function() {
   return _.get(this._data, ['api_id'], 0);
 };

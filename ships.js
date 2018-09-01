@@ -33,8 +33,7 @@ var sort_order_inverted = false;
 
 function onload() {
   storage.on('port', function(port) {
-    _ships = port.ships;
-    update();
+    update(port.ships);
   });
 
   const choices = $('#ship_type_choices');
@@ -78,20 +77,44 @@ function selectShipType(types) {
   applyFilter();
 }
 
-function update() {
-  const tbody = $('#ship_table');
-  tbody.children().each(function() {
-    const id = $(this).attr('id');
-    if (id == 'ship_table_header') {
-      return;
-    }
-    $(this).remove();
+function update(ships) {
+  const removed_ships = _.differenceBy(_ships, ships, (ship) => ship.id());
+  const added_ships = _.differenceBy(ships, _ships, (ship) => ship.id());
+
+  removed_ships.forEach((ship) => {
+    $('#ship_' + ship.id() + '_row').remove();
   });
 
-  _ships.forEach(function(ship) {
+  const $tbody = $('#ship_table');
+  added_ships.forEach((ship) => {
     const element = createShipCell(ship);
-    tbody.append(element);
+    $tbody.append(element);
+  });
 
+  const updated_ships = added_ships.map((it) => it);
+
+  const before_lut = {};
+  _ships.forEach((ship) => {
+    before_lut[ship.id()] = shipToString(ship);
+  });
+
+  const after_lut = {};
+  ships.forEach((ship) => {
+    after_lut[ship.id()] = shipToString(ship);
+  });
+
+  const existing_ships = _.intersectionBy(ships, _ships, (ship) => ship.id());
+
+  existing_ships.forEach((ship) => {
+    const id = ship.id();
+    const before = before_lut[id];
+    const after = after_lut[id];
+    if (before != after) {
+      updated_ships.push(ship);
+    }
+  });
+
+  updated_ships.forEach((ship) => {
     const slotitems = ship.slotitems();
     const slotitem_container = $('.ship_' + ship.id() + '_slotitem');
     slotitem_container.empty();
@@ -102,7 +125,9 @@ function update() {
     updateSlotitemStatus(slotitems);
   });
 
-  updateShipStatus(_ships);
+  updateShipStatus(updated_ships);
+
+  _ships = ships.map((it) => it.clone());
   applySort();
 }
 
