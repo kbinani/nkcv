@@ -53,3 +53,9 @@ html::-webkit-scrollbar {
 .CountdownLabel {
 
 }
+
+.EllipsisLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

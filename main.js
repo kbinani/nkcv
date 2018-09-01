@@ -48,7 +48,7 @@ function onload() {
     const template = `
       <div class="quest_{no}" style="flex: 0 0 auto; display: flex; height: 20px; line-height: 20px;">
         <div class="quest_{no}_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: red; margin-top: 4px;"></div>
-        <div class="quest_{no}_title" style="flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 5px;"></div>
+        <div class="quest_{no}_title EllipsisLabel" style="flex: 1 1 auto; margin-left: 5px;"></div>
       </div>`;
     const list = questlist.get().filter((quest) => {
       const state = quest.state();
@@ -138,8 +138,8 @@ function onload() {
       switch (state) {
         case 0: {
           const html = `
-            <div class="FontNormal" style="display: table-cell; height: 20px;">未使用</div>
-            <div class="FontNormal" style="display: table-cell; text-align: right; height: 20px;"></div>`;
+            <div class="FontNormal EllipsisLabel" style="flex: 1 1 auto; height: 20px; line-height: 20px;">未使用</div>
+            <div class="FontNormal" style="flex: 0 0 auto; height: 20px; line-height: 20px;"></div>`;
           $container.append(html);
           break;
         }
@@ -149,8 +149,8 @@ function onload() {
           const cls = state == 1 ? 'CountdownLabel' : '';
           const complete = ndock_ship.complete_time().getTime();
           const template = `
-            <div class="FontNormal" style="display: table-cell; height: 20px;">{name}</div>
-            <div class="FontNormal {class}" style="display: table-cell; text-align: right; height: 20px;" data-timer-finish="{complete}" data-timer-complete-message="完了"></div>`;
+            <div class="FontNormal EllipsisLabel" style="flex: 1 1 auto; height: 20px; line-height: 20px;">{name}</div>
+            <div class="FontNormal {class}" style="flex: 0 0 auto; height: 20px; line-height: 20px;" data-timer-finish="{complete}" data-timer-complete-message="完了"></div>`;
           const html = template.replace(/{name}/g, ship.name())
                                .replace(/{class}/g, cls)
                                .replace(/{complete}/g, complete);
