@@ -29,9 +29,20 @@ function onload() {
     updateShipStatus(port.ships);
     port.ships.forEach(function(ship) {
       const slotitems = ship.slotitems();
-      slotitems.forEach(function(it) {
-        $('#deck_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it.id(), 30));
-        $('#general_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it.id(), 21));
+      const slotitem_ids = slotitems.map((it) => it.id());
+
+      const ex_slotitem = ship.ex_slotitem();
+      if (ex_slotitem) {
+        slotitem_ids.push(-1);
+        slotitem_ids.push(ex_slotitem.id());
+        slotitems.push(ex_slotitem);
+      }
+
+      const size_normal = 30;
+      const size_small = 21;
+      slotitem_ids.forEach(function(it) {
+        $('#deck_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it, size_normal));
+        $('#general_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it, size_small));
       });
       updateSlotitemStatus(slotitems);
     });
@@ -326,9 +337,14 @@ function createDeckShipCell(ship_id) {
 }
 
 function createDeckShipSlotitemCell(slotitem_id, size) {
-  const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 auto; width: {size}px; height: {size}px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;"></div>';
-  return template.replace(/{slotitem_id}/g, slotitem_id)
-                 .replace(/{size}/g, size);
+  if (slotitem_id == -1) {
+    const template = '<div class="ThemeContainerBorderL" style="flex: 0 0 auto; width: 1px; height: {size}px; margin-left: 3px; margin-right: 3px;"></div>';
+    return template.replace(/{size}/g, size);
+  } else {
+    const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 auto; width: {size}px; height: {size}px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;"></div>';
+    return template.replace(/{slotitem_id}/g, slotitem_id)
+                   .replace(/{size}/g, size);
+  }
 }
 
 function createGeneralShipCell(ship_id) {

@@ -116,11 +116,19 @@ function update(ships) {
 
   updated_ships.forEach((ship) => {
     const slotitems = ship.slotitems();
+    const slotitem_ids = slotitems.map((it) => it.id());
+    const ex = ship.ex_slotitem();
+    if (ex) {
+      slotitem_ids.push(-1);
+      slotitem_ids.push(ex.id());
+      slotitems.push(ex);
+    }
+
     const slotitem_container = $('.ship_' + ship.id() + '_slotitem');
     slotitem_container.empty();
     slotitem_container.css('display', slotitems.length == 0 ? 'auto' : 'flex');
-    slotitems.forEach(function(slotitem) {
-      slotitem_container.append(createSlotitemCell(slotitem.id()));
+    slotitem_ids.forEach(function(id) {
+      slotitem_container.append(createSlotitemCell(id));
     });
     updateSlotitemStatus(slotitems);
   });
@@ -387,8 +395,12 @@ function createShipCell(ship) {
 }
 
 function createSlotitemCell(slotitem_id) {
-  const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 auto; width: 21px; height: 21px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin: 2px 2px 0px 0px;"></div>';
-  return template.replace(/{slotitem_id}/g, slotitem_id);
+  if (slotitem_id == -1) {
+    return '<div class="ThemeContainerBorderL" style="flex: 0 0 auto; width: 1px; height: 21px; margin: 2px 2px 0px 0px;"></div>';
+  } else {
+    const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 auto; width: 21px; height: 21px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin: 2px 2px 0px 0px;"></div>';
+    return template.replace(/{slotitem_id}/g, slotitem_id);
+  }
 }
 
 function unsetSortOrder($element) {

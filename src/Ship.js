@@ -150,6 +150,14 @@ Ship.prototype.slotitems = function() {
   }).filter(function(it) { return it != null; });
 };
 
+Ship.prototype.ex_slotitem = function() {
+  const id = _.get(this._data, ['api_slot_ex'], -1);
+  if (id < 0) {
+    return null;
+  }
+  return this._storage.slotitems.slotitem(id);
+};
+
 Ship.prototype.locked = function() {
   return _.get(this._data, ['api_locked'], 1) == 1;
 };
