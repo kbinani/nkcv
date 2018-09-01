@@ -24,6 +24,7 @@ function DataStorage() {
   this.port = null;
   this.questlist = null;
   this.kdock = null;
+  this.ndock = null;
 
   const self = this;
 
@@ -41,6 +42,7 @@ function DataStorage() {
     'api_req_kaisou/slot_exchange_index',
     'api_req_member/updatedeckname',
     'api_get_member/ndock',
+    'api_req_nyukyo/speedchange',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -67,7 +69,7 @@ function DataStorage() {
 
     const ndock_data = _.get(json, ['api_data', 'api_ndock'], []);
     const ndock = new NDock(ndock_data, port);
-    self.emit('ndock', ndock);
+    self.notify_ndock(ndock);
   });
 
   ipcRenderer.on('api_get_member/require_info', function(event, data, request_body) {
@@ -167,6 +169,11 @@ DataStorage.prototype.notify_questlist = function() {
   if (this.questlist) {
     this.emit('questlist', this.questlist);
   }
+};
+
+DataStorage.prototype.notify_ndock = function(ndock) {
+  this.ndock = ndock;
+  this.emit('ndock', ndock);
 };
 
 DataStorage.prototype.handle = function(api, params, response, port) {
@@ -417,7 +424,29 @@ DataStorage.prototype.handle_req_member_updatedeckname = function(params, respon
 DataStorage.prototype.handle_get_member_ndock = function(params, response, port) {
   const ndock_data = _.get(response, ['api_data'], []);
   const ndock = new NDock(ndock_data, port);
-  this.emit('ndock', ndock);
+  this.notify_ndock(ndock);
+};
+
+DataStorage.prototype.handle_req_nyukyo_speedchange = function(params, response, port) {
+  const ndock = this.ndock;
+  if (!ndock) {
+    return;
+  }
+  const ndock_id = parseInt(params.get('api_ndock_id'), 10);
+  ndock.complete(ndock_id - 1);
+  this.notify_ndock(ndock);
+
+  const ndock_ships = ndock.ships();
+  if (ndock_id <= 0 || ndock_ships.length <= ndock_id) {
+    return;
+  }
+  const ndock_ship = ndock_ships[ndock_id - 1];
+  const ship = ndock_ship.ship();
+  if (!ship) {
+    return;
+  }
+  ship.complete_repair();
+  this.notify_port();
 };
 
 module.exports = DataStorage;

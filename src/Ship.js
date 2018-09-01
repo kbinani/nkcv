@@ -130,6 +130,10 @@ Ship.prototype.repair_seconds = function() {
   return value;
 }
 
+Ship.prototype.complete_repair = function() {
+  _.set(this._data, ['api_ndock_time'], 0);
+};
+
 Ship.prototype.type = function() {
   const stype = _.get(this._master_data, ['api_stype'], -1);
   return new ShipType(stype);

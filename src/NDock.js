@@ -35,4 +35,9 @@ NDock.prototype.ships = function() {
   });
 };
 
+NDock.prototype.complete = function(index) {
+  _.set(this._data, [index, 'api_complete_time'], 0);
+  _.set(this._data, [index, 'api_complete_time_str'], '');
+};
+
 module.exports = NDock;
