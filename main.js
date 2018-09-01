@@ -336,13 +336,10 @@ function createGeneralShipCell(ship_id) {
     <tr class="DeckShipCell ThemeContainerBorderB">
       <td class="ship_{ship_id}_name" style="padding: 5px;" nowrap>艦名</td>
       <td style="padding: 5px;" nowrap>
-        <div style="display: flex; flex-direction: column;">
-          <div style="flex: 1 1 auto;">Lv. <span class="ship_{ship_id}_level">1</span></div>
-          <div style="flex: 1 1 auto;">Next: <span class="ship_{ship_id}_next_exp">100</span></div>
-        </div>
+        <div class="FontNormal">Lv. <span class="ship_{ship_id}_level">1</span></div>
       </td>
       <td style="padding: 5px;" nowrap>
-        <div style="display: flex; flex-direction: column;">
+        <div class="FontNormal"style="display: flex; flex-direction: column;">
           <div style="flex: 1 1 auto;">HP: <span class="ship_{ship_id}_hp_numerator">999</span> / <span class="ship_{ship_id}_hp_denominator">999</span></div>
           <div style="flex: 0 0 5px;"></div>
           <div style="flex: 1 1 auto; display: flex;">
@@ -352,12 +349,12 @@ function createGeneralShipCell(ship_id) {
         </div>
       </td>
       <td style="padding: 5px;" nowrap>
-        <div style="display: flex; flex-direction: column;">
+        <div class="FontNormal"style="display: flex; flex-direction: column;">
           <div style="flex: 1 1 auto; display: flex;">
             <div class="ship_{ship_id}_cond_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: white; margin: auto;"></div>
             <div class="ship_{ship_id}_cond" style="flex: 1 1 auto; margin-left: 5px;">49</div>
           </div>
-          <div>condition</div>
+          <div>cond</div>
         </div>
       </td>
       <td style="padding: 5px; overflow: hidden;">
