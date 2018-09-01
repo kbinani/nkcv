@@ -23,17 +23,6 @@ app.on('window-all-closed', function() {
 });
 
 app.on('ready', function() {
-  find_free_port(8000, function(err, port) {
-    HTTPProxy.launch(port);
-
-    const ses = session.fromPartition('persist:electron-study');
-    const proxyOptions = {
-      proxyRules: 'http=localhost:' + port + ',direct://',
-    };
-    ses.setProxy(proxyOptions, function() {
-    });
-  });
-
   const options = {
     width: 1200,
     height: 720 + 200,
@@ -42,7 +31,18 @@ app.on('ready', function() {
     useContentSize: true,
   };
   mainWindow = new BrowserWindow(options);
-  mainWindow.loadURL('file://' + __dirname + '/main.html');
+
+  find_free_port(8000, function(err, port) {
+    HTTPProxy.launch(port);
+
+    const ses = session.fromPartition('persist:electron-study');
+    const proxyOptions = {
+      proxyRules: 'http=localhost:' + port + ',direct://',
+    };
+    ses.setProxy(proxyOptions, function() {
+      mainWindow.loadURL('file://' + __dirname + '/main.html');
+    });
+  });
 
   mainWindow.webContents.on('dom-ready', function() {
     for (var key in mandatoryData) {
