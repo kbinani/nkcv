@@ -42,8 +42,8 @@ function onload() {
       <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label">{name}</span>
     </label>`
   ShipType.allCases().forEach(function(type) {
-    const element = template.replace(/\{id\}/g, type.value())
-                            .replace(/\{name\}/g, type.toString());
+    const element = template.replace(/{id}/g, type.value())
+                            .replace(/{name}/g, type.toString());
     choices.append(element);
   });
 }
@@ -383,12 +383,12 @@ function createShipCell(ship) {
       <div class="ThemeTableCell"><span class="ship_{ship_id}_repair"></span></div>
       <div class="ThemeTableCell ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>
     </div>`;
-  return template.replace(/\{ship_id\}/g, ship.id());
+  return template.replace(/{ship_id}/g, ship.id());
 }
 
 function createSlotitemCell(slotitem_id) {
   const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 auto; width: 21px; height: 21px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin: 2px 2px 0px 0px;"></div>';
-  return template.replace(/\{slotitem_id\}/g, slotitem_id);
+  return template.replace(/{slotitem_id}/g, slotitem_id);
 }
 
 function unsetSortOrder($element) {

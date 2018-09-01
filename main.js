@@ -322,12 +322,12 @@ function createDeckShipCell(ship_id) {
       </td>
       <td style="padding: 5px; overflow: hidden;" width="99999"></td>
     </tr>`;
-    return template.replace(/\{ship_id\}/g, ship_id);
+    return template.replace(/{ship_id}/g, ship_id);
 }
 
 function createDeckShipSlotitemCell(slotitem_id, size) {
   const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 auto; width: {size}px; height: {size}px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;"></div>';
-  return template.replace(/\{slotitem_id\}/g, slotitem_id)
+  return template.replace(/{slotitem_id}/g, slotitem_id)
                  .replace(/{size}/g, size);
 }
 
@@ -362,7 +362,7 @@ function createGeneralShipCell(ship_id) {
         </div>
       </td>
     </tr>`
-  return template.replace(/\{ship_id\}/g, ship_id);
+  return template.replace(/{ship_id}/g, ship_id);
 }
 
 function deckMenuClicked(index) {
