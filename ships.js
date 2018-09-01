@@ -277,7 +277,7 @@ function applyFilter() {
         row.removeClass('ThemeTableRowEven');
       }
     }
-    $('#ship_' + ship.id() + '_index').html(row_index);
+    $('.ship_' + ship.id() + '_index').html(row_index);
   });
 }
 
