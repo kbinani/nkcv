@@ -8,6 +8,10 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+#tool_container::-webkit-scrollbar {
+  display: none;
+}
+
 .MenuItem {
   flex: 0 0 40px;
   text-align: center;
