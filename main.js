@@ -276,52 +276,52 @@ function applyScale() {
 }
 
 function createDeckShipCell(ship_id) {
-  const template = '\
-    <tr class="DeckShipCell ThemeContainerBorderB">\
-      <td class="ship_{ship_id}_type FontNormal" style="padding: 5px;" nowrap>艦種</td>\
-      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap>艦名</td>\
-      <td style="padding: 5px;" nowrap>\
-        <div style="display: flex; flex-direction: column;">\
-          <div style="flex: 1 1 auto;">Lv. <span class="ship_{ship_id}_level">1</span></div>\
-          <div style="flex: 1 1 auto;">Next: <span class="ship_{ship_id}_next_exp">100</span></div>\
-        </div>\
-      </td>\
-      <td style="padding: 5px;" nowrap>\
-        <div style="display: flex; flex-direction: column;">\
-          <div style="flex: 1 1 auto;">HP: <span class="ship_{ship_id}_hp_numerator">999</span> / <span class="ship_{ship_id}_hp_denominator">999</span></div>\
-          <div style="flex: 0 0 5px;"></div>\
-          <div style="flex: 1 1 auto; display: flex;">\
-            <div style="flex: 1 1 auto; height: 8px; width: 60px; background-color: white;">\
-              <div class="ship_{ship_id}_hp_percentage" style="height: 8px; width: 50%; background-color: blue;"></div></div>\
-          </div>\
-        </div>\
-      </td>\
-      <td style="padding: 5px;" nowrap>\
-        <div style="display: flex; flex-direction: column;">\
-          <div style="flex: 1 1 auto; display: flex;">\
-            <div class="ship_{ship_id}_cond_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: white; margin: auto;"></div>\
-            <div class="ship_{ship_id}_cond" style="flex: 1 1 auto; margin-left: 5px;">49</div>\
-          </div>\
-          <div>condition</div>\
-        </div>\
-      </td>\
-      <td style="padding: 5px;" nowrap>\
-        <div style="display: flex; flex-direction: column;">\
-          <div style="flex: 0 0 auto; width: 60px; height: 8px; background-color: white;">\
-            <div class="ship_{ship_id}_fuel_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>\
-          </div>\
-          <div style="flex: 0 0 auto; height: 5px;"></div>\
-          <div style="flex: 0 0 auto; width: 60px; height: 8px; background-color: white;">\
-            <div class="ship_{ship_id}_bull_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>\
-          </div>\
-        </div>\
-      </td>\
-      <td style="padding: 5px; overflow: hidden;">\
-        <div id="deck_ship_{ship_id}_slotitem" style="display: flex;">\
-        </div>\
-      </td>\
-      <td style="padding: 5px; overflow: hidden;" width="99999"></td>\
-    </tr>';
+  const template = `
+    <tr class="DeckShipCell ThemeContainerBorderB">
+      <td class="ship_{ship_id}_type FontNormal" style="padding: 5px;" nowrap>艦種</td>
+      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap>艦名</td>
+      <td style="padding: 5px;" nowrap>
+        <div style="display: flex; flex-direction: column;">
+          <div style="flex: 1 1 auto;">Lv. <span class="ship_{ship_id}_level">1</span></div>
+          <div style="flex: 1 1 auto;">Next: <span class="ship_{ship_id}_next_exp">100</span></div>
+        </div>
+      </td>
+      <td style="padding: 5px;" nowrap>
+        <div style="display: flex; flex-direction: column;">
+          <div style="flex: 1 1 auto;">HP: <span class="ship_{ship_id}_hp_numerator">999</span> / <span class="ship_{ship_id}_hp_denominator">999</span></div>
+          <div style="flex: 0 0 5px;"></div>
+          <div style="flex: 1 1 auto; display: flex;">
+            <div style="flex: 1 1 auto; height: 8px; width: 60px; background-color: white;">
+              <div class="ship_{ship_id}_hp_percentage" style="height: 8px; width: 50%; background-color: blue;"></div></div>
+          </div>
+        </div>
+      </td>
+      <td style="padding: 5px;" nowrap>
+        <div style="display: flex; flex-direction: column;">
+          <div style="flex: 1 1 auto; display: flex;">
+            <div class="ship_{ship_id}_cond_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: white; margin: auto;"></div>
+            <div class="ship_{ship_id}_cond" style="flex: 1 1 auto; margin-left: 5px;">49</div>
+          </div>
+          <div>condition</div>
+        </div>
+      </td>
+      <td style="padding: 5px;" nowrap>
+        <div style="display: flex; flex-direction: column;">
+          <div style="flex: 0 0 auto; width: 60px; height: 8px; background-color: white;">
+            <div class="ship_{ship_id}_fuel_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>
+          </div>
+          <div style="flex: 0 0 auto; height: 5px;"></div>
+          <div style="flex: 0 0 auto; width: 60px; height: 8px; background-color: white;">
+            <div class="ship_{ship_id}_bull_percentage" style="width: 50%; height: 8px; background-color: blue;"></div>
+          </div>
+        </div>
+      </td>
+      <td style="padding: 5px; overflow: hidden;">
+        <div id="deck_ship_{ship_id}_slotitem" style="display: flex;">
+        </div>
+      </td>
+      <td style="padding: 5px; overflow: hidden;" width="99999"></td>
+    </tr>`;
     return template.replace(/\{ship_id\}/g, ship_id);
 }
 
