@@ -22,4 +22,8 @@ Quest.prototype.state = function() {
   return _.get(this._data, ['api_state'], 1);
 }
 
+Quest.prototype.category = function() {
+  return _.get(this._data, ['api_category'], -1);
+};
+
 module.exports = Quest;

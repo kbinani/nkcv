@@ -46,8 +46,10 @@ function onload() {
     const $container = $('#general_quest');
     $container.empty();
     const template = `
-      <div class="quest_{no}_title FontNormal" style="overflow: hidden; text-overflow:ellipsis; white-space:nowrap;"></div>
-    `;
+      <div class="quest_{no}" style="flex: 0 0 auto; display: flex; height: 20px; line-height: 20px;">
+        <div class="quest_{no}_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: red; margin-top: 4px;"></div>
+        <div class="quest_{no}_title" style="flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-left: 5px;"></div>
+      </div>`;
     const list = questlist.get().filter((quest) => {
       const state = quest.state();
       return state == 2 || state == 3;
@@ -64,8 +66,37 @@ function onload() {
       $item.html(quest.title());
       $item.attr('title', quest.detail().replace(/<br>/g, '\n'));
       if (i > 0) {
-        $item.css('padding-top', '5px');
+        $('.quest_' + quest.no()).css('padding-top', '5px');
       }
+      var color = '';
+      switch (quest.category()) {
+        case 1: // 編成
+          color = 'rgb(51, 173, 98)';
+          break;
+        case 2: // 出撃
+        case 8:
+          color = 'rgb(202, 83, 82)';
+          break;
+        case 3: // 演習
+          color = 'rgb(109, 177, 81)';
+          break;
+        case 4: // 遠征
+          color = 'rgb(78, 170, 167)';
+          break;
+        case 5: // 補給/入渠
+          color = 'rgb(205, 182, 96)';
+          break;
+        case 6: // 工廠
+          color = 'rgb(113, 79, 66)';
+          break;
+        case 7: // 改装
+          color = 'rgb(181, 142, 199)';
+          break;
+        default:
+          color = ''; //TODO
+          break;
+      }
+      $('.quest_' + quest.no() + '_icon').css('background-color', color);
     }
   });
 
