@@ -30,8 +30,8 @@ function onload() {
     port.ships.forEach(function(ship) {
       const slotitems = ship.slotitems();
       slotitems.forEach(function(it) {
-        const slotitemCell = createDeckShipSlotitemCell(it.id());
-        $('.ship_' + ship.id() + '_slotitem').append(slotitemCell);
+        $('#deck_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it.id(), 30));
+        $('#general_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it.id(), 21));
       });
       updateSlotitemStatus(slotitems);
     });
@@ -285,7 +285,7 @@ function createDeckShipCell(ship_id) {
         </div>\
       </td>\
       <td style="padding: 5px; overflow: hidden;">\
-        <div class="ship_{ship_id}_slotitem" style="display: flex;">\
+        <div id="deck_ship_{ship_id}_slotitem" style="display: flex;">\
         </div>\
       </td>\
       <td style="padding: 5px; overflow: hidden;" width="99999"></td>\
@@ -293,9 +293,10 @@ function createDeckShipCell(ship_id) {
     return template.replace(/\{ship_id\}/g, ship_id);
 }
 
-function createDeckShipSlotitemCell(slotitem_id) {
-  const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 30px; width: 30px; height: 30px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;"></div>';
-  return template.replace(/\{slotitem_id\}/g, slotitem_id);
+function createDeckShipSlotitemCell(slotitem_id, size) {
+  const template = '<div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="flex: 0 0 auto; width: {size}px; height: {size}px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;"></div>';
+  return template.replace(/\{slotitem_id\}/g, slotitem_id)
+                 .replace(/{size}/g, size);
 }
 
 function createGeneralShipCell(ship_id) {
@@ -328,7 +329,7 @@ function createGeneralShipCell(ship_id) {
         </div>
       </td>
       <td style="padding: 5px; overflow: hidden;">
-        <div class="ship_{ship_id}_slotitem" style="display: flex;">
+        <div id="general_ship_{ship_id}_slotitem" style="display: flex;">
         </div>
       </td>
     </tr>`
