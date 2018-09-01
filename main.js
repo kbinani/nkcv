@@ -46,7 +46,7 @@ function onload() {
     const $container = $('#general_quest');
     $container.empty();
     const template = `
-      <div class="quest_{no}_title" style="overflow: hidden;"></div>
+      <div class="quest_{no}_title FontNormal" style="overflow: hidden; text-overflow:ellipsis; white-space:nowrap;"></div>
     `;
     const list = questlist.get().filter((quest) => {
       const state = quest.state();
