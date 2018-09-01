@@ -10,7 +10,8 @@ const SlotitemList = require(__dirname + '/SlotitemList.js'),
       Slotitem = require(__dirname + '/Slotitem.js'),
       QuestList = require(__dirname + '/QuestList.js'),
       KDock = require(__dirname + '/KDock.js'),
-      Ship = require(__dirname + '/Ship.js');
+      Ship = require(__dirname + '/Ship.js'),
+      NDock = require(__dirname + '/NDock.js');
 
 function DataStorage() {
   EventEmitter.call(this);
@@ -52,7 +53,8 @@ function DataStorage() {
   });
 
   ipcRenderer.on('api_port/port', function(event, data, request_body) {
-    const port = new Port(JSON.parse(data), self);
+    const json = JSON.parse(data);
+    const port = new Port(json, self);
     port.decks.forEach(function(deck) {
       const mission_finish_time = deck.mission_finish_time();
       deck.ships.forEach(function(ship) {
@@ -61,6 +63,10 @@ function DataStorage() {
     });
     self.port = port;
     self.notify_port();
+
+    const ndock_data = _.get(json, ['api_data', 'api_ndock'], []);
+    const ndock = new NDock(ndock_data, port);
+    self.emit('ndock', ndock);
   });
 
   ipcRenderer.on('api_get_member/require_info', function(event, data, request_body) {

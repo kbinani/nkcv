@@ -114,17 +114,49 @@ function onload() {
         const template = `
           <div style="display: flex; height: 20px;">
             <div style="flex: 1 1 auto;">{name}</div>
-            <div class="{class}" style="flex: 1 1 auto; text-alignment: right;" data-timer-finish="{complete}" data-timer-complete-message="完成">{label}</div>
-          </div>
-        `;
+            <div class="{class}" style="flex: 1 1 auto; text-align: right;" data-timer-finish="{complete}" data-timer-complete-message="完成">{label}</div>
+          </div>`;
         const complete = ship.complete_time().getTime();
         const cls = (complete <= 0) ? '' : 'CountdownLabel';
         const label = (complete <= 0) ? '完成' : '';
-        const html = template.replace(/\{name\}/g, ship.name())
-                             .replace(/\{complete\}/g, complete)
-                             .replace(/\{label\}/g, label)
-                             .replace(/\{class\}/g, cls);
+        const html = template.replace(/{name}/g, ship.name())
+                             .replace(/{complete}/g, complete)
+                             .replace(/{label}/g, label)
+                             .replace(/{class}/g, cls);
         $container.html(html);
+      }
+    }
+  });
+
+  storage.on('ndock', (ndock) => {
+    const ships = ndock.ships();
+    for (var i = 0; i < ships.length; i++) {
+      const $container = $('#general_ndock_' + i);
+      $container.empty();
+      const ndock_ship = ships[i];
+      const state = ndock_ship.state();
+      switch (state) {
+        case 0: {
+          const html = `
+            <div class="FontNormal" style="display: table-cell; height: 20px;">未使用</div>
+            <div class="FontNormal" style="display: table-cell; text-align: right; height: 20px;"></div>`;
+          $container.append(html);
+          break;
+        }
+        case 1:
+        case 2: {
+          const ship = ndock_ship.ship();
+          const cls = state == 1 ? 'CountdownLabel' : '';
+          const complete = ndock_ship.complete_time().getTime();
+          const template = `
+            <div class="FontNormal" style="display: table-cell; height: 20px;">{name}</div>
+            <div class="FontNormal {class}" style="display: table-cell; text-align: right; height: 20px;" data-timer-finish="{complete}" data-timer-complete-message="完了"></div>`;
+          const html = template.replace(/{name}/g, ship.name())
+                               .replace(/{class}/g, cls)
+                               .replace(/{complete}/g, complete);
+          $container.append(html);
+          break;
+        }
       }
     }
   });
