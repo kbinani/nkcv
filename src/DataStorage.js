@@ -40,6 +40,7 @@ function DataStorage() {
     'api_req_kaisou/slot_deprive',
     'api_req_kaisou/slot_exchange_index',
     'api_req_member/updatedeckname',
+    'api_get_member/ndock',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -411,6 +412,12 @@ DataStorage.prototype.handle_req_member_updatedeckname = function(params, respon
   const name = params.get('api_name');
   deck.set_name(name);
   this.notify_port();
+};
+
+DataStorage.prototype.handle_get_member_ndock = function(params, response, port) {
+  const ndock_data = _.get(response, ['api_data'], []);
+  const ndock = new NDock(ndock_data, port);
+  this.emit('ndock', ndock);
 };
 
 module.exports = DataStorage;
