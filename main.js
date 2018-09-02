@@ -76,9 +76,6 @@ function onload() {
       const $item = $('.quest_' + quest.no() + '_title');
       $item.html(quest.title());
       $item.attr('title', quest.detail().replace(/<br>/g, '\n'));
-      if (i > 0) {
-        $('.quest_' + quest.no()).css('padding-top', '5px');
-      }
       var color = '';
       switch (quest.category()) {
         case 1: // 編成
