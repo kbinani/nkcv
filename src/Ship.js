@@ -199,4 +199,12 @@ Ship.prototype.update_slot = function(data) {
   _.set(this._data, ['api_slot'], data);
 };
 
+Ship.prototype.maxeq = function() {
+  return _.get(this._master_data, ['api_maxeq'], [0, 0, 0, 0, 0]);
+};
+
+Ship.prototype.onslot = function() {
+  return _.get(this._data, ['api_onslot'], [0, 0, 0, 0, 0]);
+};
+
 module.exports = Ship;

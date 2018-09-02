@@ -242,6 +242,8 @@ function updateDeckStatus(decks) {
       $('.deck_' + i + '_countdown').removeClass('CountdownLabel');
     }
     $('.deck_' + i + '_icon').css('background-color', color);
+    $('.deck_' + i + '_taiku').html(deck.taiku());
+    $('.deck_' + i + '_soku').html(deck.soku().toString());
   }
 }
 
@@ -451,7 +453,7 @@ function showShipList(sender) {
 
 function generalDeckMenuClicked(index) {
   for (var i = 0; i < 4; i++) {
-    const $panel = $('#general_deck_' + i);
+    const $panel = $('.general_deck_' + i);
     const $menu = $('#general_deck_menu_' + i);
 
     if (i == index) {

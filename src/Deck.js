@@ -1,6 +1,7 @@
 'use strict;'
 
 const _ = require('lodash');
+const Speed = require(__dirname + '/Speed.js');
 
 function Deck(data, port) {
   this._data = data;
@@ -60,6 +61,28 @@ Deck.prototype.is_ready_to_sally = function() {
 
 Deck.prototype.update = function(data) {
   this._data = data;
+};
+
+Deck.prototype.soku = function() {
+  const min_soku = _.reduce(this.ships, (result, value) => Math.min(result, value.soku().value()), 20);
+  return new Speed(min_soku);
+};
+
+Deck.prototype.taiku = function() {
+  var value = 0;
+  this.ships.forEach((ship) => {
+    const onslot = ship.onslot();
+    _.forEach(ship.slotitems(), (slotitem, index) => {
+      const taiku = slotitem.taiku();
+      const eq = onslot[index];
+      const level = slotitem.level();
+      const proficiency = slotitem.proficiency();
+      //TODO: 爆戦の場合は 0.2 ではなく 0.25
+      const v = (taiku + 0.2 * level) * Math.sqrt(eq) + Math.sqrt(proficiency / 10.0);
+      value += v;
+    });
+  });
+  return Math.floor(value);
 };
 
 module.exports = Deck;

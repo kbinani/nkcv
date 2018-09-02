@@ -79,4 +79,8 @@ Slotitem.prototype.proficiency = function() {
   return _.get(this._data, ['api_alv'], 0);
 };
 
+Slotitem.prototype.taiku = function() {
+  return _.get(this._master_data, ['api_tyku'], 0);
+};
+
 module.exports = Slotitem;
