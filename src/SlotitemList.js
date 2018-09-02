@@ -23,4 +23,9 @@ SlotitemList.prototype.slotitem = function(id) {
   return this._lut[id];
 };
 
+SlotitemList.prototype.push = function(item) {
+  this._list.push(item);
+  this._lut[item.id()] = item;
+};
+
 module.exports = SlotitemList;

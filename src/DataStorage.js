@@ -11,7 +11,8 @@ const SlotitemList = require(__dirname + '/SlotitemList.js'),
       QuestList = require(__dirname + '/QuestList.js'),
       KDock = require(__dirname + '/KDock.js'),
       Ship = require(__dirname + '/Ship.js'),
-      NDock = require(__dirname + '/NDock.js');
+      NDock = require(__dirname + '/NDock.js'),
+      CreatedSlotitem = require(__dirname + '/CreatedSlotitem.js');
 
 function DataStorage() {
   EventEmitter.call(this);
@@ -154,6 +155,38 @@ function DataStorage() {
     kdock.complete(dock_id - 1);
     self.kdock = kdock;
     self.emit('kdock', kdock);
+  });
+
+  ipcRenderer.on('api_req_kousyou/createitem', (api, response, request) => {
+    const json = JSON.parse(response);
+    const success = _.get(json, ['api_data', 'api_create_flag'], 0) == 1;
+    if (success) {
+      const mst_id = _.get(json, ['api_data', 'api_slot_item', 'api_slotitem_id'], -1);
+      const id = _.get(json, ['api_data', 'api_slot_item', 'api_id'], -1);
+      if (id < 0 || mst_id < 0) {
+        return;
+      }
+      const mst = self.master.slotitem(mst_id);
+      const data = {
+        'api_id': id,
+        'api_slotitem_id': mst_id,
+        'api_locked': 0,
+        'api_level': 0
+      };
+      const slotitem = new Slotitem(data, mst);
+      self.slotitems.push(slotitem);
+      const item = new CreatedSlotitem(mst, slotitem);
+      self.emit('created_slotitem', item);
+    } else {
+      const fdata = _.get(json, ['api_data', 'api_fdata'], '2,-1').split(',').map((it) => parseInt(it, 10));
+      const mst_id = _.get(fdata, [1], -1);
+      const mst = self.master.slotitem(mst_id);
+      if (!mst) {
+        return;
+      }
+      const item = new CreatedSlotitem(mst, null);
+      self.emit('created_slotitem', item);
+    }
   });
 }
 

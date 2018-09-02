@@ -169,6 +169,15 @@ function onload() {
     }
   });
 
+  storage.on('created_slotitem', (created_slotitem) => {
+    const slotitem = created_slotitem.slotitem;
+    if (slotitem == null) {
+      $('#general_develop').html('(失敗) ' + created_slotitem.name());
+    } else {
+      $('#general_develop').html(slotitem.name());
+    }
+  });
+
   setInterval(function() {
     const now = new Date();
     $('.CountdownLabel').each(function() {

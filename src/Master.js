@@ -42,11 +42,24 @@ function Master() {
 Master.prototype.ship = function(mst_id) {
   const data = this._last;
   if (!data) {
-    return;
+    return null;
   }
   const json = JSON.parse(data);
   const ships = _.get(json, ['api_data', 'api_mst_ship'], []);
   return _.find(ships, (mst) => {
+    const id = _.get(mst, ['api_id'], -1);
+    return id == mst_id;
+  });
+};
+
+Master.prototype.slotitem = function(mst_id) {
+  const data = this._last;
+  if (!data) {
+    return null;
+  }
+  const json = JSON.parse(data);
+  const slotitems = _.get(json, ['api_data', 'api_mst_slotitem'], []);
+  return _.find(slotitems, (mst) => {
     const id = _.get(mst, ['api_id'], -1);
     return id == mst_id;
   });
