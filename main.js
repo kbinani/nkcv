@@ -40,7 +40,7 @@ function onload() {
       }
 
       const size_normal = 30;
-      const size_small = 21;
+      const size_small = 25;
       slotitem_ids.forEach(function(it) {
         $('#deck_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it, size_normal));
         $('#general_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it, size_small));
@@ -351,7 +351,7 @@ function createDeckShipSlotitemCell(slotitem_id, size) {
     return template.replace(/{size}/g, size);
   } else {
     const template = `
-      <div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="display: flex; flex-direction: column; flex: 0 0 auto; width: {size}px; height: {size}px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 3px; margin-right: 3px;">
+      <div title="12.7cm連装砲" class="slotitem_{slotitem_id}_icon" style="display: flex; flex-direction: column; flex: 0 0 auto; width: {size}px; height: {size}px; background-image: url(\'img/main_canon_light.svg\'); background-size: contain; background-repeat: no-repeat; background-position: 50%; margin-left: 1px; margin-right: 1px;">
         <div style="display: flex; flex: 1 1 auto; height: {size-1/2}px; line-height: {size-1/2}px; font-size: {size-1/2-font}px; text-align: center;">
           <div style="flex: 1 1 auto;"></div>
           <div class="slotitem_{slotitem_id}_proficiency" style="flex: 0 0 auto; padding: 2px;"></div>
