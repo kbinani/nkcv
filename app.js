@@ -52,7 +52,7 @@ app.on('ready', function() {
         mainWindow.webContents.send(key, data, '');
       }
     }
-    updateScale('800/1200');
+    updateScale('900/1200');
   });
 
   mainWindow.on('closed', function() {
