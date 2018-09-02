@@ -80,7 +80,7 @@ function updateSlotitemStatus(slotitems) {
 }
 
 function barColor(rat) {
-  return rat.value() >= 0.75 ? '#0f0' : (rat.value() >= 0.5 ? 'yellow' : (rat.value() >= 0.25 ? 'orange' : 'red'));
+  return rat.value() > 0.75 ? '#0f0' : (rat.value() > 0.5 ? 'yellow' : (rat.value() > 0.25 ? 'orange' : 'red'));
 }
 
 function timeLabel(seconds_) {
