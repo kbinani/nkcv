@@ -69,4 +69,14 @@ Slotitem.prototype.type = function() {
   return _.get(mapping, [type], "unknown");
 };
 
+Slotitem.prototype.level = function() {
+  // 改修レベル
+  return _.get(this._data, ['api_level'], 0);
+};
+
+Slotitem.prototype.proficiency = function() {
+  // 熟練度
+  return _.get(this._data, ['api_alv'], 0);
+};
+
 module.exports = Slotitem;

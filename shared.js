@@ -76,6 +76,36 @@ function updateSlotitemStatus(slotitems) {
     const element = $('.slotitem_' + id + '_icon');
     element.attr('title', slotitem.name());
     element.css('background-image', "url('img/" + slotitem.type() + ".svg')");
+
+    const level = slotitem.level();
+    var level_label = '';
+    var level_background = level > 0 ? 'rgba(0, 0, 0, 0.3)' : 'transparent';
+    if (level == 10) {
+      level_label = '★max';
+    } else if (level > 0) {
+      level_label = '★' + level;
+    }
+    const $level_element = $('.slotitem_' + id + '_level');
+    $level_element.html(level_label);
+    $level_element.css('background-color', level_background);
+
+    const $proficiency_element = $('.slotitem_' + id + '_proficiency');
+    const proficiency = slotitem.proficiency();
+    var proficiency_label = '';
+    var proficiency_color = '';
+    if (proficiency > 0) {
+      proficiency_label = '+' + proficiency;
+      if (proficiency > 3) {
+        proficiency_color = 'rgb(212, 156, 15)';
+      } else {
+        proficiency_color = 'rgb(152, 179, 206)';
+      }
+      $proficiency_element.css('background-color', 'rgba(0, 0, 0, 0.3)');
+    } else {
+      $proficiency_element.css('background-color', 'transparent');
+    }
+    $proficiency_element.html(proficiency_label);
+    $proficiency_element.css('color', proficiency_color);
   });
 }
 
