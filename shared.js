@@ -74,8 +74,9 @@ function updateSlotitemStatus(slotitems) {
   slotitems.forEach(function(slotitem) {
     const id = slotitem.id();
     const element = $('.slotitem_' + id + '_icon');
-    element.attr('title', slotitem.name());
     element.css('background-image', "url('img/" + slotitem.type() + ".svg')");
+
+    var title = slotitem.name();
 
     const level = slotitem.level();
     var level_label = '';
@@ -84,6 +85,9 @@ function updateSlotitemStatus(slotitems) {
       level_label = '★max';
     } else if (level > 0) {
       level_label = '★' + level;
+    }
+    if (level_label != '') {
+      title += ' ' + level_label;
     }
     const $level_element = $('.slotitem_' + id + '_level');
     $level_element.html(level_label);
@@ -106,6 +110,11 @@ function updateSlotitemStatus(slotitems) {
     }
     $proficiency_element.html(proficiency_label);
     $proficiency_element.css('color', proficiency_color);
+    if (proficiency_label != '') {
+      title += ' (' + proficiency_label + ')';
+    }
+
+    element.attr('title', title);
   });
 }
 
