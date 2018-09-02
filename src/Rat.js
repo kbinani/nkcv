@@ -23,4 +23,11 @@ _.prototype.toString = function() {
   return this._num + "/" + this._denom;
 };
 
+Rat.fromString = function(str) {
+  const item = str.split('/').map((it) => parseInt(it, 10));
+  const num = item[0];
+  const denom = item[1];
+  return new Rat(num ,denom);
+};
+
 module.exports = Rat;

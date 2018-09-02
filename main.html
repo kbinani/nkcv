@@ -201,12 +201,23 @@
             <table id="deck_2_ships" class="DeckTable ThemeContainerActive" style="flex: 1 1 auto; border-collapse: collapse; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
             <table id="deck_3_ships" class="DeckTable ThemeContainerActive" style="flex: 1 1 auto; border-collapse: collapse; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
           </div>
-          <div id="browser_tool" class="ThemeContainerActive ToolPanel">
-            <div style="flex: 1 1 auto; margin-left: 5px; display: flex;">
+          <div id="browser_tool" class="ThemeContainerActive ToolPanel" style="flex-direction: column;">
+            <div style="flex: 0 0 auto; margin-left: 5px; display: flex;">
               <input id="browser_url" type="text" class="ThemeContainerActive ThemeContainerBorder" readonly="readonly" style="flex: 1 0 auto; margin: 5px 5px 5px 5px; padding: 0px 5px 0px 5px; height: 30px; line-height: 30px; cursor: text; display: flex;"/>
               <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; width: 30px; margin: 5px; line-height: 30px; background-image: url('img/baseline-arrow_back-24px.svg'); background-repeat: no-repeat; background-position: 50%;" onclick="browserBackClicked(this)"></div>
               <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; height: 30px; margin: 5px 10px 5px 5px; line-height: 30px; background-image: url('img/baseline-refresh-24px.svg'); background-repeat: no-repeat; background-position: 50%;" onclick="browserReloadClicked(this)"></div>
             </div>
+            <div style="flex: 0 0 auto; display: flex;">
+              <div style="flex: 0 0 auto; height: 30px; line-height: 30px; margin: 0px 5px 5px 15px;">拡大率</div>
+              <select id="browser_scale" class="ThemeContainerActive ThemeContainerBorder" style="flex: 0 0 auto; height: 30px; width: 100px; margin: 0px 5px 5px 5px;" onchange="scaleSelected(this)">
+                <option value="300/1200">25%</option>
+                <option value="600/1200">50%</option>
+                <option value="800/1200">66.6%</option>
+                <option value="900/1200">75%</option>
+                <option value="1200/1200">100%</option>
+              </select>
+            </div>
+            <div style="flex: 1 1 auto;"><!-- spacer --></div>
           </div>
         </div>
       </div>

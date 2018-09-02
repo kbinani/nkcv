@@ -8,7 +8,8 @@ const electron = require('electron'),
       strftime = require('strftime'),
       HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
-      Master = require(__dirname + '/src/Master.js');
+      Master = require(__dirname + '/src/Master.js'),
+      Rat = require(__dirname + '/src/Rat.js');
 
 const {app, BrowserWindow, session, ipcMain} = require('electron');
 
@@ -51,7 +52,7 @@ app.on('ready', function() {
         mainWindow.webContents.send(key, data, '');
       }
     }
-    updateScale(0.75);
+    updateScale('800/1200');
   });
 
   mainWindow.on('closed', function() {
@@ -88,15 +89,33 @@ ipcMain.on('app.openShipList', function(event, data) {
   openShipList();
 });
 
-function updateScale(scale) {
+ipcMain.on('app.scale', function(event, scale_rat_string) {
+  updateScale(scale_rat_string);
+});
+
+function updateScale(scale_rat_string) {
   if (!mainWindow) {
     return;
   }
+  const scale_rat = Rat.fromString(scale_rat_string);
+  const scale = scale_rat.value();
   const scrollBarSize = os.platform() == 'win32' ? 16 : 0;
   const width = 1200;
   const height = 720;
-  mainWindow.setMinimumSize(width * scale + scrollBarSize, height * scale + scrollBarSize);
-  mainWindow.webContents.executeJavaScript('updateScale(' + scale + ')');
+  const w = width * scale + scrollBarSize;
+  const h = height * scale + scrollBarSize;
+  const current = mainWindow.getSize();
+  mainWindow.setMinimumSize(w, h);
+  var next_w = current[0];
+  var next_h = current[1];
+  if (next_w < w) {
+    next_w = w;
+  }
+  if (next_h < h) {
+    next_h = h;
+  }
+  mainWindow.setSize(next_w, next_h);
+  mainWindow.webContents.executeJavaScript('updateScale("' + scale_rat_string + '")');
 }
 
 function openShipList() {

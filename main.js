@@ -2,7 +2,8 @@ window.jQuery = window.$ = require('jquery');
 const {ipcRenderer, screen} = require('electron');
 const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
-      DataStorage = require('./src/DataStorage.js');
+      DataStorage = require('./src/DataStorage.js'),
+      Rat = require('./src/Rat.js');
 const sprintf = require('sprintf');
 
 const width = 1200;
@@ -278,9 +279,11 @@ function browserReloadClicked(sender) {
   document.querySelector("webview").reload();
 }
 
-function updateScale(s) {
-  scale = s;
+function updateScale(scale_rat_string) {
+  const scale_rat = Rat.fromString(scale_rat_string);
+  scale = scale_rat.value();
   applyScale();
+  $('#browser_scale').val(scale_rat_string);
 }
 
 function applyScale() {
@@ -455,4 +458,9 @@ function generalDeckMenuClicked(index) {
       $menu.css('cursor', 'pointer');
     }
   }
+}
+
+function scaleSelected(sender) {
+  const scale_string = $("#browser_scale").val();
+  ipcRenderer.send('app.scale', scale_string);
 }
