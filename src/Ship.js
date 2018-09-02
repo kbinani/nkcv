@@ -132,6 +132,8 @@ Ship.prototype.repair_seconds = function() {
 
 Ship.prototype.complete_repair = function() {
   _.set(this._data, ['api_ndock_time'], 0);
+  const maxhp = _.get(this._data, ['api_maxhp'], 0);
+  _.set(this._data, ['api_nowhp'], maxhp);
 };
 
 Ship.prototype.type = function() {

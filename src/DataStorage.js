@@ -44,6 +44,7 @@ function DataStorage() {
     'api_req_member/updatedeckname',
     'api_get_member/ndock',
     'api_req_nyukyo/speedchange',
+    'api_req_nyukyo/start',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -475,6 +476,20 @@ DataStorage.prototype.handle_req_nyukyo_speedchange = function(params, response,
   }
   const ndock_ship = ndock_ships[ndock_id - 1];
   const ship = ndock_ship.ship();
+  if (!ship) {
+    return;
+  }
+  ship.complete_repair();
+  this.notify_port();
+};
+
+DataStorage.prototype.handle_req_nyukyo_start = function(params, response, port) {
+  const highspeed = parseInt(params.get('api_highspeed'), 10) == 1;
+  if (highspeed != 1) {
+    return;
+  }
+  const ship_id = parseInt(params.get('api_ship_id'), 10);
+  const ship = port.ship(ship_id);
   if (!ship) {
     return;
   }
