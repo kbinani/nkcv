@@ -77,8 +77,12 @@ Deck.prototype.taiku = function() {
       const eq = onslot[index];
       const level = slotitem.level();
       const proficiency = slotitem.proficiency();
-      //TODO: 爆戦の場合は 0.2 ではなく 0.25
-      const v = (taiku + 0.2 * level) * Math.sqrt(eq) + Math.sqrt(proficiency / 10.0);
+      var rate = 0.2;
+      if (slotitem.type() == "dive_bomber") {
+        // 爆戦
+        rate = 0.25;
+      }
+      const v = (taiku + rate * level) * Math.sqrt(eq) + Math.sqrt(proficiency / 10.0);
       value += v;
     });
   });
