@@ -11,7 +11,7 @@ const electron = require('electron'),
       Master = require(__dirname + '/src/Master.js'),
       Rat = require(__dirname + '/src/Rat.js');
 
-const {app, BrowserWindow, session, ipcMain} = require('electron');
+const {app, BrowserWindow, session, ipcMain, dialog} = require('electron');
 
 var mainWindow = null;
 var shipWindow = null;
@@ -53,6 +53,20 @@ app.on('ready', function() {
       }
     }
     updateScale('900/1200');
+  });
+
+  mainWindow.on('close', function(event) {
+    const response = dialog.showMessageBox({
+      type: 'question',
+      buttons: ['はい', 'いいえ'],
+      title: '確認',
+      message: '終了しますか?',
+      defaultId: 1,
+      cancelId: 1,
+    });
+    if (response == 1) {
+      event.preventDefault();
+    }
   });
 
   mainWindow.on('closed', function() {
