@@ -274,11 +274,33 @@ function menuItemClicked(sender) {
 }
 
 function browserBackClicked(sender) {
-  document.querySelector("webview").goBack();
+  const {dialog} = require('electron').remote;
+  const response = dialog.showMessageBox({
+    type: 'question',
+    buttons: ['はい', 'いいえ'],
+    title: '確認',
+    message: '前のページに戻ります。よろしいですか?',
+    defaultId: 1,
+    cancelId: 1,
+  });
+  if (response == 0) {
+    document.querySelector("webview").goBack();
+  }
 }
 
 function browserReloadClicked(sender) {
-  document.querySelector("webview").reload();
+  const {dialog} = require('electron').remote;
+  const response = dialog.showMessageBox({
+    type: 'question',
+    buttons: ['はい', 'いいえ'],
+    title: '確認',
+    message: 'ページをリロードします。よろしいですか?',
+    defaultId: 1,
+    cancelId: 1,
+  });
+  if (response == 0) {
+    document.querySelector("webview").reload();
+  }
 }
 
 function updateScale(scale_rat_string) {
