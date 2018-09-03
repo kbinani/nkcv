@@ -9,7 +9,8 @@ const electron = require('electron'),
       HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
-      Rat = require(__dirname + '/src/Rat.js');
+      Rat = require(__dirname + '/src/Rat.js'),
+      Dialog = require(__dirname + '/src/Dialog.js');
 
 const {app, BrowserWindow, session, ipcMain, dialog} = require('electron');
 
@@ -56,15 +57,8 @@ app.on('ready', function() {
   });
 
   mainWindow.on('close', function(event) {
-    const response = dialog.showMessageBox({
-      type: 'question',
-      buttons: ['はい', 'いいえ'],
-      title: '確認',
-      message: '終了しますか?',
-      defaultId: 1,
-      cancelId: 1,
-    });
-    if (response == 1) {
+    const response = Dialog.showYesNoMessageBox('確認', '終了しますか?');
+    if (!response) {
       event.preventDefault();
     }
   });

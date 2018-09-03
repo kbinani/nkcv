@@ -3,7 +3,8 @@ const {ipcRenderer, screen} = require('electron');
 const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
       DataStorage = require('./src/DataStorage.js'),
-      Rat = require('./src/Rat.js');
+      Rat = require('./src/Rat.js'),
+      Dialog = require('./src/Dialog.js');
 const sprintf = require('sprintf');
 
 const width = 1200;
@@ -274,31 +275,15 @@ function menuItemClicked(sender) {
 }
 
 function browserBackClicked(sender) {
-  const {dialog} = require('electron').remote;
-  const response = dialog.showMessageBox({
-    type: 'question',
-    buttons: ['はい', 'いいえ'],
-    title: '確認',
-    message: '前のページに戻ります。よろしいですか?',
-    defaultId: 1,
-    cancelId: 1,
-  });
-  if (response == 0) {
+  const response = Dialog.showYesNoMessageBox('確認', '前のページに戻ります。よろしいですか?');
+  if (response) {
     document.querySelector("webview").goBack();
   }
 }
 
 function browserReloadClicked(sender) {
-  const {dialog} = require('electron').remote;
-  const response = dialog.showMessageBox({
-    type: 'question',
-    buttons: ['はい', 'いいえ'],
-    title: '確認',
-    message: 'ページをリロードします。よろしいですか?',
-    defaultId: 1,
-    cancelId: 1,
-  });
-  if (response == 0) {
+  const response = Dialog.showYesNoMessageBox('確認', 'ページをリロードします。よろしいですか?');
+  if (response) {
     document.querySelector("webview").reload();
   }
 }
