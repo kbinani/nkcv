@@ -141,30 +141,22 @@ function onload() {
   storage.on('ndock', (ndock) => {
     const ships = ndock.ships();
     for (var i = 0; i < ships.length; i++) {
-      const $container = $('#general_ndock_' + i);
-      $container.empty();
       const ndock_ship = ships[i];
       const state = ndock_ship.state();
       switch (state) {
         case 0: {
-          const html = `
-            <div class="FontNormal EllipsisLabel" style="flex: 1 1 auto; height: 20px; line-height: 20px;">未使用</div>
-            <div class="FontNormal" style="flex: 0 0 auto; height: 20px; line-height: 20px;"></div>`;
-          $container.append(html);
+          $('.ndock_' + i + '_title').html('未使用');
+          $('.ndock_' + i + '_countdown').removeClass('CountdownLabel');
+          $('.ndock_' + i + '_countdown').html('');
           break;
         }
         case 1:
         case 2: {
           const ship = ndock_ship.ship();
-          const cls = state == 1 ? 'CountdownLabel' : '';
-          const complete = ndock_ship.complete_time().getTime();
-          const template = `
-            <div class="FontNormal EllipsisLabel" style="flex: 1 1 auto; height: 20px; line-height: 20px;">{name}</div>
-            <div class="FontNormal {class}" style="flex: 0 0 auto; height: 20px; line-height: 20px;" data-timer-finish="{complete}" data-timer-complete-message="完了"></div>`;
-          const html = template.replace(/{name}/g, ship.name())
-                               .replace(/{class}/g, cls)
-                               .replace(/{complete}/g, complete);
-          $container.append(html);
+          $('.ndock_' + i + '_title').html(ship.name());
+          $('.ndock_' + i + '_countdown').addClass('CountdownLabel');
+          $('.ndock_' + i + '_countdown').attr('data-timer-finish', ndock_ship.complete_time().getTime());
+          $('.ndock_' + i + '_countdown').attr('data-timer-complete-message', '完了');
           break;
         }
       }
