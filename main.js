@@ -233,6 +233,7 @@ function updateDeckStatus(decks) {
         color = 'orange';
       }
       $('.deck_' + i + '_countdown').removeClass('CountdownLabel');
+      $('.deck_' + i + '_countdown').html('');
     }
     $('.deck_' + i + '_icon').css('background-color', color);
     $('.deck_' + i + '_taiku').html(deck.taiku());
