@@ -275,14 +275,24 @@ function menuItemClicked(sender) {
 }
 
 function browserBackClicked(sender) {
-  const response = Dialog.showYesNoMessageBox('確認', '前のページに戻ります。よろしいですか?');
+  const response = Dialog.confirm({
+    title: '確認',
+    message: '前のページに戻ります。よろしいですか?',
+    yes: '戻る',
+    no: 'キャンセル'
+  });
   if (response) {
     document.querySelector("webview").goBack();
   }
 }
 
 function browserReloadClicked(sender) {
-  const response = Dialog.showYesNoMessageBox('確認', 'ページをリロードします。よろしいですか?');
+  const response = Dialog.confirm({
+    title: '確認',
+    message: 'ページをリロードします。よろしいですか?',
+    yes: 'リロード',
+    no: 'キャンセル'
+  });
   if (response) {
     document.querySelector("webview").reload();
   }

@@ -1,29 +1,34 @@
 'use strict;'
 
-const os = require('os');
+const os = require('os'),
+      _ = require('lodash');
 
 const Dialog = {};
 
-Dialog.showYesNoMessageBox = function(title, message) {
+Dialog.confirm = function(options) {
+  const title = _.get(options, ['title'], '');
+  const message = _.get(options, ['message'], '');
+  const yes = _.get(options, ['yes'], 'はい');
+  const no = _.get(options, ['no'], 'いいえ');
+
   var {dialog} = require('electron');
   if (!dialog) {
     var {dialog} = require('electron').remote;
   }
 
   const darwin = os.platform() == 'darwin';
-  const buttons = darwin ? ['いいえ', 'はい'] : ['はい', 'いいえ'];
-  const cancelId = darwin ? 0 : 1;
-  const options = {
+  const cancelId = 1;
+  const opt = {
     type: 'question',
-    buttons: buttons,
+    buttons: [yes, no],
     title: title,
     message: message,
     cancelId: cancelId,
   };
   if (!darwin) {
-    options['defaultId'] = cancelId;
+    opt['defaultId'] = cancelId;
   }
-  const response = dialog.showMessageBox(options);
+  const response = dialog.showMessageBox(opt);
   return response != cancelId;
 };
 

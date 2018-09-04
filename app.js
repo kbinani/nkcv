@@ -57,7 +57,12 @@ app.on('ready', function() {
   });
 
   mainWindow.on('close', function(event) {
-    const response = Dialog.showYesNoMessageBox('確認', '終了しますか?');
+    const response = Dialog.confirm({
+      title: '確認',
+      message: '終了しますか?',
+      yes: '終了',
+      no: 'キャンセル'
+    });
     if (!response) {
       event.preventDefault();
     }
