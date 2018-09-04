@@ -380,12 +380,12 @@ function createDeckShipSlotitemCell(slotitem_id, size) {
 
 function createGeneralShipCell(ship_id) {
   const template = `
-    <tr class="DeckShipCell ThemeContainerBorderB">
-      <td class="ship_{ship_id}_name" style="padding: 5px;" nowrap>艦名</td>
-      <td style="padding: 5px;" nowrap>
+    <div style="display: table-row; height: 40px;">
+      <div class="ship_{ship_id}_name ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;">艦名</div>
+      <div class="ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;">
         <div class="FontNormal">Lv. <span class="ship_{ship_id}_level">1</span></div>
-      </td>
-      <td style="padding: 5px;" nowrap>
+      </div>
+      <div class="ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;">
         <div class="FontNormal"style="display: flex; flex-direction: column;">
           <div style="flex: 1 1 auto;">HP: <span class="ship_{ship_id}_hp_numerator">999</span> / <span class="ship_{ship_id}_hp_denominator">999</span></div>
           <div style="flex: 0 0 5px;"></div>
@@ -394,8 +394,8 @@ function createGeneralShipCell(ship_id) {
               <div class="ship_{ship_id}_hp_percentage" style="height: 8px; width: 50%; background-color: blue;"></div></div>
           </div>
         </div>
-      </td>
-      <td style="padding: 5px;" nowrap>
+      </div>
+      <div class="ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;">
         <div class="FontNormal"style="display: flex; flex-direction: column;">
           <div style="flex: 1 1 auto; display: flex;">
             <div class="ship_{ship_id}_cond_icon" style="flex: 0 0 auto; width: 12px; height: 12px; background-color: white; margin: auto;"></div>
@@ -403,12 +403,12 @@ function createGeneralShipCell(ship_id) {
           </div>
           <div>cond</div>
         </div>
-      </td>
-      <td style="padding: 5px; overflow: hidden;">
+      </div>
+      <div class="ThemeContainerBorderB" style="display: table-cell; overflow: hidden; vertical-align: middle; padding: 5px;">
         <div id="general_ship_{ship_id}_slotitem" style="display: flex;">
         </div>
-      </td>
-    </tr>`
+      </div>
+    </div>`;
   return template.replace(/{ship_id}/g, ship_id);
 }
 

@@ -56,7 +56,7 @@
         </div>
         <div id="tool_container" class="ThemeContainerActive" style="flex: 1 1 auto; display: flex; overflow: scroll;">
           <div id="general_tool" class="ThemeContainerActive ToolPanel ToolPanelActive">
-            <div class="ThemeContainer" style="flex: 1 0 auto; display: flex; margin: 5px 0px 5px 5px; flex-direction: column;">
+            <div class="ThemeContainer" style="flex: 1 0 auto; display: flex; margin: 5px 0px 5px 5px; flex-direction: column; min-height: max-content;">
               <div class="ThemeContainerBorderT ThemeContainerBorderR ThemeContainerBorderL" style="flex: 0 0 auto; display: flex; height: 25px; line-height: 25px;">
                 <div id="general_deck_menu_0" class="ThemeContainerActive ThemeContainerBorderR" style="flex: 1 0 auto; display: flex; padding: 0px 5px 0px 5px; cursor: default;" onclick="generalDeckMenuClicked(0)">
                   <div class="deck_0_icon" style="flex: 0 0 auto; width: 15px; height: 15px; margin: 4px 5px 4px 0px; background-color: transparent;"></div>
@@ -83,41 +83,45 @@
                   </div>
                 </div>
               </div>
-              <div class="general_deck_0 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 1 1 auto; display: flex;">
-                <table id="general_deck_0_ships" style="flex: 1 1 auto; border-collapse: collapse; margin: 5px; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
+              <div class="general_deck_0 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 1 1 auto; display: flex; flex-direction: column;">
+                <div id="general_deck_0_ships" style="flex: 0 0 auto; display: table; padding: 5px;"></div>
+                <div style="flex: 1 0 auto;"><!-- spacer --></div>
+                <div class="general_deck_0 ThemeContainerActive ThemeContainerBorderT" style="flex: 0 1 auto; height: 20px; line-height: 25px; display: flex;">
+                  <div class="FontNormal" style="flex: 0 0 auto; margin-left: 5px;">対空:</div>
+                  <div class="deck_0_taiku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+                  <div class="FontNormal" style="flex: 0 0 auto; margin-left: 15px;">速力:</div>
+                  <div class="deck_0_soku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+                </div>
               </div>
-              <div class="general_deck_1 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 1 1 auto; display: none;">
-                <table id="general_deck_1_ships" style="flex: 1 1 auto; border-collapse: collapse; margin: 5px; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
+              <div class="general_deck_1 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 1 1 auto; display: none; flex-direction: column;">
+                <div id="general_deck_1_ships" style="flex: 0 1 auto; display: table; padding: 5px;"></div>
+                <div style="flex: 1 0 auto;"><!-- spacer --></div>
+                <div class="general_deck_1 ThemeContainerActive ThemeContainerBorderT" style="flex: 0 1 auto; height: 20px; line-height: 25px; display: none;">
+                  <div class="FontNormal" style="flex: 0 0 auto; margin-left: 5px;">対空:</div>
+                  <div class="deck_1_taiku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+                  <div class="FontNormal" style="flex: 0 0 auto; margin-left: 15px;">速力:</div>
+                  <div class="deck_1_soku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+                </div>
               </div>
-              <div class="general_deck_2 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 1 1 auto; display: none;">
-                <table id="general_deck_2_ships" style="flex: 1 1 auto; border-collapse: collapse; margin: 5px; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
+              <div class="general_deck_2 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 1 1 auto; display: none; flex-direction: column;">
+                <div id="general_deck_2_ships" style="flex: 0 1 auto; display: table; padding: 5px;"></div>
+                <div style="flex: 1 0 auto;"><!-- spacer --></div>
+                <div class="general_deck_2 ThemeContainerActive ThemeContainerBorderT" style="flex: 0 1 auto; height: 20px; line-height: 25px; display: none;">
+                  <div class="FontNormal" style="flex: 0 0 auto; margin-left: 5px;">対空:</div>
+                  <div class="deck_2_taiku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+                  <div class="FontNormal" style="flex: 0 0 auto; margin-left: 15px;">速力:</div>
+                  <div class="deck_2_soku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+                </div>
               </div>
-              <div class="general_deck_3 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 1 1 auto; display: none;">
-                <table id="general_deck_3_ships" style="flex: 1 1 auto; border-collapse: collapse; margin: 5px; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
-              </div>
-              <div class="general_deck_0 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 0 0 auto; height: 20px; line-height: 25px; display: flex;">
-                <div class="FontNormal" style="flex: 0 0 auto; margin-left: 5px;">対空:</div>
-                <div class="deck_0_taiku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
-                <div class="FontNormal" style="flex: 0 0 auto; margin-left: 15px;">速力:</div>
-                <div class="deck_0_soku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
-              </div>
-              <div class="general_deck_1 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 0 0 auto; height: 20px; line-height: 25px; display: none;">
-                <div class="FontNormal" style="flex: 0 0 auto; margin-left: 5px;">対空:</div>
-                <div class="deck_1_taiku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
-                <div class="FontNormal" style="flex: 0 0 auto; margin-left: 15px;">速力:</div>
-                <div class="deck_1_soku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
-              </div>
-              <div class="general_deck_2 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 0 0 auto; height: 20px; line-height: 25px; display: none;">
-                <div class="FontNormal" style="flex: 0 0 auto; margin-left: 5px;">対空:</div>
-                <div class="deck_2_taiku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
-                <div class="FontNormal" style="flex: 0 0 auto; margin-left: 15px;">速力:</div>
-                <div class="deck_2_soku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
-              </div>
-              <div class="general_deck_3 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 0 0 auto; height: 20px; line-height: 25px; display: none;">
-                <div class="FontNormal" style="flex: 0 0 auto; margin-left: 5px;">対空:</div>
-                <div class="deck_3_taiku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
-                <div class="FontNormal" style="flex: 0 0 auto; margin-left: 15px;">速力:</div>
-                <div class="deck_3_soku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+              <div class="general_deck_3 ThemeContainerActive ThemeContainerBorderR ThemeContainerBorderB ThemeContainerBorderL" style="flex: 1 1 auto; display: none; flex-direction: column; height: max-content;">
+                <div id="general_deck_3_ships" style="flex: 0 1 auto; display: table; padding: 5px;"></div>
+                <div style="flex: 1 0 auto;"><!-- spacer --></div>
+                <div class="general_deck_3 ThemeContainerActive ThemeContainerBorderT" style="flex: 0 1 auto; height: 20px; line-height: 25px; display: none;">
+                  <div class="FontNormal" style="flex: 0 0 auto; margin-left: 5px;">対空:</div>
+                  <div class="deck_3_taiku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+                  <div class="FontNormal" style="flex: 0 0 auto; margin-left: 15px;">速力:</div>
+                  <div class="deck_3_soku FontNormal" style="flex: 0 0 auto; margin-left: 5px;"></div>
+                </div>
               </div>
             </div>
             <div style="flex: 0 0 auto; display: flex; flex-direction: column; width: 160px; max-width: 160px;">
