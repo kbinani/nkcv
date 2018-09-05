@@ -10,7 +10,8 @@ const electron = require('electron'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
       Rat = require(__dirname + '/src/Rat.js'),
-      Dialog = require(__dirname + '/src/Dialog.js');
+      Dialog = require(__dirname + '/src/Dialog.js'),
+      Config = require(__dirname + '/src/Config.js');
 
 const {app, BrowserWindow, session, ipcMain, dialog} = require('electron');
 
@@ -19,19 +20,29 @@ var shipWindow = null;
 const mandatoryApiData = ['api_start2/getData', 'api_get_member/require_info', 'api_port/port'];
 var mandatoryData = {};
 var mainWindowClosed = false;
+const config = new Config({});
 
 app.on('window-all-closed', function() {
   app.quit();
 });
 
 app.on('ready', function() {
+  loadConfig();
+  saveConfig();
+  const scale = Rat.fromString(config.scale());
+
   const options = {
-    width: 1200,
-    height: 720 + 200,
-    minWidth: 1200,
-    minHeight: 720 + 200,
+    width: 1200 * scale.value(),
+    height: 720 * scale.value() + 200,
+    minWidth: 1200 * scale.value(),
+    minHeight: 720 * scale.value() + 200,
     useContentSize: true,
   };
+  const bounds = config.mainWindowBounds();
+  const scrollBarSize = os.platform() == 'win32' ? 16 : 0;
+  bounds.width = Math.max(options.width, bounds.width - scrollBarSize);
+  bounds.height = Math.max(options.height, bounds.height - scrollBarSize);
+  Object.assign(options, bounds);
   mainWindow = new BrowserWindow(options);
 
   find_free_port(8000, function(err, port) {
@@ -47,16 +58,21 @@ app.on('ready', function() {
   });
 
   mainWindow.webContents.on('dom-ready', function() {
+    updateScale(config.scale());
     for (var key in mandatoryData) {
       const data = mandatoryData[key];
       if (data.length > 0) {
         mainWindow.webContents.send(key, data, '');
       }
     }
-    updateScale('900/1200');
   });
 
   mainWindow.on('close', function(event) {
+    const bounds = mainWindow.getBounds();
+    config.patch({'mainWindow.bounds': bounds}, (c) => {
+      saveConfig();
+    });
+
     const response = Dialog.confirm({
       title: '確認',
       message: '終了しますか?',
@@ -104,6 +120,8 @@ ipcMain.on('app.openShipList', function(event, data) {
 
 ipcMain.on('app.scale', function(event, scale_rat_string) {
   updateScale(scale_rat_string);
+  config.patch({'scale': scale_rat_string});
+  saveConfig();
 });
 
 function updateScale(scale_rat_string) {
@@ -140,6 +158,8 @@ function openShipList() {
     useContentSize: true,
     width: 1026,
   };
+  const bounds = config.shipWindowBounds();
+  Object.assign(options, bounds);
   shipWindow = new BrowserWindow(options);
   shipWindow.loadURL('file://' + __dirname + '/ships.html');
 
@@ -153,10 +173,35 @@ function openShipList() {
   });
 
   shipWindow.on('close', function(event) {
+    const bounds = shipWindow.getBounds();
+    config.patch({'shipWindow.bounds': bounds}, (c) => {
+      saveConfig();
+    });
+
     if (mainWindowClosed) {
       return;
     }
     event.preventDefault();
     shipWindow.hide();
   });
+}
+
+function loadConfig() {
+  try {
+    const config_path = path.join(app.getPath('userData'), 'config.json');
+    const config_string = fs.readFileSync(config_path);
+    const config_json = JSON.parse(config_string);
+    config.patch(config_json, (c) => {
+    });
+  } catch (e) {
+  }
+}
+
+function saveConfig() {
+  try {
+    const config_path = path.join(app.getPath('userData'), 'config.json');
+    config.save_to(config_path);
+  } catch (e) {
+    console.trace(e);
+  }
 }
