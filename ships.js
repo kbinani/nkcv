@@ -86,12 +86,12 @@ function update(ships) {
   });
 
   const $tbody = $('#ship_table');
+  var appending = '';
   added_ships.forEach((ship) => {
     const element = createShipCell(ship);
-    $tbody.append(element);
+    appending += element;
   });
-
-  const updated_ships = added_ships.map((it) => it);
+  $tbody.append(appending);
 
   const before_lut = {};
   _ships.forEach((ship) => {
@@ -105,6 +105,7 @@ function update(ships) {
 
   const existing_ships = _.intersectionBy(ships, _ships, (ship) => ship.id());
 
+  const updated_ships = [];
   existing_ships.forEach((ship) => {
     const id = ship.id();
     const before = before_lut[id];
@@ -114,7 +115,7 @@ function update(ships) {
     }
   });
 
-  updated_ships.forEach((ship) => {
+  _.concat(updated_ships, added_ships).forEach((ship) => {
     const slotitems = ship.slotitems();
     const slotitem_ids = slotitems.map((it) => it.id());
     const ex = ship.ex_slotitem();
@@ -375,23 +376,37 @@ function createShipCell(ship) {
     <div id="ship_{ship_id}_row" class="ThemeTableRow" style="display: table-row;">
       <div class="ThemeTableCell"><span class="ship_{ship_id}_index"></span></div>
       <div class="ThemeTableCell">{ship_id}</div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_type"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_name"></span></div>
-      <div class="ThemeTableCell">Lv. <span class="ship_{ship_id}_level"></span> Next: <span class="ship_{ship_id}_next_exp"></span></div>
-      <div class="ThemeTableCell"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_karyoku"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_raisou"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_taiku"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_soukou"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_lucky"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_sakuteki"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_taisen"></span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_soku"></span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_type">{type}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_name">{name}</span></div>
+      <div class="ThemeTableCell">Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span></div>
+      <div class="ThemeTableCell"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond">{cond}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_karyoku">{karyoku}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_raisou">{raisou}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_taiku">{taiku}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_soukou">{soukou}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_lucky">{lucky}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_sakuteki">{sakuteki}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_taisen">{taisen}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_soku">{soku}</span></div>
       <div class="ThemeTableCell"><!-- 出撃海域 --></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_repair"></span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_repair">{repair}</span></div>
       <div class="ThemeTableCell ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>
     </div>`;
-  return template.replace(/{ship_id}/g, ship.id());
+  return template.replace(/{ship_id}/g, ship.id())
+                 .replace(/{level}/, ship.level())
+                 .replace(/{type}/, ship.type().toString())
+                 .replace(/{name}/, ship.name())
+                 .replace(/{next_exp}/, ship.next_exp())
+                 .replace(/{cond}/, ship.cond())
+                 .replace(/{karyoku}/, ship.karyoku().numerator())
+                 .replace(/{raisou}/, ship.raisou().numerator())
+                 .replace(/{taiku}/, ship.taiku().numerator())
+                 .replace(/{soukou}/, ship.soukou().numerator())
+                 .replace(/{lucky}/, ship.lucky().numerator())
+                 .replace(/{sakuteki}/, ship.sakuteki().numerator())
+                 .replace(/{taisen}/, ship.taisen().numerator())
+                 .replace(/{soku}/, ship.soku().toString())
+                 .replace(/{repair}/, ship.repair_seconds() > 0 ? timeLabel(ship.repair_seconds()) : '');
 }
 
 function createSlotitemCell(slotitem_id) {
