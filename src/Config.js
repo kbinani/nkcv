@@ -3,10 +3,38 @@
 const _ = require('lodash'),
       fs = require('fs');
 
+const Rat = require(__dirname + '/Rat.js');
+
 const keys = {
-  'scale': 'string',
-  'mainWindow.bounds': 'object',
-  'shipWindow.bounds': 'object'
+  'scale': 'rat',
+  'mainWindow.bounds': 'bounds',
+  'shipWindow.bounds': 'bounds'
+};
+
+const sanitizer_mapping = {
+  'rat': function(value) {
+    if (typeof(value) != 'string') {
+      return null;
+    }
+    const r = Rat.fromString(value);
+    if (!r) {
+      return null;
+    }
+    return value;
+  },
+  'bounds': function(value) {
+    const x = _.get(value, ['x'], null);
+    const y = _.get(value, ['y'], null);
+    const width = _.get(value, ['width'], null);
+    const height = _.get(value, ['height'], null);
+    if (typeof(x) != 'number' || typeof(y) != 'number' || typeof(width) != 'number' || typeof(height) != 'number') {
+      return {};
+    }
+    if (width <= 0 || height <= 0) {
+      return {};
+    }
+    return {x: x, y: y, width: width, height: height};
+  },
 };
 
 function Config(data) {
@@ -14,31 +42,19 @@ function Config(data) {
   this.patch(data);
 }
 
-function _sanitize_bounds(bounds) {
-  if (!bounds) {
-    return {};
-  }
-  const x = _.get(bounds, ['x'], null);
-  const y = _.get(bounds, ['y'], null);
-  const width = _.get(bounds, ['width'], null);
-  const height = _.get(bounds, ['height'], null);
-  if (typeof(x) != 'number' || typeof(y) != 'number' || typeof(width) != 'number' || typeof(height) != 'number') {
-    return {};
-  }
-  if (width <= 0 || height <= 0) {
-    return {};
-  }
-  return {x: x, y: y, width: width, height: height};
-}
-
 Config.prototype.patch = function(data, callback) {
   for (var key in keys) {
-    const expected_type = keys[key];
+    const type = keys[key];
+    const sanitizer = sanitizer_mapping[type];
+    if (!sanitizer) {
+      continue;
+    }
     const value = _.get(data, [key], null);
     if (value == null) {
       continue;
     }
-    if (typeof(value) == expected_type) {
+    const sanitized = sanitizer(value);
+    if (sanitized != null) {
       this._data[key] = value;
     }
   }
@@ -53,12 +69,12 @@ Config.prototype.scale = function() {
 
 Config.prototype.mainWindowBounds = function() {
   const bounds = _.get(this._data, ['mainWindow.bounds'], null);
-  return _sanitize_bounds(bounds);
+  return sanitizer_mapping['bounds'](bounds);
 };
 
 Config.prototype.shipWindowBounds = function() {
   const bounds = _.get(this._data, ['shipWindow.bounds'], null);
-  return _sanitize_bounds(bounds);
+  return sanitizer_mapping['bounds'](bounds);
 };
 
 Config.prototype.data = function() {

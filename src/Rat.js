@@ -25,8 +25,17 @@ _.prototype.toString = function() {
 
 Rat.fromString = function(str) {
   const item = str.split('/').map((it) => parseInt(it, 10));
+  if (item.length != 2) {
+    return null;
+  }
   const num = item[0];
   const denom = item[1];
+  if (isNaN(num) || isNaN(denom)) {
+    return null;
+  }
+  if (denom <= 0) {
+    return null;
+  }
   return new Rat(num ,denom);
 };
 
