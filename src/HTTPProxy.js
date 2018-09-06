@@ -53,7 +53,7 @@ function handle(api, data, request_body) {
   }
 }
 
-_.launch = function(port) {
+_.launch = function(port, complete) {
   var server = http.createServer(function onCliReq(cliReq, cliRes) {
     var cliSoc = cliReq.socket || cliReq.connection;
     const remoteAddress = cliReq.connection.remoteAddress;
@@ -148,7 +148,9 @@ _.launch = function(port) {
     svrReq.on('data', function(chunk) {
       console.log(chunk.toString());
     });
-  }).listen(port);
+  }).listen(port, (e) => {
+    complete(e);
+  });
 
   server.on('clientError', function onCliErr(err, cliSoc) {
     cliSoc.end();

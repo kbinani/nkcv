@@ -46,14 +46,14 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow(options);
 
   find_free_port(8000, function(err, port) {
-    HTTPProxy.launch(port);
-
-    const ses = session.fromPartition('persist:electron-study');
-    const proxyOptions = {
-      proxyRules: 'http=localhost:' + port + ',direct://',
-    };
-    ses.setProxy(proxyOptions, function() {
-      mainWindow.loadURL('file://' + __dirname + '/main.html');
+    HTTPProxy.launch(port, function(err) {
+      const ses = session.fromPartition('persist:electron-study');
+      const proxyOptions = {
+        proxyRules: 'http=localhost:' + port + ',direct://',
+      };
+      ses.setProxy(proxyOptions, function() {
+        mainWindow.loadURL('file://' + __dirname + '/main.html');
+      });
     });
   });
 
