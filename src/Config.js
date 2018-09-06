@@ -10,6 +10,7 @@ const keys = {
   'mainWindow.bounds': 'bounds',
   'shipWindow.bounds': 'bounds',
   'shipWindowVisible': 'bool',
+  'shipWindowSort': 'any'
 };
 
 const sanitizer_mapping = {
@@ -40,6 +41,9 @@ const sanitizer_mapping = {
     if (typeof(value) != 'boolean') {
       return null;
     }
+    return value;
+  },
+  'any': function(value) {
     return value;
   },
 };
@@ -88,6 +92,10 @@ Config.prototype.shipWindowBounds = function() {
 Config.prototype.shipWindowVisible = function() {
   return _.get(this._data, ['shipWindowVisible'], false);
 }
+
+Config.prototype.shipWindowSort = function() {
+  return _.get(this._data, ['shipWindowSort'], {});
+};
 
 Config.prototype.data = function() {
   const result = {};

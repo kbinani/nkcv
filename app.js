@@ -128,6 +128,12 @@ ipcMain.on('app.scale', function(event, scale_rat_string) {
   saveConfig();
 });
 
+ipcMain.on('app.patchConfig', function(event, data) {
+  config.patch(data, (c) => {
+    saveConfig();
+  });
+});
+
 function updateScale(scale_rat_string) {
   if (!mainWindow) {
     return;
@@ -178,6 +184,7 @@ function openShipList() {
         shipWindow.webContents.send(key, data);
       }
     }
+    shipWindow.webContents.send('app.shipWindowSort', config.shipWindowSort());
   });
 
   shipWindow.on('close', function(event) {

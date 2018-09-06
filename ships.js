@@ -46,6 +46,17 @@ function onload() {
                             .replace(/{name}/g, type.toString());
     choices.append(element);
   });
+
+  ipcRenderer.on('app.shipWindowSort', function(event, data) {
+    console.log(data);
+    sort_order.splice(0, sort_order.length);
+    const sort = _.get(data, ['orders'], []);
+    sort.forEach((it) => {
+      sort_order.push(it);
+    });
+    sort_order_inverted = _.get(data, ['inverted'], false);
+    applySort();
+  });
 }
 
 function toggleAll() {
@@ -366,6 +377,13 @@ function applySort() {
     const is_descending = it.is_descending === true;
     setSortOrder($('#sort_order_' + key), index, is_descending);
     index++;
+  });
+
+  ipcRenderer.send('app.patchConfig', {
+    'shipWindowSort': {
+      'orders': sort_order,
+      'inverted': sort_order_inverted
+    }
   });
 
   applyFilter();
