@@ -65,6 +65,10 @@ app.on('ready', function() {
         mainWindow.webContents.send(key, data, '');
       }
     }
+
+    if (config.shipWindowVisible()) {
+      openShipList();
+    }
   });
 
   mainWindow.on('close', function(event) {
@@ -150,6 +154,10 @@ function updateScale(scale_rat_string) {
 }
 
 function openShipList() {
+  config.patch({'shipWindowVisible': true}, (c) => {
+    saveConfig();
+  });
+
   if (shipWindow != null) {
     shipWindow.show();
     return;
@@ -183,6 +191,9 @@ function openShipList() {
     }
     event.preventDefault();
     shipWindow.hide();
+    config.patch({'shipWindowVisible': false}, (c) => {
+      saveConfig();
+    });
   });
 }
 

@@ -8,7 +8,8 @@ const Rat = require(__dirname + '/Rat.js');
 const keys = {
   'scale': 'rat',
   'mainWindow.bounds': 'bounds',
-  'shipWindow.bounds': 'bounds'
+  'shipWindow.bounds': 'bounds',
+  'shipWindowVisible': 'bool',
 };
 
 const sanitizer_mapping = {
@@ -35,6 +36,12 @@ const sanitizer_mapping = {
     }
     return {x: x, y: y, width: width, height: height};
   },
+  'bool': function(value) {
+    if (typeof(value) != 'boolean') {
+      return null;
+    }
+    return value;
+  },
 };
 
 function Config(data) {
@@ -47,6 +54,7 @@ Config.prototype.patch = function(data, callback) {
     const type = keys[key];
     const sanitizer = sanitizer_mapping[type];
     if (!sanitizer) {
+      console.trace('sanitizer not specified: type=' + type);
       continue;
     }
     const value = _.get(data, [key], null);
@@ -76,6 +84,10 @@ Config.prototype.shipWindowBounds = function() {
   const bounds = _.get(this._data, ['shipWindow.bounds'], null);
   return sanitizer_mapping['bounds'](bounds);
 };
+
+Config.prototype.shipWindowVisible = function() {
+  return _.get(this._data, ['shipWindowVisible'], false);
+}
 
 Config.prototype.data = function() {
   const result = {};
