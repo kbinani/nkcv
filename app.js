@@ -185,6 +185,7 @@ function openShipList() {
       }
     }
     shipWindow.webContents.send('app.shipWindowSort', config.shipWindowSort());
+    shipWindow.webContents.send('app.shipWindowFilter', config.shipWindowFilter());
   });
 
   shipWindow.on('close', function(event) {

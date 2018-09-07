@@ -48,7 +48,6 @@ function onload() {
   });
 
   ipcRenderer.on('app.shipWindowSort', function(event, data) {
-    console.log(data);
     sort_order.splice(0, sort_order.length);
     const sort = _.get(data, ['orders'], []);
     sort.forEach((it) => {
@@ -56,6 +55,26 @@ function onload() {
     });
     sort_order_inverted = _.get(data, ['inverted'], false);
     applySort();
+  });
+
+  ipcRenderer.on('app.shipWindowFilter', function(event, data) {
+    $("input[name='filter_cond']").val([_.get(data, ['cond'], 'any')]);
+    $("input[name='filter_damage']").val([_.get(data, ['damage'], 'any')]);
+    $("input[name='filter_level']").val([_.get(data, ['level'], 'any')]);
+    $("input[name='filter_lock']").val([_.get(data, ['lock'], 'any')]);
+    const exclude_mission = _.get(data, ['mission'], 'exclude') == 'exclude';
+    $("input[name='filter_mission']").prop('checked', exclude_mission);
+    $("input[name='filter_remodel']").val([_.get(data, ['remodel'], 'any')]);
+    $("input[name='filter_soku']").val(_.get(data, ['soku'], []));
+    const type = _.get(data, ['type'], []);
+    var all_checked = true;
+    ShipType.allCases().forEach((it) => {
+      const check = type.indexOf(it.value()) >= 0;
+      $('#ship_type_' + it.value()).prop('checked', check);
+      all_checked = all_checked && check;
+    });
+    $('#ship_type_all').prop('checked', all_checked);
+    $("input[name='filter_upgrade']").val([_.get(data, ['upgrade'], 'any')]);
   });
 }
 
@@ -149,10 +168,12 @@ function update(ships) {
 
   _ships = ships.map((it) => it.clone());
   applySort();
+  applyFilter();
 }
 
 function applyFilter() {
   const filters = [];
+  const config_filters = {};
 
   // 艦種
   const included = ShipType.allCases().filter(function(type) {
@@ -163,6 +184,7 @@ function applyFilter() {
   filters.push(function(ship) {
     return included.indexOf(ship.type().value()) >= 0;
   });
+  config_filters['type'] = included;
 
   // レベル
   const level = $("input[name='filter_level']:checked").val();
@@ -178,6 +200,7 @@ function applyFilter() {
       });
       break;
   }
+  config_filters['level'] = level;
 
   // 速力
   const soku_list = [];
@@ -189,6 +212,7 @@ function applyFilter() {
   filters.push(function(ship) {
     return soku_list.indexOf(ship.soku().value()) >= 0;
   });
+  config_filters['soku'] = soku_list;
 
   // 損傷
   const damage = $("input[name='filter_damage']:checked").val();
@@ -206,6 +230,7 @@ function applyFilter() {
       });
       break;
   }
+  config_filters['damage'] = damage;
 
   // ロック
   const locked = $("input[name='filter_lock']:checked").val();
@@ -221,6 +246,7 @@ function applyFilter() {
       });
       break;
   }
+  config_filters['lock'] = locked;
 
   // 改造状態
   const upgraded = $("input[name='filter_upgrade']:checked").val();
@@ -236,6 +262,7 @@ function applyFilter() {
       });
       break;
   }
+  config_filters['upgrade'] = upgraded;
 
   // cond
   const cond = $("input[name='filter_cond']:checked").val();
@@ -251,6 +278,7 @@ function applyFilter() {
       });
       break;
   }
+  config_filters['cond'] = cond;
 
   // 遠征
   const mission = $("input[name='filter_mission']");
@@ -259,6 +287,7 @@ function applyFilter() {
       return !ship.is_mission();
     });
   }
+  config_filters['mission'] = mission.prop('checked') ? 'exclude' : 'include';
 
   // 近代化改修
   const remodel = $("input[name='filter_remodel']:checked").val();
@@ -274,6 +303,7 @@ function applyFilter() {
       });
       break;
   }
+  config_filters['remodel'] = remodel;
 
   var row_index = 0;
   _ships.forEach(function(ship) {
@@ -299,6 +329,8 @@ function applyFilter() {
     }
     $('.ship_' + ship.id() + '_index').html(row_index);
   });
+
+  ipcRenderer.send('app.patchConfig',{'shipWindowFilter': config_filters});
 }
 
 function applySort() {
@@ -385,8 +417,6 @@ function applySort() {
       'inverted': sort_order_inverted
     }
   });
-
-  applyFilter();
 }
 
 function createShipCell(ship) {
@@ -445,7 +475,7 @@ function createSlotitemCell(slotitem_id) {
 }
 
 function unsetSortOrder($element) {
-    $element.css('display', 'none');
+  $element.css('display', 'none');
 }
 
 function setSortOrder($element, order_index, is_descending) {
@@ -461,12 +491,14 @@ function resetSortOrder() {
   sort_order.splice(0, sort_order.length);
   sort_order_inverted = false;
   applySort();
+  applyFilter();
 }
 
 function invertSortOrder() {
   sort_order.forEach((it) => it.is_descending = !it.is_descending);
   sort_order_inverted = !sort_order_inverted;
   applySort();
+  applyFilter();
 }
 
 function sortOrderClicked(key) {
@@ -482,4 +514,5 @@ function sortOrderClicked(key) {
     }
   }
   applySort();
+  applyFilter();
 }

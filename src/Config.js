@@ -10,7 +10,8 @@ const keys = {
   'mainWindow.bounds': 'bounds',
   'shipWindow.bounds': 'bounds',
   'shipWindowVisible': 'bool',
-  'shipWindowSort': 'any'
+  'shipWindowSort': 'any',
+  'shipWindowFilter': 'any',
 };
 
 const sanitizer_mapping = {
@@ -95,6 +96,10 @@ Config.prototype.shipWindowVisible = function() {
 
 Config.prototype.shipWindowSort = function() {
   return _.get(this._data, ['shipWindowSort'], {});
+};
+
+Config.prototype.shipWindowFilter = function() {
+  return _.get(this._data, ['shipWindowFilter'], {});
 };
 
 Config.prototype.data = function() {
