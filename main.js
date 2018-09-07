@@ -172,6 +172,10 @@ function onload() {
     }
   });
 
+  ipcRenderer.on('app.mute', function(event, mute) {
+    setMute(mute);
+  });
+
   setInterval(function() {
     const now = new Date();
     $('.CountdownLabel').each(function() {
@@ -436,15 +440,21 @@ function deckMenuClicked(index) {
   }
 }
 
-function toggleMute(sender) {
+function setMute(mute) {
   const webview = document.querySelector("webview");
-  const mute = !webview.isAudioMuted();
   webview.setAudioMuted(mute);
   if (mute) {
     $('#mute_button').css('background-image', "url('img/baseline-volume_off-24px.svg')");
   } else {
     $('#mute_button').css('background-image', "url('img/baseline-volume_up-24px.svg')");
   }
+}
+
+function toggleMute(sender) {
+  const webview = document.querySelector("webview");
+  const mute = !webview.isAudioMuted();
+  setMute(mute);
+  ipcRenderer.send('app.patchConfig', {'mute': mute});
 }
 
 function takeScreenshot(sender) {

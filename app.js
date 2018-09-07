@@ -69,6 +69,7 @@ app.on('ready', function() {
     if (config.shipWindowVisible()) {
       openShipList();
     }
+    mainWindow.webContents.send('app.mute', config.mute());
   });
 
   mainWindow.on('close', function(event) {

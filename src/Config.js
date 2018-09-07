@@ -12,6 +12,7 @@ const keys = {
   'shipWindowVisible': 'bool',
   'shipWindowSort': 'any',
   'shipWindowFilter': 'any',
+  'mute': 'bool',
 };
 
 const sanitizer_mapping = {
@@ -100,6 +101,10 @@ Config.prototype.shipWindowSort = function() {
 
 Config.prototype.shipWindowFilter = function() {
   return _.get(this._data, ['shipWindowFilter'], {});
+};
+
+Config.prototype.mute = function() {
+  return _.get(this._data, ['mute'], false) == true;
 };
 
 Config.prototype.data = function() {
