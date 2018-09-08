@@ -299,6 +299,8 @@ function applyFilter() {
     order_by.push(key + (it.is_descending ? ' DESC' : ' ASC'));
     if (key == 'id') {
       contains_id_key = true;
+    } else if (key == 'level') {
+      order_by.push('next_exp ' + (it.is_descending ? 'ASC' : 'DESC'));
     }
   }
   if (!contains_id_key) {
@@ -487,7 +489,7 @@ function togglePanel(panel_title_id, panel_id) {
 function shipToJSON(ship) {
   return {
     'id': ship.id(),
-    'level': ship.level_with_exp(),
+    'level': ship.level(),
     'name': ship.name(),
     'hp': ship.hp().numerator(),
     'maxhp': ship.hp().denominator(),
