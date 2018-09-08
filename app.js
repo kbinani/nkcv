@@ -6,7 +6,8 @@ const electron = require('electron'),
       fs = require('fs'),
       path = require('path'),
       strftime = require('strftime'),
-      HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
+      tlds = require('tlds');
+const HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
       Rat = require(__dirname + '/src/Rat.js'),
@@ -57,10 +58,11 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow(options);
 
   find_free_port(8000, function(err, port) {
-    HTTPProxy.launch(port, function(err) {
+    HTTPProxy.launch(port, function(e) {
       const ses = session.fromPartition('persist:electron-study');
       const proxyOptions = {
         proxyRules: 'http=localhost:' + port + ';https=direct://',
+        proxyBypassRules: tlds.map((it) => '.' + it).join(','),
       };
       ses.setProxy(proxyOptions, function() {
         mainWindow.loadURL('file://' + __dirname + '/main.html');
