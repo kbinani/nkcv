@@ -525,3 +525,20 @@ function shipToJSON(ship) {
     'is_mission': ship.is_mission(),
   };
 };
+
+function toggleQuery() {
+  const query_enabled = $('#use_query').prop('checked');
+  $('#filter_panel input').each(function() {
+    $(this).prop('disabled', query_enabled);
+  });
+  $('#filter_panel').css('pointer-events', query_enabled ? 'none' : 'auto');
+  $('#sort_panel').css('pointer-events', query_enabled ? 'none' : 'auto');
+
+  $('#filter_panel').css('opacity', query_enabled ? 0.5 : 1);
+  $('#sort_panel').css('opacity', query_enabled ? 0.5 : 1);
+
+  $('#query').prop('disabled', !query_enabled);
+  $('#query').prop('readonly', !query_enabled);
+  $('#query').css('user-select', query_enabled ? 'auto' : 'none');
+  $('#query').css('cursor', query_enabled ? 'auto' : 'default');
+}

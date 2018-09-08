@@ -13,7 +13,7 @@
     <div class="ThemeContainerBorder" style="flex: 0 0 auto; display: flex; flex-direction: column; margin: 10px 10px 0px 10px;">
       <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="togglePanel('filter_panel_title_icon', 'filter_panel')">
         <div id="filter_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_more-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
-        <div style="flex: 0 0 auto; margin-left: 5px;">フィルタ</div>
+        <div style="flex: 0 0 auto; margin-left: 5px;">フィルタ設定</div>
       </div>
       <div id="filter_panel" style="flex: 0 0 auto; display: flex; flex-direction: column;">
         <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 5px 5px 0px 5px; display: flex; flex-direction: column;">
@@ -99,7 +99,7 @@
     <div class="ThemeContainerBorder" style="flex: 0 0 auto; display: flex; flex-direction: column; margin: 5px 10px 0px 10px;">
       <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="togglePanel('sort_panel_title_icon', 'sort_panel')">
         <div id="sort_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_more-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
-        <div style="flex: 0 0 auto; margin-left: 5px;">ソート</div>
+        <div style="flex: 0 0 auto; margin-left: 5px;">並べ替え設定</div>
       </div>
       <div id="sort_panel" style="flex: 0 0 auto; display: flex;">
         <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="resetSortOrder()">ソート条件をリセット</div>
@@ -113,9 +113,14 @@
         <div style="flex: 0 0 auto; margin-left: 5px;">クエリー</div>
       </div>
       <div id="query_panel" style="flex: 0 0 auto; display: flex; font-family: monospace; flex-direction: column;">
+        <div style="flex: 0 0 auto; display: flex; margin: 5px 5px 0px 5px; padding-left: 5px;">
+          <label for="use_query">
+            <input id="use_query" type="checkbox" onclick="toggleQuery()" style="height: 25px; line-height: 25px; vertical-align: middle;"/>クエリーを使用する
+          </label>
+        </div>
         <div style="flex: 0 0 auto; margin: 10px 10px 0px 10px; ">SELECT * FROM ships WHERE</div>
         <div style="flex: 0 0 auto; margin: 5px 10px 10px 10px; width: 100vw-5; display: flex;"><!-- 100vw-数字 にするとなぜか横方向に最大化される -->
-          <textarea id="query" style="flex: 1 1 auto; min-height: 50px; resize: vertical;" readonly="true"></textarea>
+          <textarea id="query" style="flex: 1 1 auto; min-height: 50px; resize: vertical; cursor: default;" readonly="true" disabled=""></textarea>
         </div>
       </div>
     </div>
