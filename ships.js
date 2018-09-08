@@ -48,6 +48,17 @@ function onload() {
     choices.append(element);
   });
 
+  $('#query').bind('input propertychange', function() {
+    queryChanged()
+  });
+
+  $('#query').keypress(function(e) {
+    if (e.which == 13) {
+      applyFilter();
+      return false;
+    }
+  });
+
   ipcRenderer.on('app.shipWindowSort', function(event, data) {
     sort_order.splice(0, sort_order.length);
     const sort = _.get(data, ['orders'], []);
@@ -276,11 +287,26 @@ function applyFilter() {
   }
   config_filters['remodel'] = remodel;
 
+  var query = '';
+
+  const query_enabled = $('#use_query').prop('checked');
+  if (query_enabled) {
+    query = 'SELECT id FROM ? WHERE ' + $('#query').val();
+  } else {
+    query = 'SELECT id FROM ? WHERE ' + where.join(' AND ') + ';';
+    $('#query').val(where.join(' AND '));
+  }
+
   const ships = _ships.map((ship) => {
     return shipToJSON(ship);
   });
-  const query = 'SELECT id FROM ? WHERE ' + where.join(' AND ') + ';';
-  const visible_ids = alasql(query, [ships]).map((it) => it.id);
+  var compiled = null;
+  try {
+    compiled = alasql.compile(query);
+  } catch (e) {
+    return;
+  }
+  const visible_ids = compiled([ships]).map((it) => it.id);
   const invisible_ids = _.difference(ships.map((it) => it.id), visible_ids);
 
   invisible_ids.forEach((id) => {
@@ -302,8 +328,6 @@ function applyFilter() {
     }
     $('.ship_' + id + '_index').html(row_index);
   });
-
-  $('#query').val(where.join(' AND '));
 
   ipcRenderer.send('app.patchConfig',{'shipWindowFilter': config_filters});
 }
@@ -523,6 +547,7 @@ function shipToJSON(ship) {
     'remodel_completed': ship.remodel_completed(),
     'after_level': ship.after_level(),
     'is_mission': ship.is_mission(),
+    'repair_seconds': ship.repair_seconds(),
   };
 };
 
@@ -539,6 +564,16 @@ function toggleQuery() {
 
   $('#query').prop('disabled', !query_enabled);
   $('#query').prop('readonly', !query_enabled);
-  $('#query').css('user-select', query_enabled ? 'auto' : 'none');
+  $('#query').css('user-select', query_enabled ? 'text' : 'none');
   $('#query').css('cursor', query_enabled ? 'auto' : 'default');
+}
+
+function queryChanged() {
+  const query = 'SELECT * FROM ? WHERE ' + $('#query').val();
+  try {
+    alasql.compile(query);
+    $('#query').css('background-color', '#ddd');
+  } catch (e) {
+    $('#query').css('background-color', '#fdd');
+  }
 }
