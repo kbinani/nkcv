@@ -31,6 +31,17 @@ app.on('ready', function() {
   saveConfig();
   const scale = Rat.fromString(config.scale());
 
+  if (false) {  // オフラインで作業する時有効にする
+    mandatoryApiData.forEach((it) => {
+      const name = path.basename(it) + '.json';
+      const filepath = path.join(__dirname, name);
+      console.log(filepath);
+      const str = fs.readFileSync(filepath, {encoding: 'utf8'}).toString();
+      const json = JSON.parse(str);
+      mandatoryData[it] = JSON.stringify(json['response'], null, 2);
+    });
+  }
+
   const options = {
     width: 1200 * scale.value(),
     height: 720 * scale.value() + 200,
