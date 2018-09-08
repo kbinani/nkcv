@@ -289,12 +289,27 @@ function applyFilter() {
 
   var query = '';
 
+  var order_by = [];
+  for (var i = 0; i < sort_order.length; i++) {
+    const it = sort_order[i];
+    const key = it.key;
+    var is_descending = it.is_descending === true;
+    if (sort_order_inverted) {
+      is_descending = !is_descending;
+    }
+    order_by.push(key + (is_descending ? ' DESC' : ' ASC'));
+  }
+
   const query_enabled = $('#use_query').prop('checked');
   if (query_enabled) {
     query = 'SELECT id FROM ? WHERE ' + $('#query').val();
   } else {
-    query = 'SELECT id FROM ? WHERE ' + where.join(' AND ') + ';';
-    $('#query').val(where.join(' AND '));
+    var query_after_where = where.join(' AND ');
+    if (order_by.length > 0) {
+      query_after_where += ' ORDER BY ' + order_by.join(', ');
+    }
+    query = 'SELECT id FROM ? WHERE ' + query_after_where;
+    $('#query').val(query_after_where);
   }
 
   const ships = _ships.map((ship) => {
@@ -314,6 +329,8 @@ function applyFilter() {
     $row.css('display', 'none');
   });
 
+  const container = $('#ship_table');
+
   var row_index = 0;
   visible_ids.forEach((id) => {
     const $row = $('#ship_' + id + '_row');
@@ -327,78 +344,13 @@ function applyFilter() {
       $row.removeClass('ThemeTableRowEven');
     }
     $('.ship_' + id + '_index').html(row_index);
+    container.append($row);
   });
 
   ipcRenderer.send('app.patchConfig',{'shipWindowFilter': config_filters});
 }
 
 function applySort() {
-  var filters = [];
-
-  const filter_templates = {
-    'id': function(a, b) { return a.id() - b.id(); },
-    'type': function(a, b) { return a.type().value() - b.type().value(); },
-    'level': function(a, b) { return a.exp() - b.exp(); },
-    'name': function(a, b) { return a.name().localeCompare(b.name()); },
-    'cond': function(a, b) { return a.cond() - b.cond(); },
-    'karyoku': function(a, b) { return a.karyoku().numerator() - b.karyoku().numerator(); },
-    'raisou': function(a, b) { return a.raisou().numerator() - b.raisou().numerator(); },
-    'taiku': function(a, b) { return a.taiku().numerator() - b.taiku().numerator(); },
-    'soukou': function(a, b) { return a.soukou().numerator() - b.soukou().numerator(); },
-    'lucky': function(a, b) { return a.lucky().numerator() - b.lucky().numerator(); },
-    'sakuteki': function(a, b) { return a.sakuteki().numerator() - b.sakuteki().numerator(); },
-    'taisen': function(a, b) { return a.taisen().numerator() - b.taisen().numerator(); },
-    'soku': function(a, b) { return a.soku().value() - b.soku().value(); },
-    //TODO: sally_area
-    'repair_time': function(a, b) { return a.repair_seconds() - b.repair_seconds(); },
-  };
-
-  var id_key_included = false;
-  for (var i = 0; i < sort_order.length; i++) {
-    const it = sort_order[i];
-    const key = it.key;
-    if (key == 'id') {
-      id_key_included = true;
-    }
-    const is_descending = it.is_descending === true;
-    const func = filter_templates[key];
-    if (!func) {
-      console.log('filter func not defined for key:' + key);
-      continue;
-    }
-    if (is_descending) {
-      filters.push(function(a, b) { return func(b, a); });
-    } else {
-      filters.push(func);
-    }
-  }
-
-  if (!id_key_included) {
-    // Array.sort は stable でないので, id を優先順位最低のソートキーとしています.
-    const func = filter_templates['id'];
-    if (sort_order_inverted) {
-      filters.push((a, b) => func(b, a));
-    } else {
-      filters.push(func);
-    }
-  }
-
-  const sorted = _ships.sort((a, b) => {
-    for (var i = 0; i < filters.length; i++) {
-      const compare = filters[i];
-      const result = compare(a, b);
-      if (result != 0) {
-        return result;
-      }
-    }
-    return 0;
-  });
-  const container = $('#ship_table');
-  sorted.forEach(function(ship) {
-    const row = $('#ship_' + ship.id() + '_row');
-    container.append(row);
-  });
-
   sort_order_key.forEach(key => {
     unsetSortOrder($('#sort_order_' + key));
   });
@@ -525,7 +477,7 @@ function togglePanel(panel_title_id, panel_id) {
 function shipToJSON(ship) {
   return {
     'id': ship.id(),
-    'level': ship.level(),
+    'level': ship.level_with_exp(),
     'name': ship.name(),
     'hp': ship.hp().numerator(),
     'maxhp': ship.hp().denominator(),
@@ -566,6 +518,15 @@ function toggleQuery() {
   $('#query').prop('readonly', !query_enabled);
   $('#query').css('user-select', query_enabled ? 'text' : 'none');
   $('#query').css('cursor', query_enabled ? 'auto' : 'default');
+
+  if (query_enabled) {
+    sort_order.forEach((it) => {
+      unsetSortOrder($('#sort_order_' + it.key));
+    });
+  } else {
+    applySort();
+  }
+  $('#ship_table_header').css('cursor', query_enabled ? 'default' : 'pointer');
 }
 
 function queryChanged() {

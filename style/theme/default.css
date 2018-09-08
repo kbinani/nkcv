@@ -63,7 +63,6 @@
 
 .ThemeTableHeader {
   background-color: #333;
-  cursor: pointer;
   display: table-cell;
   height: 25px;
   padding-left: 5px;
