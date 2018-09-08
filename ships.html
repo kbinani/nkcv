@@ -114,12 +114,12 @@
       </div>
       <div id="query_panel" style="flex: 0 0 auto; display: flex; font-family: monospace; flex-direction: column;">
         <div style="flex: 0 0 auto; margin: 10px 10px 0px 10px; ">SELECT * FROM ships WHERE</div>
-        <div style="flex: 0 0 auto; margin: 5px 10px 5px 10px; max-width: max-content; display: flex;">
-          <textarea id="query" style="display: block; flex: 1 1 auto; min-width: 100px; min-height: 25px; max-width: 100%; width: 100%;"></textarea>
+        <div style="flex: 0 0 auto; margin: 5px 10px 10px 10px; width: 100vw-5; display: flex;"><!-- 100vw-数字 にするとなぜか横方向に最大化される -->
+          <textarea id="query" style="flex: 1 1 auto; min-height: 50px; resize: vertical;" readonly="true"></textarea>
         </div>
       </div>
     </div>
-    <div style="flex: 1 1 auto; border: solid 1px #888; margin: 5px 10px 10px 10px; overflow: scroll;">
+    <div class="ThemeContainerBorder" style="flex: 1 1 auto; margin: 5px 10px 10px 10px; overflow: scroll;">
       <div id="ship_table" style="display: table; min-width: 100%;">
         <div id="ship_table_header" style="display: table-row;">
           <div class="ThemeTableHeader"></div>

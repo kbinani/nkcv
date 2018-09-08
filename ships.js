@@ -5,7 +5,8 @@ const Port = require('./src/Port.js'),
       DataStorage = require('./src/DataStorage.js'),
       ShipType = require('./src/ShipType.js');
 const sprintf = require('sprintf'),
-      _ = require('lodash');
+      _ = require('lodash'),
+      alasql = require('alasql');
 
 var _ships = [];
 const storage = new DataStorage();
@@ -172,8 +173,8 @@ function update(ships) {
 }
 
 function applyFilter() {
-  const filters = [];
   const config_filters = {};
+  var where = [];
 
   // 艦種
   const included = ShipType.allCases().filter(function(type) {
@@ -181,23 +182,17 @@ function applyFilter() {
   }).map(function(type) {
     return type.value();
   });
-  filters.push(function(ship) {
-    return included.indexOf(ship.type().value()) >= 0;
-  });
   config_filters['type'] = included;
+  where.push('type IN(' + included.join(', ') + ')');
 
   // レベル
   const level = $("input[name='filter_level']:checked").val();
   switch (level) {
     case '2_or_grater':
-      filters.push(function(ship) {
-        return ship.level() >= 2;
-      });
+      where.push('level > 2');
       break;
     case '1':
-      filters.push(function(ship) {
-        return ship.level() == 1;
-      });
+      where.push('level = 1');
       break;
   }
   config_filters['level'] = level;
@@ -209,25 +204,19 @@ function applyFilter() {
     const element = $(checked[index]);
     soku_list.push(parseInt(element.val(), 10));
   });
-  filters.push(function(ship) {
-    return soku_list.indexOf(ship.soku().value()) >= 0;
-  });
   config_filters['soku'] = soku_list;
+  if (soku_list.length > 0) {
+    where.push('soku IN(' + soku_list.join(', ') + ')');
+  }
 
   // 損傷
   const damage = $("input[name='filter_damage']:checked").val();
   switch (damage) {
     case 'damaged':
-      filters.push(function(ship) {
-        const hp = ship.hp();
-        return hp.numerator() < hp.denominator();
-      });
+      where.push('hp < maxhp');
       break;
     case 'non_damaged':
-      filters.push(function(ship) {
-        const hp = ship.hp();
-        return hp.numerator() == hp.denominator();
-      });
+      where.push('hp = maxhp');
       break;
   }
   config_filters['damage'] = damage;
@@ -236,14 +225,10 @@ function applyFilter() {
   const locked = $("input[name='filter_lock']:checked").val();
   switch (locked) {
     case 'locked':
-      filters.push(function(ship) {
-        return ship.locked();
-      });
+      where.push('locked = TRUE');
       break;
     case 'non_locked':
-      filters.push(function(ship) {
-        return !ship.locked();
-      });
+      where.push('locked = FALSE');
       break;
   }
   config_filters['lock'] = locked;
@@ -252,14 +237,10 @@ function applyFilter() {
   const upgraded = $("input[name='filter_upgrade']:checked").val();
   switch (upgraded) {
     case 'upgraded':
-      filters.push(function(ship) {
-        return ship.after_level() == 0;
-      });
+      where.push('after_level = 0');
       break;
     case 'non_upgraded':
-      filters.push(function(ship) {
-        return ship.after_level() > 0;
-      });
+      where.push('after_level > 0');
       break;
   }
   config_filters['upgrade'] = upgraded;
@@ -268,14 +249,10 @@ function applyFilter() {
   const cond = $("input[name='filter_cond']:checked").val();
   switch (cond) {
     case '50_or_grater':
-      filters.push(function(ship) {
-        return ship.cond() >= 50;
-      });
+      where.push('cond >= 50');
       break;
     case 'lower_than_50':
-      filters.push(function(ship) {
-        return ship.cond() < 50;
-      });
+      where.push('cond < 50');
       break;
   }
   config_filters['cond'] = cond;
@@ -283,9 +260,7 @@ function applyFilter() {
   // 遠征
   const mission = $("input[name='filter_mission']");
   if (mission.prop('checked')) {
-    filters.push(function(ship) {
-      return !ship.is_mission();
-    });
+    where.push('is_mission = FALSE');
   }
   config_filters['mission'] = mission.prop('checked') ? 'exclude' : 'include';
 
@@ -293,42 +268,42 @@ function applyFilter() {
   const remodel = $("input[name='filter_remodel']:checked").val();
   switch (remodel) {
     case 'remodelled':
-      filters.push(function(ship) {
-        return ship.remodel_completed();
-      });
+      where.push('remodel_completed = TRUE');
       break;
     case 'non_remodelled':
-      filters.push(function(ship) {
-        return !ship.remodel_completed();
-      });
+      where.push('remodel_completed = FALSE');
       break;
   }
   config_filters['remodel'] = remodel;
 
-  var row_index = 0;
-  _ships.forEach(function(ship) {
-    var visible = true;
-    for (var i = 0; i < filters.length; i++) {
-      const by = filters[i];
-      if (by(ship) === false) {
-        visible = false;
-        break;
-      }
-    }
-    const row = $('#ship_' + ship.id() + '_row');
-    row.css('display', visible ? 'table-row' : 'none');
-    if (visible) {
-      row_index++;
-      if (row_index % 2 == 0) {
-        row.addClass('ThemeTableRowEven');
-        row.removeClass('ThemeTableRowOdd');
-      } else {
-        row.addClass('ThemeTableRowOdd');
-        row.removeClass('ThemeTableRowEven');
-      }
-    }
-    $('.ship_' + ship.id() + '_index').html(row_index);
+  const ships = _ships.map((ship) => {
+    return shipToJSON(ship);
   });
+  const query = 'SELECT id FROM ? WHERE ' + where.join(' AND ') + ';';
+  const visible_ids = alasql(query, [ships]).map((it) => it.id);
+  const invisible_ids = _.difference(ships.map((it) => it.id), visible_ids);
+
+  invisible_ids.forEach((id) => {
+    const $row = $('#ship_' + id + '_row');
+    $row.css('display', 'none');
+  });
+
+  var row_index = 0;
+  visible_ids.forEach((id) => {
+    const $row = $('#ship_' + id + '_row');
+    $row.css('display', 'table-row');
+    row_index++;
+    if (row_index % 2 == 0) {
+      $row.addClass('ThemeTableRowEven');
+      $row.removeClass('ThemeTableRowOdd');
+    } else {
+      $row.addClass('ThemeTableRowOdd');
+      $row.removeClass('ThemeTableRowEven');
+    }
+    $('.ship_' + id + '_index').html(row_index);
+  });
+
+  $('#query').val(where.join(' AND '));
 
   ipcRenderer.send('app.patchConfig',{'shipWindowFilter': config_filters});
 }
@@ -522,3 +497,31 @@ function togglePanel(panel_title_id, panel_id) {
   $('#' + panel_id).css('display', current_visible ? 'none' : 'flex');
   $('#' + panel_title_id).css('background-image', current_visible ? "url('img/baseline-unfold_less-24px.svg')" : "url('img/baseline-unfold_more-24px.svg')");
 }
+
+function shipToJSON(ship) {
+  return {
+    'id': ship.id(),
+    'level': ship.level(),
+    'name': ship.name(),
+    'hp': ship.hp().numerator(),
+    'maxhp': ship.hp().denominator(),
+    'cond': ship.cond(),
+    'next_exp': ship.next_exp(),
+    'fuel': ship.fuel().numerator(),
+    'bull': ship.bull().numerator(),
+    'type': ship.type().value(),
+    'karyoku': ship.karyoku().numerator(),
+    'raisou': ship.raisou().numerator(),
+    'taiku': ship.taiku().numerator(),
+    'soukou': ship.soukou().numerator(),
+    'lucky': ship.lucky().numerator(),
+    'sakuteki': ship.sakuteki().numerator(),
+    'taisen': ship.taisen().numerator(),
+    'soku': ship.soku().value(),
+    'repair': ship.repair_seconds(),
+    'locked': ship.locked(),
+    'remodel_completed': ship.remodel_completed(),
+    'after_level': ship.after_level(),
+    'is_mission': ship.is_mission(),
+  };
+};
