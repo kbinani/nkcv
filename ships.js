@@ -194,7 +194,9 @@ function applyFilter() {
     return type.value();
   });
   config_filters['type'] = included;
-  where.push('type IN(' + included.join(', ') + ')');
+  if (included.length < ShipType.allCases().length) {
+    where.push('type IN(' + included.join(', ') + ')');
+  }
 
   // レベル
   const level = $("input[name='filter_level']:checked").val();
