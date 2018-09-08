@@ -60,7 +60,7 @@ app.on('ready', function() {
     HTTPProxy.launch(port, function(err) {
       const ses = session.fromPartition('persist:electron-study');
       const proxyOptions = {
-        proxyRules: 'http=localhost:' + port + ',direct://',
+        proxyRules: 'http=localhost:' + port + ';https=direct://',
       };
       ses.setProxy(proxyOptions, function() {
         mainWindow.loadURL('file://' + __dirname + '/main.html');
