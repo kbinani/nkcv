@@ -109,10 +109,10 @@
     </div>
     <div class="ThemeContainerBorder" style="flex: 0 0 auto; display: flex; flex-direction: column; margin: 5px 10px 0px 10px;">
       <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="togglePanel('query_panel_title_icon', 'query_panel')">
-        <div id="query_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_more-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
+        <div id="query_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_less-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
         <div style="flex: 0 0 auto; margin-left: 5px;">クエリー</div>
       </div>
-      <div id="query_panel" style="flex: 0 0 auto; display: flex; font-family: monospace; flex-direction: column;">
+      <div id="query_panel" style="flex: 0 0 auto; display: none; font-family: monospace; flex-direction: column;">
         <div style="flex: 0 0 auto; display: flex; margin: 5px 5px 0px 5px; padding-left: 5px;">
           <label for="use_query">
             <input id="use_query" type="checkbox" onclick="toggleQuery()" style="height: 25px; line-height: 25px; vertical-align: middle;"/>クエリーを使用する
@@ -126,7 +126,7 @@
     </div>
     <div class="ThemeContainerBorder" style="flex: 1 1 auto; margin: 5px 10px 10px 10px; overflow: scroll;">
       <div id="ship_table" style="display: table; min-width: 100%;">
-        <div id="ship_table_header" style="display: table-row;">
+        <div id="ship_table_header" style="display: table-row; cursor: pointer;">
           <div class="ThemeTableHeader"></div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('id')">
             <div style="display: flex;">
