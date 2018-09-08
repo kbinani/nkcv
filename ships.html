@@ -8,90 +8,104 @@
 <script src="./shared.js"></script>
 <script src="./ships.js"></script>
 </head>
-<body class="ThemeContainer" style="margin: 0; padding: 0; width: 100vw; height: 100vh;" onload="onload()">
+<body class="ThemeContainerActive" style="margin: 0; padding: 0; width: 100vw; height: 100vh;" onload="onload()">
   <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden;">
-    <div style="flex: 0 0 auto; border: solid 1px #888; margin: 10px 10px 5px 10px; display: flex; flex-direction: column;">
-      <div id="ship_type_choices" style="flex: 1 1 auto; padding: 5px;">
-        艦種:
-        <br/>
-        <span style="height: 25px; line-height: 25px; margin-right: 10px;">
-          <label for="ship_type_all">
-            <input id="ship_type_all" type="checkbox" onclick="toggleAll()" checked="checked"/>すべて選択
-          </label>
-        </span>
-        <br/>
+    <div class="ThemeContainerBorder" style="flex: 0 0 auto; display: flex; flex-direction: column; margin: 10px 10px 0px 10px;">
+      <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="togglePanel('filter_panel_title_icon', 'filter_panel')">
+        <div id="filter_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_more-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
+        <div style="flex: 0 0 auto; margin-left: 5px;">フィルタ</div>
       </div>
-      <div style="flex: 1 1 auto; display: flex;">
-        <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([2])">駆逐艦</div>
-        <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([3, 4, 21])">軽巡・雷巡</div>
-        <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([5, 6])">重巡・航巡</div>
-        <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([8, 9, 10])">戦艦</div>
-        <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([7, 11, 18])">空母</div>
-        <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([13, 14])">潜水艦</div>
-        <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([6, 10])">航戦・航巡</div>
+      <div id="filter_panel" style="flex: 0 0 auto; display: flex; flex-direction: column;">
+        <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 5px 5px 0px 5px; display: flex; flex-direction: column;">
+          <div id="ship_type_choices" style="flex: 1 1 auto; padding: 5px;">
+            艦種:
+            <br/>
+            <span style="height: 25px; line-height: 25px; margin-right: 10px;">
+              <label for="ship_type_all">
+                <input id="ship_type_all" type="checkbox" onclick="toggleAll()" checked="checked"/>すべて選択
+              </label>
+            </span>
+            <br/>
+          </div>
+          <div style="flex: 1 1 auto; display: flex;">
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([2])">駆逐艦</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([3, 4, 21])">軽巡・雷巡</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([5, 6])">重巡・航巡</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([8, 9, 10])">戦艦</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([7, 11, 18])">空母</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([13, 14])">潜水艦</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([6, 10])">航戦・航巡</div>
+          </div>
+        </div>
+        <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 5px;">
+          <table style="flex: 1 1 auto; padding: 5px;" width="100%">
+            <tr>
+              <td align="right" nowrap>レベル:</td>
+              <td width="33.3%" nowrap>
+                <label><input type="radio" name="filter_level" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+                <label><input type="radio" name="filter_level" value="2_or_grater" onchange="applyFilter()">Lv.2以上</label>
+                <label><input type="radio" name="filter_level" value="1" onchange="applyFilter()">Lv.1</label>
+              </td>
+              <td align="right" nowrap>速力:</td>
+              <td width="33.3%" nowrap>
+                <label><input type="checkbox" name="filter_soku" checked="checked" value="20" onchange="applyFilter()">最速</label>
+                <label><input type="checkbox" name="filter_soku" checked="checked" value="15" onchange="applyFilter()">高速+</label>
+                <label><input type="checkbox" name="filter_soku" checked="checked" value="10" onchange="applyFilter()">高速</label>
+                <label><input type="checkbox" name="filter_soku" checked="checked" value="5" onchange="applyFilter()">低速</label>
+              </td>
+              <td align="right" nowrap>損傷:</td>
+              <td width="33.3%" nowrap>
+                <label><input type="radio" name="filter_damage" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+                <label><input type="radio" name="filter_damage" value="damaged" onchange="applyFilter()">あり</label>
+                <label><input type="radio" name="filter_damage" value="non_damaged" onchange="applyFilter()">なし</label>
+              </td>
+            </tr>
+            <tr>
+              <td align="right" nowrap>ロック:</td>
+              <td width="33.3%" nowrap>
+                <label><input type="radio" name="filter_lock" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+                <label><input type="radio" name="filter_lock" value="locked" onchange="applyFilter()">している</label>
+                <label><input type="radio" name="filter_lock" value="non_locked" onchange="applyFilter()">していない</label>
+              </td>
+              <td align="right" nowrap>改造:</td>
+              <td width="33.3%" nowrap>
+                <label><input type="radio" name="filter_upgrade" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+                <label><input type="radio" name="filter_upgrade" value="upgraded" onchange="applyFilter()">改造完了</label>
+                <label><input type="radio" name="filter_upgrade" value="non_upgraded" onchange="applyFilter()">改造未完</label>
+              </td>
+              <td align="right" nowrap>cond:</td>
+              <td width="33.3%" nowrap>
+                <label><input type="radio" name="filter_cond" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+                <label><input type="radio" name="filter_cond" value="50_or_grater" onchange="applyFilter()">50以上</label>
+                <label><input type="radio" name="filter_cond" value="lower_than_50" onchange="applyFilter()">50未満</label>
+              </td>
+            </tr>
+            <tr>
+              <td align="right" nowrap>遠征:</td>
+              <td width="33.3%" nowrap>
+                <label><input type="checkbox" name="filter_mission" checked="checked" onchange="applyFilter()">遠征中の艦を除外する</label>
+              </td>
+              <td align="right" nowrap>近代化改修:</td>
+              <td width="33.3%" nowrap>
+                <label><input type="radio" name="filter_remodel" checked="checked" value="any" onchange="applyFilter()">すべて</label>
+                <label><input type="radio" name="filter_remodel" value="remodelled" onchange="applyFilter()">改修完了</label>
+                <label><input type="radio" name="filter_remodel" value="non_remodelled" onchange="applyFilter()">改修未完</label>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
-    <div style="flex: 0 0 auto; border: solid 1px #888; margin: 5px 10px 5px 10px;">
-      <table style="flex: 1 1 auto; padding: 5px;" width="100%">
-        <tr>
-          <td align="right" nowrap>レベル:</td>
-          <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_level" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-            <label><input type="radio" name="filter_level" value="2_or_grater" onchange="applyFilter()">Lv.2以上</label>
-            <label><input type="radio" name="filter_level" value="1" onchange="applyFilter()">Lv.1</label>
-          </td>
-          <td align="right" nowrap>速力:</td>
-          <td width="33.3%" nowrap>
-            <label><input type="checkbox" name="filter_soku" checked="checked" value="20" onchange="applyFilter()">最速</label>
-            <label><input type="checkbox" name="filter_soku" checked="checked" value="15" onchange="applyFilter()">高速+</label>
-            <label><input type="checkbox" name="filter_soku" checked="checked" value="10" onchange="applyFilter()">高速</label>
-            <label><input type="checkbox" name="filter_soku" checked="checked" value="5" onchange="applyFilter()">低速</label>
-          </td>
-          <td align="right" nowrap>損傷:</td>
-          <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_damage" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-            <label><input type="radio" name="filter_damage" value="damaged" onchange="applyFilter()">あり</label>
-            <label><input type="radio" name="filter_damage" value="non_damaged" onchange="applyFilter()">なし</label>
-          </td>
-        </tr>
-        <tr>
-          <td align="right" nowrap>ロック:</td>
-          <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_lock" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-            <label><input type="radio" name="filter_lock" value="locked" onchange="applyFilter()">している</label>
-            <label><input type="radio" name="filter_lock" value="non_locked" onchange="applyFilter()">していない</label>
-          </td>
-          <td align="right" nowrap>改造:</td>
-          <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_upgrade" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-            <label><input type="radio" name="filter_upgrade" value="upgraded" onchange="applyFilter()">改造完了</label>
-            <label><input type="radio" name="filter_upgrade" value="non_upgraded" onchange="applyFilter()">改造未完</label>
-          </td>
-          <td align="right" nowrap>cond:</td>
-          <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_cond" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-            <label><input type="radio" name="filter_cond" value="50_or_grater" onchange="applyFilter()">50以上</label>
-            <label><input type="radio" name="filter_cond" value="lower_than_50" onchange="applyFilter()">50未満</label>
-          </td>
-        </tr>
-        <tr>
-          <td align="right" nowrap>遠征:</td>
-          <td width="33.3%" nowrap>
-            <label><input type="checkbox" name="filter_mission" checked="checked" onchange="applyFilter()">遠征中の艦を除外する</label>
-          </td>
-          <td align="right" nowrap>近代化改修:</td>
-          <td width="33.3%" nowrap>
-            <label><input type="radio" name="filter_remodel" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-            <label><input type="radio" name="filter_remodel" value="remodelled" onchange="applyFilter()">改修完了</label>
-            <label><input type="radio" name="filter_remodel" value="non_remodelled" onchange="applyFilter()">改修未完</label>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div style="flex: 0 0 auto; border: solid 1px #888; margin: 5px 10px 5px 10px; display: flex;">
-      <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="resetSortOrder()">ソート条件をリセット</div>
-      <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="invertSortOrder()">ソート条件を反転</div>
-      <div style="flex: 1 1 auto;"></div>
+    <div class="ThemeContainerBorder" style="flex: 0 0 auto; display: flex; flex-direction: column; margin: 5px 10px 0px 10px;">
+      <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="togglePanel('sort_panel_title_icon', 'sort_panel')">
+        <div id="sort_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_more-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
+        <div style="flex: 0 0 auto; margin-left: 5px;">ソート</div>
+      </div>
+      <div id="sort_panel" style="flex: 0 0 auto; display: flex;">
+        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="resetSortOrder()">ソート条件をリセット</div>
+        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="invertSortOrder()">ソート条件を反転</div>
+        <div style="flex: 1 1 auto;"></div>
+      </div>
     </div>
     <div style="flex: 1 1 auto; border: solid 1px #888; margin: 5px 10px 10px 10px; overflow: scroll;">
       <div id="ship_table" style="display: table; min-width: 100%;">

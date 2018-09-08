@@ -516,3 +516,9 @@ function sortOrderClicked(key) {
   applySort();
   applyFilter();
 }
+
+function togglePanel(panel_title_id, panel_id) {
+  const current_visible = $('#' + panel_id).css('display') == 'flex';
+  $('#' + panel_id).css('display', current_visible ? 'none' : 'flex');
+  $('#' + panel_title_id).css('background-image', current_visible ? "url('img/baseline-unfold_less-24px.svg')" : "url('img/baseline-unfold_more-24px.svg')");
+}
