@@ -453,6 +453,11 @@ function invertSortOrder() {
 }
 
 function sortOrderClicked(key) {
+  const query_enabled = $('#use_query').prop('checked');
+  if (query_enabled) {
+    return;
+  }
+
   const index = _.findIndex(sort_order, function(it) { return it.key == key; });
   if (index >= 0) {
     const existing = sort_order[index];
