@@ -289,15 +289,18 @@ function applyFilter() {
 
   var query = '';
 
+  var contains_id_key = false;
   var order_by = [];
   for (var i = 0; i < sort_order.length; i++) {
     const it = sort_order[i];
     const key = it.key;
-    var is_descending = it.is_descending === true;
-    if (sort_order_inverted) {
-      is_descending = !is_descending;
+    order_by.push(key + (it.is_descending ? ' DESC' : ' ASC'));
+    if (key == 'id') {
+      contains_id_key = true;
     }
-    order_by.push(key + (is_descending ? ' DESC' : ' ASC'));
+  }
+  if (!contains_id_key) {
+    order_by.push('id ' + (sort_order_inverted ? 'DESC' : 'ASC'));
   }
 
   const query_enabled = $('#use_query').prop('checked');
