@@ -66,6 +66,7 @@ function shipToString(ship) {
     'soku': ship.soku().value(),
     'repair': ship.repair_seconds(),
     'slotitems': ship.slotitems().map((slotitem) => slotitem.id()).join(','),
+    'locked': ship.locked(),
   };
   return JSON.stringify(json);
 };
