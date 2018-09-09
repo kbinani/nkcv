@@ -7,24 +7,23 @@ const http = require('http'),
       is_dev = require('electron-is-dev'),
       mkdirp = require('mkdirp'),
       path = require('path'),
-      fs = require('fs');
+      fs = require('fs'),
+      _ = require('lodash');
 
 function HTTPProxy() {
 
 }
 
-const _ = HTTPProxy;
-
 const observers = {};
 var maxObserverId = -1;
 
-_.addObserver = function(callback) {
+HTTPProxy.addObserver = function(callback) {
   maxObserverId++;
   observers[maxObserverId] = callback;
   return maxObserverId;
 };
 
-_.removeObserver = function(key) {
+HTTPProxy.removeObserver = function(key) {
   observers[key] = null;
 };
 
@@ -50,10 +49,16 @@ function handle(api, data, request_body) {
       stream.write(JSON.stringify(log, null, 2));
       stream.end();
     });
+    if (api == 'api_req_map/start' || api == 'api_req_map/next') {
+      const area = _.get(json, ['api_data', 'api_maparea_id'], -1);
+      const map = _.get(json, ['api_data', 'api_mapinfo_no'], -1);
+      const no = _.get(json, ['api_data', 'api_no'], -1);
+      console.log([area, map, no].join("-"));
+    }
   }
 }
 
-_.launch = function(port, complete) {
+HTTPProxy.launch = function(port, complete) {
   var server = http.createServer(function onCliReq(cliReq, cliRes) {
     var cliSoc = cliReq.socket || cliReq.connection;
     const remoteAddress = cliReq.connection.remoteAddress;
@@ -157,4 +162,4 @@ _.launch = function(port, complete) {
   });
 };
 
-module.exports = _;
+module.exports = HTTPProxy;
