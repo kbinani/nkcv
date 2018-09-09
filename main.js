@@ -77,7 +77,8 @@ function onload() {
       const quest = list[i];
       const $item = $('.quest_' + quest.no() + '_title');
       $item.html(quest.title());
-      $item.attr('title', quest.detail().replace(/<br>/g, '\n'));
+      const title = quest.title() + '\n' + quest.detail().replace(/<br>/g, '\n');
+      $item.attr('title', title);
       var color = '';
       switch (quest.category()) {
         case 1: // 編成
