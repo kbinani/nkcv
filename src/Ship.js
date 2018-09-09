@@ -31,12 +31,6 @@ Ship.prototype.level = function() {
   return _.get(this._data, ['api_lv'], 0);
 };
 
-Ship.prototype.level_with_exp = function() {
-  const level = this.level();
-  const percentage = _.get(this._data, ['api_exp', 2], 0) / 100.0;
-  return level + percentage;
-};
-
 Ship.prototype.hp = function() {
   const nowhp = _.get(this._data, ['api_nowhp'], 0);
   const maxhp = _.get(this._data, ['api_maxhp'], 0);
