@@ -4,7 +4,8 @@ const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
       DataStorage = require('./src/DataStorage.js'),
       Rat = require('./src/Rat.js'),
-      Dialog = require('./src/Dialog.js');
+      Dialog = require('./src/Dialog.js'),
+      BattleCell = require('./src/BattleCell.js');
 const sprintf = require('sprintf');
 
 const width = 1200;
@@ -25,6 +26,8 @@ function onload() {
   webview.addEventListener("did-navigate", function(data) {
     $("#browser_url").val(data.url);
   });
+
+  BattleCell.load_remote_mapping();
 
   storage.on('port', function(port) {
     updateDeckStatus(port.decks);
@@ -219,7 +222,10 @@ function updateDeckStatus(decks) {
       general_deck_container.append(general);
     }
 
-    const name = deck.name();
+    let name = deck.name();
+    if (deck.battle_cell) {
+      name += ' (' + deck.battle_cell.name() + ')';
+    }
     $('.deck_' + i + '_title').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
 
     const mission_finish_time = deck.mission_finish_time();
@@ -230,7 +236,7 @@ function updateDeckStatus(decks) {
       $('.deck_' + i + '_countdown').attr('data-timer-complete-message', '帰還');
       $('.deck_' + i + '_countdown').addClass('CountdownLabel');
     } else {
-      if (deck.in_combat) {
+      if (deck.battle_cell != null) {
         color = 'red';
       } else if (deck.is_ready_to_sally()) {
         color = '#00CC00';

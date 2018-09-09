@@ -6,7 +6,7 @@ const Speed = require(__dirname + '/Speed.js');
 function Deck(data, port) {
   this._data = data;
   this._port = port;
-  this.in_combat = false;
+  this.battle_cell = null;
 
   const ships = _.get(data, ['api_ship'], []);
   this.ships = ships.map(function(id) {

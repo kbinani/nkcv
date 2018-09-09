@@ -13,6 +13,7 @@
     "alasql": "^0.4.11",
     "electron-is-dev": "^0.3.0",
     "find-free-port": "^2.0.0",
+    "hjson": "^3.1.1",
     "jquery": "^3.3.1",
     "lodash": "^4.17.10",
     "mkdirp": "^0.5.1",
