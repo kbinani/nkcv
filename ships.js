@@ -537,6 +537,7 @@ function toggleQuery() {
     });
   } else {
     applySort();
+    applyFilter();
   }
   $('#ship_table_header').css('cursor', query_enabled ? 'default' : 'pointer');
 }
