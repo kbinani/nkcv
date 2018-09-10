@@ -25,7 +25,7 @@ const sort_order_key = [
   'taisen',
   'soku',
   'sally_area',
-  'repair_time',
+  'repair_seconds',
 ];
 const sort_order = [
   {'key': 'level', 'is_descending': false},
