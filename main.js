@@ -224,7 +224,10 @@ function updateDeckStatus(decks) {
 
     let name = deck.name();
     if (deck.battle_cell) {
-      name += ' (' + deck.battle_cell.name() + ')';
+      let cell_name = deck.battle_cell.name();
+      if (cell_name.length > 0) {
+        name += ' (' + cell_name + ')';
+      }
     }
     $('.deck_' + i + '_title').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
 
