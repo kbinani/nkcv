@@ -15,6 +15,8 @@ const keys = {
   'mute': 'bool',
 };
 
+const VERSION = 0;
+
 const sanitizer_mapping = {
   'rat': function(value) {
     if (typeof(value) != 'string') {
@@ -50,9 +52,22 @@ const sanitizer_mapping = {
   },
 };
 
+function migrate(data) {
+  const version = _.get(data, ['version'], 0);
+  if (version > VERSION) {
+    return {};
+  }
+  switch (version) {
+    case 0:
+      return data;
+    default:
+      return {};
+  }
+}
+
 function Config(data) {
   this._data = {};
-  this.patch(data);
+  this.patch(migrate(data));
 }
 
 Config.prototype.patch = function(data, callback) {
@@ -112,6 +127,7 @@ Config.prototype.data = function() {
   for (var key in this._data) {
     result[key] = this._data[key];
   }
+  result['version'] = VERSION;
   return result;
 };
 
