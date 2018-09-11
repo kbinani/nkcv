@@ -20,5 +20,9 @@
     "sprintf": "^0.1.5",
     "strftime": "^0.10.0",
     "tlds": "^1.203.1"
+  },
+  "devDependencies": {
+    "electron-packager": "^12.1.1",
+    "electron-winstaller": "^2.6.4"
   }
 }
