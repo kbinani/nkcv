@@ -2,3 +2,4 @@
 *.log
 *.json
 /api_log
+/release-builds

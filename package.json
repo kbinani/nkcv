@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "git clean -xdf -e node_modules",
+    "package-macos": "npm run clean && electron-packager . electron-study --ignore=release-builds --platform=darwin --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds && electron-installer-dmg ./release-builds/electron-study-darwin-x64/electron-study.app electron-study --out=release-builds --overwrite",
+    "package-win": "npm run clean && electron-packager . electron-study --ignore=release-builds --platform=win32  --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,7 @@
     "tlds": "^1.203.1"
   },
   "devDependencies": {
+    "electron-installer-dmg": "^2.0.0",
     "electron-packager": "^12.1.1",
     "electron-winstaller": "^2.6.4"
   }
