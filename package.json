@@ -1,12 +1,12 @@
 {
-  "name": "electron-study",
+  "name": "nkcv",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "clean": "git clean -xdf -e node_modules",
-    "package-macos": "npm run clean && electron-packager . electron-study --ignore=release-builds --platform=darwin --asar --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds && electron-installer-dmg ./release-builds/electron-study-darwin-x64/electron-study.app electron-study --out=release-builds --overwrite",
-    "package-win": "npm run clean && electron-packager   . electron-study --ignore=release-builds --platform=win32  --asar --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds && electron-installer-zip ./release-builds/electron-study-win32-x64 ./release-builds/electron-study.zip"
+    "package-macos": "npm run clean && electron-packager . nkcv --ignore=release-builds --platform=darwin --asar --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds && electron-installer-dmg ./release-builds/nkcv-darwin-x64/nkcv.app nkcv --out=release-builds --overwrite",
+    "package-win": "npm run clean && electron-packager   . nkcv --ignore=release-builds --platform=win32  --asar --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds && electron-installer-zip ./release-builds/nkcv-win32-x64 ./release-builds/nkcv.zip"
   },
   "keywords": [],
   "author": "",

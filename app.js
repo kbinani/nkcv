@@ -59,7 +59,7 @@ app.on('ready', function() {
 
   find_free_port(8000, function(err, port) {
     HTTPProxy.launch(port, function(e) {
-      const ses = session.fromPartition('persist:electron-study');
+      const ses = session.fromPartition('persist:nkcv');
       const proxyOptions = {
         proxyRules: 'http=localhost:' + port + ';https=direct://',
         proxyBypassRules: tlds.map((it) => '.' + it).join(','),
