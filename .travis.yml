@@ -5,7 +5,8 @@ before_install:
   - git submodule sync --recursive
   - git submodule update --init --recursive
 script:
-  - brew install node
+  - nvm install $(cat .node-version)
+  - nvm use $(cat .node-version)
   - which node
   - node --version
   - which npm
