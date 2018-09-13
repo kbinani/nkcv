@@ -2,6 +2,7 @@ language: cpp
 os:
   - osx
 script:
+  - if [ -z "$TRAVIS_TAG" ]; then exit 0; fi
   - nvm install $(cat .node-version)
   - nvm use $(cat .node-version)
   - node --version
