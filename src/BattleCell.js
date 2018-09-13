@@ -18,7 +18,7 @@ BattleCell.prototype.name = function() {
 };
 
 BattleCell.load_remote_mapping = function() {
-  const url = 'https://gist.githubusercontent.com/kbinani/ac6e84a846385537f951c362b8b2f8c4/raw/a823e0f5c5f9a205a479a327d27f1dd572f01b2a/kc_map_cell_name.hjson';
+  const url = 'https://gist.githubusercontent.com/kbinani/ac6e84a846385537f951c362b8b2f8c4/raw/kc_map_cell_name.hjson';
   const req = https.request(url, (res) => {
     var body = '';
     res.on('data', (chunk) => {
