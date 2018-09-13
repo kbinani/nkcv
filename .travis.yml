@@ -1,12 +1,6 @@
 language: cpp
 os:
   - osx
-env:
-  global:
-    secure: kXhv86SQ3WaxWx99JdnFCkJ2XdYlFyLtCIl/XruC1HklNVjUXMl2DEfNfQJLjciZMFmg0/0JDNvtoGnJHudFvzWI3anT6r6FNgtmZR6mXQdXMu3y+rniMDpL1yeYXfpODZU/B+dCFGD1ToCmx5P5zonmToIYKOToU4ssevss8T7mECVMRvjvENyK+NbOqqCqDIiWEZNT3CbGDH+lOAM1AquX/dYvSV3rcpQeQSr6qCcccGE2IM48p165z5iGnS9H9O+lQa6VzGgZ9t6RvGzn5SMzHUHBSsteheTOuVftClXiajbxSYMRNYDRF9DYyCquIYbVVhooG7N4KUUofkrZUk0jjGugUs8/un5gKV8UI7HVkqmg+q5MGfmoS8gIqh0Jzj1IzvxSJfYJfZHb9/MMHU1IBs/dFm+No+Tlnv/CdRfLl4shnZ8lTaEUo9LEmIf8P/30KVZBCcF90DADSr7H5Z36M4mRVOaxdObC5eZqtkN32KzEkbazBkxdlB5eO1mLjjbynOJa3Q9kLLF/XEz90jxIdna0q5+eSw5AAxtA+Fg9qGd5mh9pGqzuqVjK8BT7j/aE+iv2OuIhElAs5CJMim5aBySKqLc/bpamZwD7Qp7JcAN9EchZBeQyR2jEMrVxnxT44XyLDnb533hdw3fXnyYf4EE+1hrXhWd13Kwm2Oo=
-before_install:
-  - git submodule sync --recursive
-  - git submodule update --init --recursive
 script:
   - nvm install $(cat .node-version)
   - nvm use $(cat .node-version)
@@ -14,6 +8,11 @@ script:
   - npm --version
   - npm install
   - npm run package-macos
-  - ls -la ./release-builds
-  - ls -la ./release-builds/nkcv-darwin-x64
-  - bash ext/upload-github-release-asset/upload-github-release-asset.sh owner=kbinani repo=nkcv tag=v0.0.1 filename=./release-builds/nkcv.dmg
+deploy:
+  provider: releases
+  api_key:
+    secure: "MOibK2+jhFIxKdWztYOyG/SCmXR8qprR7LaSOXsoyYSrGRGP0w8+Z+KxHZRttLWbWZ5dBdlePBFqeE8Ubpmvl4axQBNav1VxJA+GpKF5QEXWLFZUCeS/x6/cqW1bmYVtZ0WEnHsTAaBpAOkWitDOiUjUMoOLVZLyQUl7JMWyNoX61tJmB3LGih8HdPe5gR1y1BzKoBypyvAEtPXPQ8RJJ/uNwEhS7Mi7j97eXd/Z/K/Bu9Zpb9JW08mLarp9oGrAUWxrEig/JjuDX3rzJkyMPXWpQc+bjUuci7aeTEXY5wYPa2W7nUKVu4VhcFVYNvpGRNDlZIB/DC5xdku7lke3LUpN7rVtQicf882JuAv3vkRTy8evu0w+IDfzI8PirQIzrhrKZhgY3TSl1Kn1zYctnrWzJwJGjHG8GeP1eJsvG2xaocmHR6ezBVcFs7mDm+OYisSeCI1tv35zBNmmy8TsTWJnXJsg3ec1Q4I2uD7P3pxU6Xz/mINCyqPZKxNfr5+WpS7oadRVJQ+Z/t8CWaluBTyHbNbqMCf38ndtaDrBYpu/D+aQB57CT+FdqsjvsUPEX2m0H7jblF4J8M3AiReXgh0iiOH2W30bqmdr6TwlssdTkE7UEi6+RIFjYTJAGiYkG5JdKYcxu6CjfQEJ0kjw21FPgGTE7Nth2Z8EpQi30VA="
+  file: ./release-builds/nkcv.dmg
+  skip_cleanup: true
+  on:
+    tags: true
