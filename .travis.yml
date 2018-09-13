@@ -4,13 +4,11 @@ os:
 before_install:
   - git submodule sync --recursive
   - git submodule update --init --recursive
-install:
+script:
   - git clone https://github.com/riywo/ndenv ~/.ndenv
-  - echo 'export PATH="$HOME/.ndenv/bin:$PATH"' >> ~/.bash_profile
-  - echo 'eval "$(ndenv init -)"' >> ~/.bash_profile
-  - source ~/.bash_profile
+  - export PATH="$HOME/.ndenv/bin:$PATH"
+  - eval "$(ndenv init -)"
   - ndenv install $(cat .node-version)
   - npm install
-script:
   - npm run package-macos
   - ls -la ./release-builds/nkcv-darwin-x64
