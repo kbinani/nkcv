@@ -460,6 +460,7 @@ DataStorage.prototype.handle_req_sortie_battle = function(params, response, port
   deck.battle_cell = this._next_battle_cell;
   this._next_battle_cell = null;
   this.notify_port();
+  this.emit('sortie', {});
 };
 
 DataStorage.prototype.handle_req_kaisou_slot_deprive = function(params, response, port) {

@@ -176,6 +176,10 @@ function onload() {
     }
   });
 
+  storage.on('sortie', (data) => {
+    BattleCell.load_remote_mapping();
+  });
+
   ipcRenderer.on('app.mute', function(event, mute) {
     setMute(mute);
   });
