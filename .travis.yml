@@ -8,7 +8,7 @@ install:
   - git clone https://github.com/riywo/ndenv ~/.ndenv
   - echo 'export PATH="$HOME/.ndenv/bin:$PATH"' >> ~/.bash_profile
   - echo 'eval "$(ndenv init -)"' >> ~/.bash_profile
-  - exec $SHELL -l
+  - source ~/.bash_profile
   - ndenv install $(cat .node-version)
   - npm install
 script:
