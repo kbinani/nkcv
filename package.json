@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "clean": "git clean -xdf -e node_modules",
-    "package-macos": "npm run clean && electron-packager . nkcv --ignore=release-builds --ignore=script --platform=darwin --asar --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds && electron-osx-sign ./release-builds/nkcv-darwin-x64/nkcv.app --keychain=nkcv-build.keychain && electron-installer-dmg ./release-builds/nkcv-darwin-x64/nkcv.app nkcv --out=release-builds --overwrite",
+    "package-macos": "npm run clean && electron-packager . nkcv --ignore=release-builds --ignore=script --platform=darwin --asar --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds --osx-sign --osx-sign.identity=XM695N4A7T && electron-installer-dmg ./release-builds/nkcv-darwin-x64/nkcv.app nkcv --out=release-builds --overwrite",
     "package-win": "npm run clean && electron-packager   . nkcv --ignore=release-builds --ignore=script --platform=win32  --asar --arch=x64 --prune=true --overwrite=true --app-version=0.0.0 --electron-version=2.0.7 --out=release-builds && electron-installer-zip ./release-builds/nkcv-win32-x64 ./release-builds/nkcv.zip"
   },
   "keywords": [],
@@ -26,7 +26,6 @@
   "devDependencies": {
     "electron-installer-dmg": "^2.0.0",
     "electron-installer-zip": "^0.1.2",
-    "electron-osx-sign": "^0.4.10",
     "electron-packager": "^12.1.1"
   }
 }
