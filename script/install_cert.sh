@@ -11,3 +11,5 @@ security set-keychain-settings -t 3600 -l ~/Library/Keychains/nkcv-build.keychai
 security import ./script/certs/AppleWWDRCA.cer -k ~/Library/Keychains/nkcv-build.keychain -T /usr/bin/codesign
 security import ./script/certs/cert.cer -k ~/Library/Keychains/nkcv-build.keychain -T /usr/bin/codesign
 security import ./script/certs/cert.p12 -k ~/Library/Keychains/nkcv-build.keychain -P $CERTS_PASS -T /usr/bin/codesign
+
+security set-key-partition-list -S apple-tool:,apple: -s -k travis nkcv-build.keychain
