@@ -1,7 +1,7 @@
 #!/bin/sh
 
-openssl aes-256-cbc -k $DECORD_CERTS -in script/certs/cert.cer.enc -d -a -out script/certs/cert.cer
-openssl aes-256-cbc -k $DECORD_CERTS -in script/certs/cert.p12.enc -d -a -out script/certs/cert.p12
+openssl aes-256-cbc -k $DECORD_CERT -in script/certs/cert.cer.enc -d -a -out script/certs/cert.cer
+openssl aes-256-cbc -k $DECORD_CERT -in script/certs/cert.p12.enc -d -a -out script/certs/cert.p12
 
 security create-keychain -p travis nkcv-build.keychain
 security default-keychain -s nkcv-build.keychain
