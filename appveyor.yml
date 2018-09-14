@@ -1,0 +1,16 @@
+skip_non_tags: true
+environment:
+  nodejs_version: "10.8.0"
+install:
+  - ps: Install-Product node $env:nodejs_version x64
+  - npm install
+build_script:
+  - npm run package-win
+artifacts:
+  - path: release-builds\nkcv.zip
+    name: nkcv.zip
+deploy:
+  - provider: GitHub
+    auth_token:
+      secure: HjklBUd/3Ki6qtAQ2aJp/PUJ8bDtzfSyEYKyQ0fqUshUhrZZVGVMACjx8/7ov+C7
+    artifact: nkcv.zip
