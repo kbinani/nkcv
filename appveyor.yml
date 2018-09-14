@@ -2,7 +2,7 @@ skip_non_tags: true
 environment:
   nodejs_version: "10.8.0"
 install:
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node $env:nodejs_version x64
   - npm install
 build_script:
 - ps: npm run package-win
