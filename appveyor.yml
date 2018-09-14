@@ -6,7 +6,6 @@ install:
   - npm install
 build_script:
   - npm run package-win
-  - dir release-builds
 artifacts:
   - path: release-builds\nkcv.zip
     name: nkcv.zip
