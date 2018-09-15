@@ -66,6 +66,7 @@ function DataStorage() {
     'api_req_nyukyo/start',
     'api_req_map/next',
     'api_req_sortie/battle',
+    'api_req_sortie/ld_airbattle',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -405,6 +406,7 @@ DataStorage.prototype.handle_req_map_start = function(params, response, port) {
   this._next_battle_cell = new BattleCell(area, map, no);
   deck.battle_cell = new DummyBattleCell(area, map, no);
   this.notify_port();
+  this.emit('sortie', {});
 };
 
 DataStorage.prototype.handle_req_map_next = function(params, response, port) {
@@ -471,7 +473,18 @@ DataStorage.prototype.handle_req_sortie_battle = function(params, response, port
   deck.battle_cell = this._next_battle_cell;
   this._next_battle_cell = null;
   this.notify_port();
-  this.emit('sortie', {});
+};
+
+DataStorage.prototype.handle_req_sortie_ld_airbattle = function(params, response, port) {
+  const deck_id = _.get(response, ['api_data', 'api_deck_id'], -1);
+  const deck_index = deck_id - 1;
+  if (0 < deck_index || port.decks.length <= deck_index) {
+    return;
+  }
+  const deck = port.decks[deck_index];
+  deck.battle_cell = this._next_battle_cell;
+  this._next_battle_cell = null;
+  this.notify_port();
 };
 
 DataStorage.prototype.handle_req_kaisou_slot_deprive = function(params, response, port) {
