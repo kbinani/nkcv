@@ -13,8 +13,9 @@ function BattleCell(area, map, cell) {
 }
 
 BattleCell.prototype.name = function() {
+  const area_name = _.get(mapping, [this.area, 'name'], this.area + '-');
   const name = _.get(mapping, [this.area, this.map, this.cell], this.cell);
-  return [this.area, this.map, name].join('-');
+  return area_name + this.map + '-' + name;
 };
 
 BattleCell.load_remote_mapping = function() {
