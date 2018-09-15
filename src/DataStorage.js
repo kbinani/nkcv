@@ -15,14 +15,22 @@ const SlotitemList = require(__dirname + '/SlotitemList.js'),
       CreatedSlotitem = require(__dirname + '/CreatedSlotitem.js'),
       BattleCell = require(__dirname + '/BattleCell.js');
 
-function DummyBattleCell() {
+function DummyBattleCell(area, map, no) {
+  this.area = area;
+  this.map = map;
+  this.no = no;
 }
-
 
 DummyBattleCell.prototype.name = function() {
   return '';
 }
 
+function PracticeBattleCell() {
+}
+
+PracticeBattleCell.prototype.name = function() {
+  return '';
+};
 
 function DataStorage() {
   EventEmitter.call(this);
@@ -395,7 +403,7 @@ DataStorage.prototype.handle_req_map_start = function(params, response, port) {
   const map = _.get(response, ['api_data', 'api_mapinfo_no'], -1);
   const no = _.get(response, ['api_data', 'api_no'], -1);
   this._next_battle_cell = new BattleCell(area, map, no);
-  deck.battle_cell = new DummyBattleCell();
+  deck.battle_cell = new DummyBattleCell(area, map, no);
   this.notify_port();
 };
 
@@ -403,6 +411,7 @@ DataStorage.prototype.handle_req_map_next = function(params, response, port) {
   const area = _.get(response, ['api_data', 'api_maparea_id'], -1);
   const map = _.get(response, ['api_data', 'api_mapinfo_no'], -1);
   const no = _.get(response, ['api_data', 'api_no'], -1);
+
   const deck = _.find(port.decks, (value, index, _) => {
     const battle_cell = value.battle_cell;
     if (!battle_cell) {
@@ -410,10 +419,12 @@ DataStorage.prototype.handle_req_map_next = function(params, response, port) {
     }
     return battle_cell.area == area && battle_cell.map == map;
   });
-  if (!deck) {
-    return;
+  if (deck != null && this._next_battle_cell != null) {
+    deck.battle_cell = this._next_battle_cell;
   }
+
   this._next_battle_cell = new BattleCell(area, map, no);
+  this.notify_port();
 };
 
 DataStorage.prototype.handle_get_member_deck = function(params, response, port) {
@@ -444,7 +455,7 @@ DataStorage.prototype.handle_req_practice_battle = function(params, response, po
     return;
   }
   const deck = port.decks[deck_id - 1];
-  deck.battle_cell = new DummyBattleCell();
+  deck.battle_cell = new PracticeBattleCell();
   this.notify_port();
 };
 
