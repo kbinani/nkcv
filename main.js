@@ -1,5 +1,5 @@
 window.jQuery = window.$ = require('jquery');
-const {ipcRenderer, screen} = require('electron');
+const {ipcRenderer, screen, clipboard} = require('electron');
 const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
       DataStorage = require('./src/DataStorage.js'),
@@ -13,6 +13,7 @@ const width = 1200;
 const height = 720;
 var scale = 1;
 const storage = new DataStorage();
+var _port = null;
 
 function onload() {
   const webview = document.querySelector("webview");
@@ -31,6 +32,8 @@ function onload() {
   BattleCell.load_remote_mapping();
 
   storage.on('port', function(port) {
+    _port = port;
+
     updateDeckStatus(port.decks);
     updateShipStatus(port.ships);
     port.ships.forEach(function(ship) {
@@ -511,4 +514,29 @@ function generalDeckMenuClicked(index) {
 function scaleSelected(sender) {
   const scale_string = $("#browser_scale").val();
   ipcRenderer.send('app.scale', scale_string);
+}
+
+function copyDeckInfo(deck_index) {
+  if (!_port) {
+    return;
+  }
+  if (deck_index < 0 || _port.decks.length <= deck_index) {
+    return;
+  }
+  const deck = _port.decks[deck_index];
+  if (!deck) {
+    return;
+  }
+  var lines = [];
+  lines.push('(制空' + deck.taiku() + ')');
+  deck.ships.forEach((ship) => {
+    var line = '';
+    line += ship.name() + ship.level();
+    line += '{cond:' + ship.cond() + ',HP:' + ship.hp().toString() + '}';
+    line += '[' + ship.slotitems().map((slotitem) => slotitem.name() + slotitem.level_description()).join('/') + ']';
+    const ex = ship.ex_slotitem();
+    line += '[' + (ex == null ? [] : [ex]).map((slotitem) => slotitem.name() + slotitem.level_description()).join('/') + ']';
+    lines.push(line);
+  });
+  clipboard.writeText(lines.join('\n') + '\n');
 }

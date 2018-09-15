@@ -74,6 +74,18 @@ Slotitem.prototype.level = function() {
   return _.get(this._data, ['api_level'], 0);
 };
 
+Slotitem.prototype.level_description = function() {
+  const level = this.level();
+  if (level <= 0) {
+    return '';
+  }
+  if (level == 10) {
+    return '★max';
+  } else {
+    return '★' + level;
+  }
+};
+
 Slotitem.prototype.proficiency = function() {
   // 熟練度
   return _.get(this._data, ['api_alv'], 0);
