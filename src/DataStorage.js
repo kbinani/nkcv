@@ -396,16 +396,18 @@ DataStorage.prototype.handle_req_hokyu_charge = function(params, response, port)
 };
 
 DataStorage.prototype.handle_req_map_start = function(params, response, port) {
-  const deck_index = parseInt(params.get('api_deck_id'), 10) - 1;
-  if (deck_index < 0 || port.decks.length <= deck_index) {
-    return;
-  }
-  const deck = port.decks[deck_index];
+  const deck_id = parseInt(params.get('api_deck_id'), 10);
+  const decks = port.sortie_decks(deck_id);
+
   const area = _.get(response, ['api_data', 'api_maparea_id'], -1);
   const map = _.get(response, ['api_data', 'api_mapinfo_no'], -1);
   const no = _.get(response, ['api_data', 'api_no'], -1);
   this._next_battle_cell = new BattleCell(area, map, no);
-  deck.battle_cell = new DummyBattleCell(area, map, no);
+
+  decks.forEach((deck) => {
+    deck.battle_cell = new DummyBattleCell(area, map, no);
+  });
+
   this.notify_port();
   this.emit('sortie', {});
 };
@@ -415,15 +417,19 @@ DataStorage.prototype.handle_req_map_next = function(params, response, port) {
   const map = _.get(response, ['api_data', 'api_mapinfo_no'], -1);
   const no = _.get(response, ['api_data', 'api_no'], -1);
 
-  const deck = _.find(port.decks, (value, index, _) => {
-    const battle_cell = value.battle_cell;
-    if (!battle_cell) {
+  const decks = port.decks.filter((deck) => {
+    const battle_cell = deck.battle_cell;
+    if (battle_cell == null) {
       return false;
     }
     return battle_cell.area == area && battle_cell.map == map;
   });
-  if (deck != null && this._next_battle_cell != null) {
-    deck.battle_cell = this._next_battle_cell;
+
+  const next_battle_cell = this._next_battle_cell;
+  if (next_battle_cell != null) {
+    decks.forEach((deck) => {
+      deck.battle_cell = next_battle_cell;
+    });
   }
 
   this._next_battle_cell = new BattleCell(area, map, no);
@@ -463,27 +469,26 @@ DataStorage.prototype.handle_req_practice_battle = function(params, response, po
 };
 
 DataStorage.prototype.handle_req_sortie_battle = function(params, response, port) {
-  if (this._next_battle_cell == null) {
+  const next_battle_cell = this._next_battle_cell;
+  if (next_battle_cell == null) {
     return;
   }
   const deck_id = _.get(response, ['api_data', 'api_deck_id'], -1);
-  if (deck_id <= 0 || port.decks.length < deck_id) {
-    return;
-  }
-  const deck = port.decks[deck_id - 1];
-  deck.battle_cell = this._next_battle_cell;
+  const decks = port.sortie_decks(deck_id);
+  decks.forEach((deck) => {
+    deck.battle_cell = next_battle_cell;
+  });
   this._next_battle_cell = null;
   this.notify_port();
 };
 
 DataStorage.prototype.handle_req_sortie_ld_airbattle = function(params, response, port) {
   const deck_id = _.get(response, ['api_data', 'api_deck_id'], -1);
-  const deck_index = deck_id - 1;
-  if (0 < deck_index || port.decks.length <= deck_index) {
-    return;
-  }
-  const deck = port.decks[deck_index];
-  deck.battle_cell = this._next_battle_cell;
+  const decks = port.sortie_decks(deck_id);
+  const next_battle_cell = this._next_battle_cell;
+  decks.forEach((deck) => {
+    deck.battle_cell = next_battle_cell;
+  });
   this._next_battle_cell = null;
   this.notify_port();
 };
