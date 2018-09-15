@@ -42,6 +42,11 @@ function updateShipStatus(ships) {
     } else {
       $('.ship_' + id + '_repair').html('');
     }
+
+    const sally_area = ship.sally_area();
+    $('.ship_' + id + '_sally_area').css('background-color', sally_area.background_color());
+    $('.ship_' + id + '_sally_area').css('color', sally_area.text_color());
+    $('.ship_' + id + '_sally_area').html(sally_area.name());
   });
 }
 
@@ -67,6 +72,7 @@ function shipToString(ship) {
     'repair': ship.repair_seconds(),
     'slotitems': ship.slotitems().map((slotitem) => slotitem.id()).join(','),
     'locked': ship.locked(),
+    'sally_area': ship.sally_area().id(),
   };
   return JSON.stringify(json);
 };

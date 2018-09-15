@@ -3,7 +3,8 @@ const {ipcRenderer, screen} = require('electron');
 const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
       DataStorage = require('./src/DataStorage.js'),
-      ShipType = require('./src/ShipType.js');
+      ShipType = require('./src/ShipType.js'),
+      SallyArea = require('./src/SallyArea.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       alasql = require('alasql');
@@ -33,19 +34,37 @@ const sort_order = [
 var sort_order_inverted = false;
 
 function onload() {
-  storage.on('port', function(port) {
-    update(port.ships);
-  });
+  SallyArea.load_remote_mapping(function() {
+    const $container = $('#sally_area_choices');
+    const sally_area_template = `
+      <label for="sally_area_{id}" style="display: block; height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap; background-color: {background_color}; color: {text_color}; min-width: 80px; flex: 0 0 auto; vertical-align: middle;">
+        <input id="sally_area_{id}" type="checkbox" onclick="sallyAreaCheckboxClicked()" checked="checked"/><span id="sally_area_{id}" style="margin-right: 10px;">{name}</span>
+      </label>`
+    const allSallyAreas = SallyArea.allCases();
+    $container.empty();
+    allSallyAreas.forEach((it) => {
+      const name = it.name();
+      const element = sally_area_template.replace(/{id}/g, it.id())
+                              .replace(/{name}/g, name.length == 0 ? 'なし' : name)
+                              .replace(/{background_color}/g, it.background_color())
+                              .replace(/{text_color}/g, it.text_color());
+      $container.append(element);
+    });
 
-  const choices = $('#ship_type_choices');
-  const template = `
-    <label for="ship_type_{id}" style="height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap;">
-      <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label">{name}</span>
-    </label>`
-  ShipType.allCases().forEach(function(type) {
-    const element = template.replace(/{id}/g, type.value())
-                            .replace(/{name}/g, type.toString());
-    choices.append(element);
+    const choices = $('#ship_type_choices');
+    const template = `
+      <label for="ship_type_{id}" style="height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap;">
+        <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label">{name}</span>
+      </label>`
+    ShipType.allCases().forEach(function(type) {
+      const element = template.replace(/{id}/g, type.value())
+                              .replace(/{name}/g, type.toString());
+      choices.append(element);
+    });
+
+    storage.on('port', function(port) {
+      update(port.ships);
+    });
   });
 
   $('#query').bind('input propertychange', function() {
@@ -289,6 +308,15 @@ function applyFilter() {
   }
   config_filters['remodel'] = remodel;
 
+  // 出撃海域
+  const areas = SallyArea.allCases().filter((it) => {
+    return $('#sally_area_' + it.id()).prop('checked');
+  }).map((it) => it.id());
+  config_filters['sally_area'] = areas;
+  if (areas.length > 0) {
+    where.push('sally_area IN(' + areas.join(', ') + ')');
+  }
+
   var query = '';
 
   var contains_id_key = false;
@@ -394,7 +422,11 @@ function createShipCell(ship) {
       <div class="ThemeTableCell"><span class="ship_{ship_id}_sakuteki">{sakuteki}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_taisen">{taisen}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_soku">{soku}</span></div>
-      <div class="ThemeTableCell"><div style="display: flex;"><div class="ship_{ship_id}_sally_area" style="flex: 1 1 auto; color: {sally_area_text_color}; background-color: {sally_area_background_color}; text-align: center; vertical-align: middle;">{sally_area}</div></div></div>
+      <div class="ThemeTableCell">
+        <div style="display: flex;">
+          <div class="ship_{ship_id}_sally_area FontNormal" style="flex: 1 1 auto; color: {sally_area_text_color}; background-color: {sally_area_background_color}; text-align: center; vertical-align: middle; padding: 0px 5px 0px 5px;">{sally_area}</div>
+        </div>
+      </div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_repair">{repair}</span></div>
       <div class="ThemeTableCell ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>
     </div>`;
@@ -480,6 +512,10 @@ function sortOrderClicked(key) {
     }
   }
   applySort();
+  applyFilter();
+}
+
+function sallyAreaCheckboxClicked() {
   applyFilter();
 }
 

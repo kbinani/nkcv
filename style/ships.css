@@ -28,3 +28,7 @@ label, input[type='checkbox'] {
 .TableHeaderKey {
   padding-top: 2px;
 }
+
+.FontNormal {
+  font-size: 12px;
+}
