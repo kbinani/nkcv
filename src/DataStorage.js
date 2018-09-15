@@ -67,6 +67,7 @@ function DataStorage() {
     'api_req_map/next',
     'api_req_sortie/battle',
     'api_req_sortie/ld_airbattle',
+    'api_req_hensei/combined',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -569,6 +570,12 @@ DataStorage.prototype.handle_req_nyukyo_start = function(params, response, port)
     return;
   }
   ship.complete_repair();
+  this.notify_port();
+};
+
+DataStorage.prototype.handle_req_hensei_combined = function(params, response, port) {
+  const type = parseInt(params.get('api_combined_type'), 10);
+  port.set_combined_type(type);
   this.notify_port();
 };
 

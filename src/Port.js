@@ -87,4 +87,24 @@ Port.prototype.destroy_ship = function(ship_id, destroy_slotitems) {
   });
 };
 
+Port.prototype.combined_type = function() {
+  return _.get(this._data, ['api_data', 'api_combined_flag'], 0);
+};
+
+Port.prototype.set_combined_type = function(type) {
+  _.set(this._data, ['api_data', 'api_combined_flag'], type);
+};
+
+Port.prototype.sortie_decks = function(deck_id) {
+  const deck_index = deck_id - 1;
+  if (deck_index < 0 || this.decks.length <= deck_index) {
+    return [];
+  }
+  if (deck_id == 1 && this.combined_type() != 0) {
+    return [this.decks[0], this.decks[1]];
+  } else {
+    return [this.decks[deck_index]];
+  }
+};
+
 module.exports = Port;
