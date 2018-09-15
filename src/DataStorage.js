@@ -70,6 +70,7 @@ function DataStorage() {
     'api_req_hensei/combined',
     'api_req_combined_battle/battle_water',
     'api_req_combined_battle/each_battle_water',
+    'api_req_combined_battle/each_battle',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -254,6 +255,7 @@ DataStorage.prototype.handle = function(api, params, response, port) {
     case 'api_req_sortie/ld_airbattle':
     case 'api_req_combined_battle/battle_water':
     case 'api_req_combined_battle/each_battle_water':
+    case 'api_req_combined_battle/each_battle':
       this.handle_battle_started(params, response, port);
       break;
     default:
