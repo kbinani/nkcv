@@ -394,7 +394,7 @@ function createShipCell(ship) {
       <div class="ThemeTableCell"><span class="ship_{ship_id}_sakuteki">{sakuteki}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_taisen">{taisen}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_soku">{soku}</span></div>
-      <div class="ThemeTableCell"><!-- 出撃海域 --></div>
+      <div class="ThemeTableCell"><div style="display: flex;"><div class="ship_{ship_id}_sally_area" style="flex: 1 1 auto; color: {sally_area_text_color}; background-color: {sally_area_background_color}; text-align: center; vertical-align: middle;">{sally_area}</div></div></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_repair">{repair}</span></div>
       <div class="ThemeTableCell ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>
     </div>`;
@@ -412,7 +412,10 @@ function createShipCell(ship) {
                  .replace(/{sakuteki}/, ship.sakuteki().numerator())
                  .replace(/{taisen}/, ship.taisen().numerator())
                  .replace(/{soku}/, ship.soku().toString())
-                 .replace(/{repair}/, ship.repair_seconds() > 0 ? timeLabel(ship.repair_seconds()) : '');
+                 .replace(/{repair}/, ship.repair_seconds() > 0 ? timeLabel(ship.repair_seconds()) : '')
+                 .replace(/{sally_area}/, ship.sally_area().name())
+                 .replace(/{sally_area_background_color}/, ship.sally_area().background_color())
+                 .replace(/{sally_area_text_color}/, ship.sally_area().text_color());
 }
 
 function createSlotitemCell(slotitem_id) {
@@ -512,6 +515,7 @@ function shipToJSON(ship) {
     'after_level': ship.after_level(),
     'is_mission': ship.is_mission(),
     'repair_seconds': ship.repair_seconds(),
+    'sally_area': ship.sally_area().id(),
   };
 };
 

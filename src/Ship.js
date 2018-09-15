@@ -4,7 +4,8 @@ const _ = require('lodash'),
       Rat = require(__dirname + '/Rat.js'),
       SlotitemList = require(__dirname + '/SlotitemList.js'),
       ShipType = require(__dirname + '/ShipType.js'),
-      Speed = require(__dirname + '/Speed.js');
+      Speed = require(__dirname + '/Speed.js'),
+      SallyArea = require(__dirname + '/SallyArea.js');
 
 function Ship(data, master_data, storage) {
   this._data = data;
@@ -205,6 +206,11 @@ Ship.prototype.maxeq = function() {
 
 Ship.prototype.onslot = function() {
   return _.get(this._data, ['api_onslot'], [0, 0, 0, 0, 0]);
+};
+
+Ship.prototype.sally_area = function() {
+  const id = _.get(this._data, ['api_sally_area'], 0);
+  return new SallyArea(id);
 };
 
 module.exports = Ship;

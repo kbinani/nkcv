@@ -5,7 +5,8 @@ const Port = require('./src/Port.js'),
       DataStorage = require('./src/DataStorage.js'),
       Rat = require('./src/Rat.js'),
       Dialog = require('./src/Dialog.js'),
-      BattleCell = require('./src/BattleCell.js');
+      BattleCell = require('./src/BattleCell.js'),
+      SallyArea = require('./src/SallyArea.js');
 const sprintf = require('sprintf');
 
 const width = 1200;
@@ -178,6 +179,7 @@ function onload() {
 
   storage.on('sortie', (data) => {
     BattleCell.load_remote_mapping();
+    SallyArea.load_remote_mapping();
   });
 
   ipcRenderer.on('app.mute', function(event, mute) {
