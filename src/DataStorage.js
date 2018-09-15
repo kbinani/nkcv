@@ -69,6 +69,7 @@ function DataStorage() {
     'api_req_sortie/ld_airbattle',
     'api_req_hensei/combined',
     'api_req_combined_battle/battle_water',
+    'api_req_combined_battle/each_battle_water',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -248,6 +249,12 @@ DataStorage.prototype.handle = function(api, params, response, port) {
   switch (api) {
     case 'api_get_member/ship3':
       this.handle_get_member_ship_deck(params, response, port);
+      break;
+    case 'api_req_sortie/battle':
+    case 'api_req_sortie/ld_airbattle':
+    case 'api_req_combined_battle/battle_water':
+    case 'api_req_combined_battle/each_battle_water':
+      this.handle_battle_started(params, response, port);
       break;
     default:
       console.trace('api not handled: api=' + api);
@@ -469,32 +476,7 @@ DataStorage.prototype.handle_req_practice_battle = function(params, response, po
   this.notify_port();
 };
 
-DataStorage.prototype.handle_req_sortie_battle = function(params, response, port) {
-  const next_battle_cell = this._next_battle_cell;
-  if (next_battle_cell == null) {
-    return;
-  }
-  const deck_id = _.get(response, ['api_data', 'api_deck_id'], -1);
-  const decks = port.sortie_decks(deck_id);
-  decks.forEach((deck) => {
-    deck.battle_cell = next_battle_cell;
-  });
-  this._next_battle_cell = null;
-  this.notify_port();
-};
-
-DataStorage.prototype.handle_req_sortie_ld_airbattle = function(params, response, port) {
-  const deck_id = _.get(response, ['api_data', 'api_deck_id'], -1);
-  const decks = port.sortie_decks(deck_id);
-  const next_battle_cell = this._next_battle_cell;
-  decks.forEach((deck) => {
-    deck.battle_cell = next_battle_cell;
-  });
-  this._next_battle_cell = null;
-  this.notify_port();
-};
-
-DataStorage.prototype.handle_req_combined_battle_battle_water = function(params, response, port) {
+DataStorage.prototype.handle_battle_started = function(params, response, port) {
   const next_battle_cell = this._next_battle_cell;
   if (next_battle_cell == null) {
     return;
