@@ -68,6 +68,7 @@ function DataStorage() {
     'api_req_sortie/battle',
     'api_req_sortie/ld_airbattle',
     'api_req_hensei/combined',
+    'api_req_combined_battle/battle_water',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -486,6 +487,20 @@ DataStorage.prototype.handle_req_sortie_ld_airbattle = function(params, response
   const deck_id = _.get(response, ['api_data', 'api_deck_id'], -1);
   const decks = port.sortie_decks(deck_id);
   const next_battle_cell = this._next_battle_cell;
+  decks.forEach((deck) => {
+    deck.battle_cell = next_battle_cell;
+  });
+  this._next_battle_cell = null;
+  this.notify_port();
+};
+
+DataStorage.prototype.handle_req_combined_battle_battle_water = function(params, response, port) {
+  const next_battle_cell = this._next_battle_cell;
+  if (next_battle_cell == null) {
+    return;
+  }
+  const deck_id = _.get(response, ['api_data', 'api_deck_id'], -1);
+  const decks = port.sortie_decks(deck_id);
   decks.forEach((deck) => {
     deck.battle_cell = next_battle_cell;
   });
