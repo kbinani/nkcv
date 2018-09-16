@@ -21,7 +21,8 @@
     "mkdirp": "^0.5.1",
     "sprintf": "^0.1.5",
     "strftime": "^0.10.0",
-    "tlds": "^1.203.1"
+    "tlds": "^1.203.1",
+    "tmp": "0.0.33"
   },
   "devDependencies": {
     "electron-installer-dmg": "^2.0.0",

@@ -148,6 +148,17 @@ ipcMain.on('app.patchConfig', function(event, data) {
   });
 });
 
+ipcMain.on('app.recorded', function(event, input_filepath) {
+  const now = new Date();
+  const filename = app.getName() + '_' + strftime('%Y%m%d-%H%M%S-%L', now) + '.webm';
+  const fullpath = path.join(app.getPath('pictures'), filename);
+  fs.rename(input_filepath, fullpath, (err) => {
+    if (err) {
+      console.trace(err);
+    }
+  });
+});
+
 function updateScale(scale_rat_string) {
   if (!mainWindow) {
     return;

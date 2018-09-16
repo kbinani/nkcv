@@ -1,5 +1,5 @@
 window.jQuery = window.$ = require('jquery');
-const {ipcRenderer, screen, clipboard} = require('electron');
+const {ipcRenderer, screen, clipboard, desktopCapturer, app} = require('electron');
 const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
       DataStorage = require('./src/DataStorage.js'),
@@ -7,13 +7,18 @@ const Port = require('./src/Port.js'),
       Dialog = require('./src/Dialog.js'),
       BattleCell = require('./src/BattleCell.js'),
       SallyArea = require('./src/SallyArea.js');
-const sprintf = require('sprintf');
+const sprintf = require('sprintf'),
+      _ = require('lodash'),
+      fs = require('fs'),
+      tmp = require('tmp');
 
 const width = 1200;
 const height = 720;
 var scale = 1;
 const storage = new DataStorage();
 var _port = null;
+var _recording = false;
+var _recorder = null;
 
 function onload() {
   const webview = document.querySelector("webview");
@@ -541,6 +546,76 @@ function copyDeckInfo(deck_index) {
   clipboard.writeText(lines.join('\n') + '\n');
 }
 
-function toggleScreenRecording(sender) {
+function setRecording(v) {
+  _recording = v;
+  $('#record_button').css('background-image', v ? "url('img/baseline-videocam-active-24px.svg')" : "url('img/baseline-videocam-24px.svg')");
+}
 
+function toggleScreenRecording(sender) {
+  if (!_recording) {
+    const options = {
+      types: ['window'],
+    };
+    desktopCapturer.getSources(options, (error, sources) => {
+      if (error) {
+        setRecording(false);
+        return;
+      }
+      const source = _.find(sources, (it) => it.name == 'nkcv');
+      if (!source) {
+        setRecording(false);
+        return;
+      }
+      const media_options = {
+        audio: false,
+        video: {
+          mandatory: {
+            chromeMediaSource: 'desktop',
+            chromeMediaSourceId: source.id
+          }
+        }
+      };
+      navigator.mediaDevices.getUserMedia(media_options)
+        .then((stream) => {
+          setRecording(true);
+          _recorder = new MediaRecorder(stream);
+          var stopped = false;
+          const filepath = tmp.fileSync({postfix: '.webm'});
+          const file = fs.createWriteStream(filepath.name);
+          _recorder.ondataavailable = (event) => {
+            if (event.data && event.data.size > 0) {
+              var reader = new FileReader();
+              reader.addEventListener('loadend', (event) => {
+                if (event.error) {
+                  _recorder.stop();
+                } else {
+                  file.write(new Buffer(reader.result));
+                  if (stopped) {
+                    reader.abort();
+                    reader = null;
+                    file.end();
+                    ipcRenderer.send('app.recorded', filepath.name);
+                  }
+                }
+              });
+              reader.readAsArrayBuffer(event.data);
+            }
+          };
+          _recorder.onstop = () => {
+            stopped = true;
+            setRecording(false);
+          };
+          const timeslice_milli_sec = 1000;
+          _recorder.start(timeslice_milli_sec);
+        }).catch((e) => {
+          setRecording(false);
+        });
+    });
+  } else {
+    const recorder = _recorder;
+    if (!recorder) {
+      return;
+    }
+    recorder.stop();
+  }
 }
