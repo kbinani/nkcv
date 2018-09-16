@@ -540,3 +540,7 @@ function copyDeckInfo(deck_index) {
   });
   clipboard.writeText(lines.join('\n') + '\n');
 }
+
+function toggleScreenRecording(sender) {
+
+}
