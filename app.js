@@ -6,7 +6,9 @@ const electron = require('electron'),
       fs = require('fs'),
       path = require('path'),
       strftime = require('strftime'),
-      tlds = require('tlds');
+      tlds = require('tlds'),
+      Transcoder = require('stream-transcoder'),
+      tmp = require('tmp');
 const HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
@@ -150,13 +152,44 @@ ipcMain.on('app.patchConfig', function(event, data) {
 
 ipcMain.on('app.recorded', function(event, input_filepath) {
   const now = new Date();
-  const filename = app.getName() + '_' + strftime('%Y%m%d-%H%M%S-%L', now) + '.webm';
-  const fullpath = path.join(app.getPath('pictures'), filename);
-  fs.rename(input_filepath, fullpath, (err) => {
-    if (err) {
-      console.trace(err);
-    }
+  const filename_without_ext = app.getName() + '_' + strftime('%Y%m%d-%H%M%S-%L', now);
+
+  const content_bounds = mainWindow.getContentBounds();
+  const window_bounds = mainWindow.getBounds();
+  const dy = content_bounds.y - window_bounds.y;
+
+  const scale_rat_string = config.scale();
+  const scale = Rat.fromString(scale_rat_string);
+  const width = 1200 * scale.value();
+  const height = 720 * scale.value();
+
+  const reader = fs.createReadStream(input_filepath);
+  const temporary_mp4_file = tmp.fileSync({postfix: '.mp4'}, (err) => {
+    if (err) console.trace(err);
   });
+  const writer = fs.createWriteStream(temporary_mp4_file.name);
+  const t = new Transcoder(reader)
+    .format('mp4')
+    .custom('vf', 'crop=' + [width, height, 0, dy].join(':'))
+    .on('finish', function() {
+      const result = path.join(app.getPath('pictures'), filename_without_ext + '.mp4');
+      fs.rename(temporary_mp4_file.name, result, (err) => {
+        if (err) console.trace(err);
+      });
+      fs.unlink(input_filepath, (err) => {
+        if (err) console.trace(err);
+      });
+    })
+    .on('error', function() {
+      const result = path.join(app.getPath('pictures'), filename_without_ext + '.webm');
+      fs.rename(input_filepath, result, (err) => {
+        if (err) console.trace(err);
+      });
+      fs.unlink(temporary_mp4_file.name, (err) => {
+        if (err) console.trace(err);
+      });
+    })
+    .stream().pipe(writer);
 });
 
 function updateScale(scale_rat_string) {

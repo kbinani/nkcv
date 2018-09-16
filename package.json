@@ -20,6 +20,7 @@
     "lodash": "^4.17.10",
     "mkdirp": "^0.5.1",
     "sprintf": "^0.1.5",
+    "stream-transcoder": "0.0.5",
     "strftime": "^0.10.0",
     "tlds": "^1.203.1",
     "tmp": "0.0.33"
