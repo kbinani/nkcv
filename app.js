@@ -24,6 +24,7 @@ const mandatoryApiData = ['api_start2/getData', 'api_get_member/require_info', '
 var mandatoryData = {};
 var mainWindowClosed = false;
 const config = new Config({});
+var _numFilesEncoding = 0;
 
 app.on('window-all-closed', function() {
   app.quit();
@@ -165,15 +166,16 @@ ipcMain.on('app.recorded', function(event, input_filepath) {
   const width = 1200 * scale.value();
   const height = 720 * scale.value();
 
-  const reader = fs.createReadStream(input_filepath);
   const temporary_mp4_file = tmp.fileSync({postfix: '.mp4'}, (err) => {
     if (err) console.trace(err);
   });
   const writer = fs.createWriteStream(temporary_mp4_file.name);
-  const t = new Transcoder(reader)
+  incrementNumFilesEncoding();
+  const t = new Transcoder(input_filepath)
     .format('mp4')
     .custom('vf', 'crop=' + [width, height, 0, dy].map((it) => it * scaleFactor).join(':'))
     .on('finish', function() {
+      decrementNumFilesEncoding();
       const result = path.join(app.getPath('pictures'), filename_without_ext + '.mp4');
       fs.rename(temporary_mp4_file.name, result, (err) => {
         if (err) console.trace(err);
@@ -183,6 +185,7 @@ ipcMain.on('app.recorded', function(event, input_filepath) {
       });
     })
     .on('error', function() {
+      decrementNumFilesEncoding();
       const result = path.join(app.getPath('pictures'), filename_without_ext + '.webm');
       fs.rename(input_filepath, result, (err) => {
         if (err) console.trace(err);
@@ -193,6 +196,24 @@ ipcMain.on('app.recorded', function(event, input_filepath) {
     })
     .stream().pipe(writer);
 });
+
+function incrementNumFilesEncoding(num) {
+  _numFilesEncoding++;
+  updateWindowTitle();
+}
+
+function decrementNumFilesEncoding(num) {
+  _numFilesEncoding--;
+  updateWindowTitle();
+}
+
+function updateWindowTitle() {
+  var title = app.getName();
+  if (_numFilesEncoding > 0) {
+    title += ' - ' + _numFilesEncoding + ' 個のファイルをエンコード中';
+  }
+  mainWindow.setTitle(title);
+}
 
 function updateScale(scale_rat_string) {
   if (!mainWindow) {
