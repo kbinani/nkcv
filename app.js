@@ -91,6 +91,16 @@ app.on('ready', function() {
   });
 
   mainWindow.on('close', function(event) {
+    if (_numFilesEncoding > 0) {
+      const {dialog} = require('electron');
+      dialog.showMessageBox({
+        type: 'info',
+        message: '動画をエンコード中です',
+      });
+      event.preventDefault();
+      return;
+    }
+
     const bounds = mainWindow.getBounds();
     config.patch({'mainWindow.bounds': bounds}, (c) => {
       saveConfig();
