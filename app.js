@@ -151,6 +151,8 @@ ipcMain.on('app.patchConfig', function(event, data) {
 });
 
 ipcMain.on('app.recorded', function(event, input_filepath) {
+  const scaleFactor = electron.screen.getPrimaryDisplay().scaleFactor;
+
   const now = new Date();
   const filename_without_ext = app.getName() + '_' + strftime('%Y%m%d-%H%M%S-%L', now);
 
@@ -170,7 +172,7 @@ ipcMain.on('app.recorded', function(event, input_filepath) {
   const writer = fs.createWriteStream(temporary_mp4_file.name);
   const t = new Transcoder(reader)
     .format('mp4')
-    .custom('vf', 'crop=' + [width, height, 0, dy].join(':'))
+    .custom('vf', 'crop=' + [width, height, 0, dy].map((it) => it * scaleFactor).join(':'))
     .on('finish', function() {
       const result = path.join(app.getPath('pictures'), filename_without_ext + '.mp4');
       fs.rename(temporary_mp4_file.name, result, (err) => {
