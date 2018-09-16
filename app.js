@@ -8,7 +8,8 @@ const electron = require('electron'),
       strftime = require('strftime'),
       tlds = require('tlds'),
       Transcoder = require('stream-transcoder'),
-      tmp = require('tmp');
+      tmp = require('tmp'),
+      uuidv4 = require('uuid/v4');
 const HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
@@ -25,6 +26,7 @@ var mandatoryData = {};
 var mainWindowClosed = false;
 const config = new Config({});
 var _numFilesEncoding = 0;
+var _screenRecordingToken = null;
 
 app.on('window-all-closed', function() {
   app.quit();
@@ -151,6 +153,17 @@ ipcMain.on('app.patchConfig', function(event, data) {
   });
 });
 
+ipcMain.on('app.screenRecordingToken', function() {
+  _screenRecordingToken = uuidv4();
+  updateWindowTitle();
+  mainWindow.webContents.send('app.startScreenRecording', _screenRecordingToken);
+});
+
+ipcMain.on('app.screenRecordingStarted', function() {
+  _screenRecordingToken =  null;
+  updateWindowTitle();
+});
+
 ipcMain.on('app.recorded', function(event, input_filepath) {
   const scaleFactor = electron.screen.getPrimaryDisplay().scaleFactor;
 
@@ -211,6 +224,9 @@ function updateWindowTitle() {
   var title = app.getName();
   if (_numFilesEncoding > 0) {
     title += ' - ' + _numFilesEncoding + ' 個のファイルをエンコード中';
+  }
+  if (_screenRecordingToken) {
+    title += ' - [' + _screenRecordingToken + ']';
   }
   mainWindow.setTitle(title);
 }
