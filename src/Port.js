@@ -88,6 +88,7 @@ Port.prototype.destroy_ship = function(ship_id, destroy_slotitems) {
 };
 
 Port.prototype.combined_type = function() {
+  // 3: 輸送護衛部隊
   return _.get(this._data, ['api_data', 'api_combined_flag'], 0);
 };
 
