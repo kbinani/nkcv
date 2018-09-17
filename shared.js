@@ -44,7 +44,7 @@ function updateShipStatus(ships) {
     }
 
     const sally_area = ship.sally_area();
-    $('.ship_' + id + '_sally_area').css('background-color', sally_area.background_color());
+    $('.ship_' + id + '_sally_area').css('background-color', sally_area.id() == 0 ? 'transparent' : sally_area.background_color());
     $('.ship_' + id + '_sally_area').css('color', sally_area.text_color());
     $('.ship_' + id + '_sally_area').html(sally_area.name());
   });

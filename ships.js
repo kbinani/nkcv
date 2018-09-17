@@ -422,14 +422,15 @@ function createShipCell(ship) {
       <div class="ThemeTableCell"><span class="ship_{ship_id}_sakuteki">{sakuteki}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_taisen">{taisen}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_soku">{soku}</span></div>
-      <div class="ThemeTableCell">
-        <div style="display: flex;">
-          <div class="ship_{ship_id}_sally_area FontNormal" style="flex: 1 1 auto; color: {sally_area_text_color}; background-color: {sally_area_background_color}; text-align: center; vertical-align: middle; padding: 0px 5px 0px 5px;">{sally_area}</div>
+      <div class="ThemeTableCell" sylte="vertical-align: middle;">
+        <div style="display: flex; height: 25px; line-height: 25px;">
+          <div class="ship_{ship_id}_sally_area FontNormal" style="flex: 1 1 auto; height: 19px; line-height: 19px; margin-top: 3px; margin-bottom: 3px; color: {sally_area_text_color}; background-color: {sally_area_background_color}; text-align: center; vertical-align: middle; padding: 0px 5px 0px 5px;">{sally_area}</div>
         </div>
       </div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_repair">{repair}</span></div>
       <div class="ThemeTableCell ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>
     </div>`;
+  const sally_area = ship.sally_area();
   return template.replace(/{ship_id}/g, ship.id())
                  .replace(/{level}/, ship.level())
                  .replace(/{type}/, ship.type().toString())
@@ -446,8 +447,8 @@ function createShipCell(ship) {
                  .replace(/{soku}/, ship.soku().toString())
                  .replace(/{repair}/, ship.repair_seconds() > 0 ? timeLabel(ship.repair_seconds()) : '')
                  .replace(/{sally_area}/, ship.sally_area().name())
-                 .replace(/{sally_area_background_color}/, ship.sally_area().background_color())
-                 .replace(/{sally_area_text_color}/, ship.sally_area().text_color());
+                 .replace(/{sally_area_background_color}/, sally_area.id() == 0 ? 'transparent' : sally_area.background_color())
+                 .replace(/{sally_area_text_color}/, sally_area.text_color());
 }
 
 function createSlotitemCell(slotitem_id) {
