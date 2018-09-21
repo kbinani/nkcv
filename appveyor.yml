@@ -10,10 +10,11 @@ build_script:
   - dir release-builds
 artifacts:
   - path: 'release-builds\nkcv-*.zip'
+    name: zip_archive_package
 deploy:
   - provider: GitHub
     auth_token:
       secure: HjklBUd/3Ki6qtAQ2aJp/PUJ8bDtzfSyEYKyQ0fqUshUhrZZVGVMACjx8/7ov+C7
-    artifact: 'release-builds\nkcv-*.zip'
+    artifact: zip_archive_package
     force_update: true
     prerelease: true
