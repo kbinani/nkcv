@@ -10,7 +10,6 @@ build_script:
   - dir release-builds
 artifacts:
   - path: 'release-builds\nkcv-*.zip'
-    name: nkcv.zip
 deploy:
   - provider: GitHub
     auth_token:
