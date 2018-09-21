@@ -6,11 +6,13 @@ install:
   - npm install
 build_script:
   - npm run package-win
+  - move release-builds\nkcv.zip release-builds\nkcv-%APPVEYOR_REPO_TAG_NAME%-windows.zip
+  - dir release-builds
 artifacts:
-  - path: release-builds\nkcv.zip
+  - path: 'release-builds\nkcv-*.zip'
     name: nkcv.zip
 deploy:
   - provider: GitHub
     auth_token:
       secure: HjklBUd/3Ki6qtAQ2aJp/PUJ8bDtzfSyEYKyQ0fqUshUhrZZVGVMACjx8/7ov+C7
-    artifact: nkcv.zip
+    artifact: 'release-builds\nkcv-*.zip'
