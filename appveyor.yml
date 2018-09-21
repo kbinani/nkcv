@@ -16,3 +16,4 @@ deploy:
     auth_token:
       secure: HjklBUd/3Ki6qtAQ2aJp/PUJ8bDtzfSyEYKyQ0fqUshUhrZZVGVMACjx8/7ov+C7
     artifact: 'release-builds\nkcv-*.zip'
+    force_update: true
