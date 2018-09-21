@@ -6,11 +6,22 @@ install:
   - npm install
 build_script:
   - npm run package-win
+  - move release-builds\nkcv.zip release-builds\nkcv-%APPVEYOR_REPO_TAG_NAME%-windows.zip
+  - dir release-builds
 artifacts:
-  - path: release-builds\nkcv.zip
-    name: nkcv.zip
+  - path: 'release-builds\nkcv-*.zip'
+    name: zip_archive_package
 deploy:
   - provider: GitHub
     auth_token:
       secure: HjklBUd/3Ki6qtAQ2aJp/PUJ8bDtzfSyEYKyQ0fqUshUhrZZVGVMACjx8/7ov+C7
-    artifact: nkcv.zip
+    artifact: zip_archive_package
+    force_update: true
+    prerelease: true
+    description: |
+      ## ダウンロード
+      * [Windows 64bit](https://github.com/kbinani/nkcv/releases/download/%APPVEYOR_REPO_TAG_NAME%/nkcv-%APPVEYOR_REPO_TAG_NAME%-windows.zip)
+      * [macOS](https://github.com/kbinani/nkcv/releases/download/%APPVEYOR_REPO_TAG_NAME%/nkcv-%APPVEYOR_REPO_TAG_NAME%-macos.dmg)
+      ## リリースノート
+      ## インストール方法
+      * [こちら](https://github.com/kbinani/nkcv/wiki) を参照ください

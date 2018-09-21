@@ -15,14 +15,17 @@ script:
   - nvm use $(cat .node-version)
   - npm install
   - npm run package-macos
+  - mv ./release-builds/nkcv.dmg ./release-builds/nkcv-${TRAVIS_TAG}-macos.dmg
 after_script:
   - bash script/uninstall_cert.sh
 deploy:
   provider: releases
   api_key:
     secure: MOibK2+jhFIxKdWztYOyG/SCmXR8qprR7LaSOXsoyYSrGRGP0w8+Z+KxHZRttLWbWZ5dBdlePBFqeE8Ubpmvl4axQBNav1VxJA+GpKF5QEXWLFZUCeS/x6/cqW1bmYVtZ0WEnHsTAaBpAOkWitDOiUjUMoOLVZLyQUl7JMWyNoX61tJmB3LGih8HdPe5gR1y1BzKoBypyvAEtPXPQ8RJJ/uNwEhS7Mi7j97eXd/Z/K/Bu9Zpb9JW08mLarp9oGrAUWxrEig/JjuDX3rzJkyMPXWpQc+bjUuci7aeTEXY5wYPa2W7nUKVu4VhcFVYNvpGRNDlZIB/DC5xdku7lke3LUpN7rVtQicf882JuAv3vkRTy8evu0w+IDfzI8PirQIzrhrKZhgY3TSl1Kn1zYctnrWzJwJGjHG8GeP1eJsvG2xaocmHR6ezBVcFs7mDm+OYisSeCI1tv35zBNmmy8TsTWJnXJsg3ec1Q4I2uD7P3pxU6Xz/mINCyqPZKxNfr5+WpS7oadRVJQ+Z/t8CWaluBTyHbNbqMCf38ndtaDrBYpu/D+aQB57CT+FdqsjvsUPEX2m0H7jblF4J8M3AiReXgh0iiOH2W30bqmdr6TwlssdTkE7UEi6+RIFjYTJAGiYkG5JdKYcxu6CjfQEJ0kjw21FPgGTE7Nth2Z8EpQi30VA=
-  file: ./release-builds/nkcv.dmg
+  file_glob: true
+  file: ./release-builds/nkcv-*.dmg
   overwrite: true
   skip_cleanup: true
+  prerelease: true
   on:
     tags: true
