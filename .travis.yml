@@ -26,5 +26,13 @@ deploy:
   file: ./release-builds/nkcv-*.dmg
   overwrite: true
   skip_cleanup: true
+  prerelease: true
+  body: |
+    ## ダウンロード
+    * [Windows 64bit](https://github.com/kbinani/nkcv/releases/download/${TRAVIS_TAG}/nkcv-${TRAVIS_TAG}-windows.zip)
+    * [macOS](https://github.com/kbinani/nkcv/releases/download/${TRAVIS_TAG}/nkcv-${TRAVIS_TAG}-macos.dmg)'
+    ## リリースノート
+    ## インストール方法
+    * [こちら](https://github.com/kbinani/nkcv/wiki) を参照ください
   on:
     tags: true
