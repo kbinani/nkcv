@@ -63,7 +63,7 @@ HTTPProxy.launch = function(port, complete) {
     var cliSoc = cliReq.socket || cliReq.connection;
     const remoteAddress = cliReq.connection.remoteAddress;
 
-    const whitelist = ['::1'];
+    const whitelist = ['::1', '::ffff:127.0.0.1'];
     if (whitelist.indexOf(remoteAddress) < 0) {
       cliReq.destroy();
       return;
