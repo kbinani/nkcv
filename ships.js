@@ -42,14 +42,19 @@ function onload() {
       </label>`
     const allSallyAreas = SallyArea.allCases();
     $container.empty();
-    allSallyAreas.forEach((it) => {
-      const name = it.name();
-      const element = sally_area_template.replace(/{id}/g, it.id())
-                              .replace(/{name}/g, name.length == 0 ? 'なし' : name)
-                              .replace(/{background_color}/g, it.background_color())
-                              .replace(/{text_color}/g, it.text_color());
-      $container.append(element);
-    });
+    if (allSallyAreas.length > 1) {
+      allSallyAreas.forEach((it) => {
+        const name = it.name();
+        const element = sally_area_template.replace(/{id}/g, it.id())
+                                .replace(/{name}/g, name.length == 0 ? 'なし' : name)
+                                .replace(/{background_color}/g, it.background_color())
+                                .replace(/{text_color}/g, it.text_color());
+        $container.append(element);
+      });
+      $('#sally_area_choices_container').css('display', 'flex');
+    } else {
+      $('#sally_area_choices_container').css('display', 'none');
+    }
 
     const choices = $('#ship_type_choices');
     const template = `
