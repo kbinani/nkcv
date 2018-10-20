@@ -34,6 +34,8 @@ const sort_order = [
 var sort_order_inverted = false;
 
 function onload() {
+  require('electron-disable-file-drop');
+
   SallyArea.load_remote_mapping(function() {
     const $container = $('#sally_area_choices');
     const sally_area_template = `

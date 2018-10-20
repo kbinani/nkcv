@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "alasql": "^0.4.11",
+    "electron-disable-file-drop": "^1.0.2",
     "electron-is-dev": "^0.3.0",
     "find-free-port": "^2.0.0",
     "hjson": "^3.1.1",

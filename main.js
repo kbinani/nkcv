@@ -21,6 +21,8 @@ var _recording = false;
 var _recorder = null;
 
 function onload() {
+  require('electron-disable-file-drop');
+
   const webview = document.querySelector("webview");
   webview.addEventListener("dom-ready", function() {
     applyScale();
