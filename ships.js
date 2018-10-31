@@ -105,38 +105,22 @@ function onload() {
     $("input[name='filter_remodel']").val([_.get(data, ['remodel'], 'any')]);
     $("input[name='filter_soku']").val(_.get(data, ['soku'], []));
     const type = _.get(data, ['type'], []);
-    var all_checked = true;
     ShipType.allCases().forEach((it) => {
       const check = type.indexOf(it.value()) >= 0;
       $('#ship_type_' + it.value()).prop('checked', check);
-      all_checked = all_checked && check;
     });
-    $('#ship_type_all').prop('checked', all_checked);
     $("input[name='filter_upgrade']").val([_.get(data, ['upgrade'], 'any')]);
   });
 }
 
-function toggleAll() {
-  const checked = $('#ship_type_all').prop('checked');
-  ShipType.allCases().forEach(function(type) {
-    const checkbox = $('#ship_type_' + type.value());
-    checkbox.prop('checked', checked);
-  });
-  applyFilter();
-}
-
 function shipTypeCheckboxClicked() {
-  var allchecked = true;
   ShipType.allCases().forEach(function(type) {
     const checkbox = $('#ship_type_' + type.value());
-    allchecked &= checkbox.prop('checked');
   });
-  $('#ship_type_all').prop('checked', allchecked);
   applyFilter();
 }
 
 function selectShipType(types) {
-  $('#ship_type_all').prop('checked', false);
   ShipType.allCases().forEach(function(type) {
     const checkbox = $('#ship_type_' + type.value());
     const check = types.indexOf(type.value()) >= 0;

@@ -17,16 +17,7 @@
       </div>
       <div id="filter_panel" style="flex: 0 0 auto; display: flex; flex-direction: column;">
         <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 5px; display: flex; flex-direction: column;">
-          <div id="ship_type_choices" style="flex: 1 1 auto; padding: 5px;">
-            艦種:
-            <br/>
-            <span style="height: 25px; line-height: 25px; margin-right: 10px;">
-              <label for="ship_type_all">
-                <input id="ship_type_all" type="checkbox" onclick="toggleAll()" checked="checked"/>すべて選択
-              </label>
-            </span>
-            <br/>
-          </div>
+          <div id="ship_type_choices" style="flex: 1 1 auto; padding: 5px;"></div>
           <div style="flex: 1 1 auto; display: flex;">
             <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([8, 9, 10])">戦艦級</div>
             <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([7, 11, 18])">航空母艦</div>
@@ -36,6 +27,9 @@
             <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([1])">海防艦</div>
             <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([13, 14])">潜水艦</div>
             <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([16, 17, 19, 20, 22])">補助艦艇</div>
+            <div style="flex: 1 1 auto;"><!-- spacer --></div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 18, 19, 20, 21, 22])">全て選択</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([])">全て解除</div>
           </div>
         </div>
         <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 0px 5px 5px 5px;">
