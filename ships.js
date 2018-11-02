@@ -76,6 +76,8 @@ function onload() {
     });
   });
 
+  setQueryEnabled(false);
+
   $('#query').bind('input propertychange', function() {
     queryChanged()
   });
@@ -564,8 +566,9 @@ function shipToJSON(ship) {
   };
 };
 
-function toggleQuery() {
-  const query_enabled = $('#use_query').prop('checked');
+function setQueryEnabled(query_enabled) {
+  $('#use_query').prop('checked', query_enabled);
+
   $('#filter_panel input').each(function() {
     $(this).prop('disabled', query_enabled);
   });
@@ -575,8 +578,10 @@ function toggleQuery() {
   $('#filter_panel').css('opacity', query_enabled ? 0.5 : 1);
   $('#sort_panel').css('opacity', query_enabled ? 0.5 : 1);
 
-  $('#query').prop('disabled', !query_enabled);
-  $('#query').prop('readonly', !query_enabled);
+  $('.QueryInputGroup').prop('disabled', !query_enabled);
+  $('.QueryInputGroup').prop('readonly', !query_enabled);
+  $('.QueryInputGroup').css('pointer-events', !query_enabled ? 'none' : 'auto');
+
   $('#query').css('user-select', query_enabled ? 'text' : 'none');
   $('#query').css('cursor', query_enabled ? 'auto' : 'default');
 
@@ -589,6 +594,11 @@ function toggleQuery() {
     applyFilter();
   }
   $('#ship_table_header').css('cursor', query_enabled ? 'default' : 'pointer');
+}
+
+function toggleQuery() {
+  const query_enabled = $('#use_query').prop('checked');
+  setQueryEnabled(query_enabled);
 }
 
 function queryChanged() {
