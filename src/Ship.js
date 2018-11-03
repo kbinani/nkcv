@@ -14,8 +14,12 @@ function Ship(data, master_data, storage) {
   this._is_mission = false;
 }
 
+function clone(data) {
+  return JSON.parse(JSON.stringify(data));
+}
+
 Ship.prototype.clone = function() {
-  const ship = new Ship(this._data, this._master_data, this._storage);
+  const ship = new Ship(clone(this._data), this._master_data, this._storage);
   ship._is_mission = this._is_mission;
   return ship;
 };

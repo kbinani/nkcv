@@ -573,7 +573,7 @@ DataStorage.prototype.handle_req_nyukyo_speedchange = function(params, response,
 
 DataStorage.prototype.handle_req_nyukyo_start = function(params, response, port) {
   const highspeed = parseInt(params.get('api_highspeed'), 10) == 1;
-  if (highspeed != 1) {
+  if (!highspeed) {
     return;
   }
   const ship_id = parseInt(params.get('api_ship_id'), 10);
