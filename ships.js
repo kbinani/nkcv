@@ -4,8 +4,7 @@ const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
       DataStorage = require('./src/DataStorage.js'),
       ShipType = require('./src/ShipType.js'),
-      SallyArea = require('./src/SallyArea.js'),
-      QueryHistory = require('./src/QueryHistory.js');
+      SallyArea = require('./src/SallyArea.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       alasql = require('alasql');
@@ -33,7 +32,6 @@ const sort_order = [
   {'key': 'level', 'is_descending': false},
 ];
 var sort_order_inverted = false;
-const _query_history = new QueryHistory(50);
 
 function onload() {
   require('electron-disable-file-drop');
@@ -82,14 +80,10 @@ function onload() {
 
   $('#query').keypress(function(e) {
     if (e.which == 13) {
-      queryDidEntered();
+      applyFilter();
       return false;
     }
   });
-
-  _query_history.onChange = function() {
-    queryHistoryChanged();
-  };
 
   ipcRenderer.on('app.shipWindowSort', function(event, data) {
     sort_order.splice(0, sort_order.length);
@@ -197,17 +191,6 @@ function update(ships) {
   _ships = ships.map((it) => it.clone());
   applySort();
   applyFilter();
-}
-
-const _QUERY_PREFIX_DISPLAY = 'SELECT * FROM ships WHERE ';
-const _QUERY_PREFIX_ALASQL = 'SELECT id FROM ? WHERE ';
-
-function createQueryDisplay() {
-  return _QUERY_PREFIX_DISPLAY + $('#query').val();
-}
-
-function createQueryAlasql() {
-  return _QUERY_PREFIX_ALASQL + $('#query').val();
 }
 
 function applyFilter() {
@@ -345,7 +328,7 @@ function applyFilter() {
 
   const query_enabled = $('#use_query').prop('checked');
   if (query_enabled) {
-    query = createQueryAlasql();
+    query = 'SELECT id FROM ? WHERE ' + $('#query').val();
   } else {
     var query_after_where = where.join(' AND ');
     if (order_by.length > 0) {
@@ -592,45 +575,11 @@ function toggleQuery() {
 }
 
 function queryChanged() {
-  const query = createQueryAlasql();
+  const query = 'SELECT * FROM ? WHERE ' + $('#query').val();
   try {
     alasql.compile(query);
     $('#query').css('background-color', '#ddd');
   } catch (e) {
     $('#query').css('background-color', '#fdd');
   }
-}
-
-function queryDidEntered() {
-  const query = createQueryAlasql();
-  try {
-    const compiled = alasql.compile(query);
-  } catch (e) {
-    return;
-  }
-  _query_history.append(createQueryDisplay());
-  applyFilter();
-}
-
-function queryHistoryChanged() {
-  const $select = $('#query_history_choice');
-  $select.empty();
-  const history = _query_history.history;
-  const template = '<option value="{query}">{query}</option>';
-  for (var i = history.length - 1; i >= 0; i--) {
-    const query = history[i];
-    $select.append(template.replace(/{query}/g, query));
-  }
-}
-
-function queryHistorySelected() {
-  const $select = $('#query_history_choice');
-  const query = $select.val();
-  const index = query.indexOf(_QUERY_PREFIX_DISPLAY);
-  if (index != 0) {
-    return;
-  }
-  $('#query').val(query.substring(index + _QUERY_PREFIX_DISPLAY.length));
-  queryChanged();
-  applyFilter();
 }
