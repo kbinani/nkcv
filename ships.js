@@ -4,7 +4,9 @@ const Port = require('./src/Port.js'),
       Master = require('./src/Master.js'),
       DataStorage = require('./src/DataStorage.js'),
       ShipType = require('./src/ShipType.js'),
-      SallyArea = require('./src/SallyArea.js');
+      SallyArea = require('./src/SallyArea.js'),
+      QueryHistory = require('./src/QueryHistory.js'),
+      QueryPresetList = require('./src/QueryPresetList.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       alasql = require('alasql');
@@ -32,6 +34,8 @@ const sort_order = [
   {'key': 'level', 'is_descending': false},
 ];
 var sort_order_inverted = false;
+const _query_history = new QueryHistory(50);
+const _query_preset_list = new QueryPresetList({});
 
 function onload() {
   require('electron-disable-file-drop');
@@ -74,16 +78,27 @@ function onload() {
     });
   });
 
+  setQueryEnabled(false);
+
   $('#query').bind('input propertychange', function() {
     queryChanged()
   });
 
   $('#query').keypress(function(e) {
     if (e.which == 13) {
-      applyFilter();
+      queryDidEntered();
       return false;
     }
   });
+
+  _query_history.onChange = function() {
+    queryHistoryChanged();
+  };
+
+  _query_preset_list.onChange = function() {
+    loadQueryPresetList();
+    ipcRenderer.send('app.patchConfig', {'sqlPresetList': _query_preset_list.toJSON()});
+  };
 
   ipcRenderer.on('app.shipWindowSort', function(event, data) {
     sort_order.splice(0, sort_order.length);
@@ -111,7 +126,33 @@ function onload() {
     });
     $("input[name='filter_upgrade']").val([_.get(data, ['upgrade'], 'any')]);
   });
+
+  ipcRenderer.on('app.sqlPresetList', function(event, data) {
+    // ここは 1 回しか来ないはず
+    _query_preset_list.patch(data);
+    loadQueryPresetList();
+  });
 }
+
+function loadQueryPresetList() {
+  const preset_list = _query_preset_list.list;
+  const $query_preset_choice = $('#query_preset_choice');
+  const current = $query_preset_choice.val();
+  $query_preset_choice.empty();
+  $query_preset_choice.append('<option value="empty">-</option>');
+
+  const keys = Object.keys(preset_list);
+  keys.sort();
+  keys.forEach((key) => {
+    const preset = preset_list[key];
+    const template = `<option value="{id}">{title}</option>`;
+    const element = template.replace(/{id}/g, preset.id)
+                            .replace(/{title}/g, preset.title);
+    $query_preset_choice.append(element);
+  });
+
+  $query_preset_choice.val(current);
+};
 
 function shipTypeCheckboxClicked() {
   ShipType.allCases().forEach(function(type) {
@@ -191,6 +232,17 @@ function update(ships) {
   _ships = ships.map((it) => it.clone());
   applySort();
   applyFilter();
+}
+
+const _QUERY_PREFIX_DISPLAY = 'SELECT * FROM ships WHERE ';
+const _QUERY_PREFIX_ALASQL = 'SELECT id FROM ? WHERE ';
+
+function createQueryDisplay() {
+  return _QUERY_PREFIX_DISPLAY + $('#query').val();
+}
+
+function createQueryAlasql() {
+  return _QUERY_PREFIX_ALASQL + $('#query').val();
 }
 
 function applyFilter() {
@@ -328,7 +380,7 @@ function applyFilter() {
 
   const query_enabled = $('#use_query').prop('checked');
   if (query_enabled) {
-    query = 'SELECT id FROM ? WHERE ' + $('#query').val();
+    query = createQueryAlasql();
   } else {
     var query_after_where = where.join(' AND ');
     if (order_by.length > 0) {
@@ -547,8 +599,9 @@ function shipToJSON(ship) {
   };
 };
 
-function toggleQuery() {
-  const query_enabled = $('#use_query').prop('checked');
+function setQueryEnabled(query_enabled) {
+  $('#use_query').prop('checked', query_enabled);
+
   $('#filter_panel input').each(function() {
     $(this).prop('disabled', query_enabled);
   });
@@ -558,8 +611,10 @@ function toggleQuery() {
   $('#filter_panel').css('opacity', query_enabled ? 0.5 : 1);
   $('#sort_panel').css('opacity', query_enabled ? 0.5 : 1);
 
-  $('#query').prop('disabled', !query_enabled);
-  $('#query').prop('readonly', !query_enabled);
+  $('.QueryInputGroup').prop('disabled', !query_enabled);
+  $('.QueryInputGroup').prop('readonly', !query_enabled);
+  $('.QueryInputGroup').css('pointer-events', !query_enabled ? 'none' : 'auto');
+
   $('#query').css('user-select', query_enabled ? 'text' : 'none');
   $('#query').css('cursor', query_enabled ? 'auto' : 'default');
 
@@ -574,12 +629,107 @@ function toggleQuery() {
   $('#ship_table_header').css('cursor', query_enabled ? 'default' : 'pointer');
 }
 
+function toggleQuery() {
+  const query_enabled = $('#use_query').prop('checked');
+  if (query_enabled) {
+    $('#query_preset_choice').val('empty');
+  }
+  setQueryEnabled(query_enabled);
+}
+
 function queryChanged() {
-  const query = 'SELECT * FROM ? WHERE ' + $('#query').val();
+  const query = createQueryAlasql();
   try {
     alasql.compile(query);
     $('#query').css('background-color', '#ddd');
   } catch (e) {
     $('#query').css('background-color', '#fdd');
   }
+}
+
+function queryDidEntered() {
+  const query = createQueryAlasql();
+  try {
+    const compiled = alasql.compile(query);
+  } catch (e) {
+    return;
+  }
+  _query_history.append(createQueryDisplay());
+  applyFilter();
+}
+
+function queryHistoryChanged() {
+  const $select = $('#query_history_choice');
+  $select.empty();
+  const history = _query_history.history;
+  const template = '<option value="{query}">{query}</option>';
+  for (var i = history.length - 1; i >= 0; i--) {
+    const query = history[i];
+    $select.append(template.replace(/{query}/g, query));
+  }
+}
+
+function queryHistorySelected() {
+  const $select = $('#query_history_choice');
+  const query = $select.val();
+  const index = query.indexOf(_QUERY_PREFIX_DISPLAY);
+  if (index != 0) {
+    return;
+  }
+  $('#query').val(query.substring(index + _QUERY_PREFIX_DISPLAY.length));
+  queryChanged();
+  applyFilter();
+}
+
+function queryPresetSelected() {
+  const $select = $('#query_preset_choice');
+  const id = $select.val();
+  const preset = _query_preset_list.presetById(id);
+  if (preset == null) {
+    return;
+  }
+  const sql = preset.sql;
+  $('#query').val(sql);
+  _query_history.append(_QUERY_PREFIX_DISPLAY + sql);
+  applyFilter();
+}
+
+function registerSqlPreset() {
+  const title = $('#preset_name').val();
+  const sql_part = $('#query').val();
+  const sql = _QUERY_PREFIX_ALASQL + sql_part;
+  var error_messages = [];
+
+  try {
+    alasql.compile(sql);
+  } catch (e) {
+    error_messages.push('SQL にエラーがあります.');
+  }
+
+  if (title.length == 0) {
+    error_messages.push('プリセット名を設定してください.');
+  }
+
+  if (error_messages.length > 0) {
+    var {dialog} = require('electron').remote;
+    const opt = {
+      type: 'error',
+      title: 'エラー',
+      message: error_messages.join('\n')
+    };
+    dialog.showMessageBox(opt);
+    return;
+  }
+
+  _query_preset_list.append(title, sql_part);
+}
+
+function deleteSqlPreset() {
+  const $select = $('#query_preset_choice');
+  const id = $select.val();
+  if (_query_preset_list.isBuiltin(id)) {
+    return;
+  }
+  $select.val('empty');
+  _query_preset_list.remove(id);
 }

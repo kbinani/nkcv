@@ -293,6 +293,7 @@ function openShipList() {
     }
     shipWindow.webContents.send('app.shipWindowSort', config.shipWindowSort());
     shipWindow.webContents.send('app.shipWindowFilter', config.shipWindowFilter());
+    shipWindow.webContents.send('app.sqlPresetList', config.sqlPresetList());
   });
 
   shipWindow.on('close', function(event) {

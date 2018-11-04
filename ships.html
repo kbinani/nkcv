@@ -112,15 +112,33 @@
         <div id="query_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_less-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
         <div style="flex: 0 0 auto; margin-left: 5px;">クエリー</div>
       </div>
-      <div id="query_panel" style="flex: 0 0 auto; display: none; font-family: monospace; flex-direction: column;">
+      <div id="query_panel" style="flex: 0 0 auto; display: none;flex-direction: column;">
         <div style="flex: 0 0 auto; display: flex; margin: 5px 5px 0px 5px; padding-left: 5px;">
           <label for="use_query">
             <input id="use_query" type="checkbox" onclick="toggleQuery()" style="height: 25px; line-height: 25px; vertical-align: middle;"/>クエリーを使用する
           </label>
         </div>
-        <div style="flex: 0 0 auto; margin: 10px 10px 0px 10px; ">SELECT * FROM ships WHERE</div>
-        <div style="flex: 0 0 auto; margin: 5px 10px 10px 10px; display: flex;">
-          <textarea id="query" style="flex: 1 1 auto; min-height: 50px; resize: vertical; cursor: default; background-color: #ddd; font-family: monospace; font-size: 14px;" readonly="true" disabled title="Enterキーを押すとクエリーが実行されます"></textarea>
+        <div style="flex: 0 0 auto; margin: 5px 10px 0px 10px; font-family: monospace;">SELECT * FROM ships WHERE</div>
+        <div style="flex: 0 0 auto; margin: 5px 10px 0px 10px; display: flex; font-family: monospace;">
+          <textarea class="QueryInputGroup" id="query" style="flex: 1 1 auto; min-height: 50px; resize: vertical; cursor: default; background-color: #ddd; font-family: monospace; font-size: 14px;" readonly="true" disabled title="Enterキーを押すとクエリーが実行されます"></textarea>
+        </div>
+        <div style="flex: 0 0 auto; margin: 10px 10px 0px 10px; height: 25px; line-height: 25px; display: flex;">
+          <div style="display: flex; height: 25px; line-height: 25px; flex: 1 1 auto;">
+            <div>プリセット</div>
+            <select id="query_preset_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 1 1 auto; height: 25px; margin: 0px 5px 5px 5px;" onchange="queryPresetSelected()">
+            </select>
+          </div>
+          <div style="margin-right: 5px; margin-left: 10px;">名前をつけてプリセット登録</div>
+          <label for="preset_name">
+            <input class="QueryInputGroup" id="preset_name" type="text" style="width: 300px;">
+          </label>
+          <div class="ThemeRectButton QueryInputGroup" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;" onclick="registerSqlPreset()">登録</div>
+          <div class="ThemeRectButton QueryInputGroup" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;" onclick="deleteSqlPreset()">削除</div>
+        </div>
+        <div style="flex: 0 0 auto; margin: 5px 10px 5px 10px; height: 25px; line-height: 25px; display: flex;">
+          <div style="flex: 0 0 auto; margin-right: 10px;">履歴</div>
+          <select id="query_history_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 1 1 auto;" onchange="queryHistorySelected()">
+          </select>
         </div>
       </div>
     </div>
