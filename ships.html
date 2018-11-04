@@ -123,13 +123,12 @@
           <textarea class="QueryInputGroup" id="query" style="flex: 1 1 auto; min-height: 50px; resize: vertical; cursor: default; background-color: #ddd; font-family: monospace; font-size: 14px;" readonly="true" disabled title="Enterキーを押すとクエリーが実行されます"></textarea>
         </div>
         <div style="flex: 0 0 auto; margin: 10px 10px 0px 10px; height: 25px; line-height: 25px; display: flex;">
-          <div style="display: flex; height: 25px; line-height: 25px;">
+          <div style="display: flex; height: 25px; line-height: 25px; flex: 1 1 auto;">
             <div>プリセット</div>
-            <select id="query_preset_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 0 0 auto; height: 25px; width: 100px; margin: 0px 5px 5px 5px;" onchange="">
+            <select id="query_preset_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 1 1 auto; height: 25px; margin: 0px 5px 5px 5px;" onchange="queryPresetSelected()">
             </select>
           </div>
-          <div style="flex: 1 1 auto;"><!-- spacer --></div>
-          <div style="margin-right: 5px;">名前をつけてプリセット登録</div>
+          <div style="margin-right: 5px; margin-left: 10px;">名前をつけてプリセット登録</div>
           <label for="preset_name">
             <input class="QueryInputGroup" id="preset_name" type="text" style="width: 300px;">
           </label>

@@ -5,7 +5,8 @@ const Port = require('./src/Port.js'),
       DataStorage = require('./src/DataStorage.js'),
       ShipType = require('./src/ShipType.js'),
       SallyArea = require('./src/SallyArea.js'),
-      QueryHistory = require('./src/QueryHistory.js');
+      QueryHistory = require('./src/QueryHistory.js'),
+      QueryPresetList = require('./src/QueryPresetList.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       alasql = require('alasql');
@@ -34,6 +35,7 @@ const sort_order = [
 ];
 var sort_order_inverted = false;
 const _query_history = new QueryHistory(50);
+const _query_preset_list = new QueryPresetList({});
 
 function onload() {
   require('electron-disable-file-drop');
@@ -119,7 +121,30 @@ function onload() {
     });
     $("input[name='filter_upgrade']").val([_.get(data, ['upgrade'], 'any')]);
   });
+
+  ipcRenderer.on('app.sqlPresetList', function(event, data) {
+    // ここは 1 回しか来ないはず
+    _query_preset_list.patch(data);
+    initQueryPresetList();
+  });
 }
+
+function initQueryPresetList() {
+  const preset_list = _query_preset_list.list;
+  const $query_preset_choice = $('#query_preset_choice');
+  $query_preset_choice.empty();
+  $query_preset_choice.append('<option value="empty">-</option>');
+
+  const keys = Object.keys(preset_list);
+  keys.sort();
+  keys.forEach((key) => {
+    const preset = preset_list[key];
+    const template = `<option value="{id}">{title}</option>`;
+    const element = template.replace(/{id}/g, preset.id)
+                            .replace(/{title}/g, preset.title);
+    $query_preset_choice.append(element);
+  });
+};
 
 function shipTypeCheckboxClicked() {
   ShipType.allCases().forEach(function(type) {
@@ -598,6 +623,9 @@ function setQueryEnabled(query_enabled) {
 
 function toggleQuery() {
   const query_enabled = $('#use_query').prop('checked');
+  if (query_enabled) {
+    $('#query_preset_choice').val('empty');
+  }
   setQueryEnabled(query_enabled);
 }
 
@@ -642,5 +670,18 @@ function queryHistorySelected() {
   }
   $('#query').val(query.substring(index + _QUERY_PREFIX_DISPLAY.length));
   queryChanged();
+  applyFilter();
+}
+
+function queryPresetSelected() {
+  const $select = $('#query_preset_choice');
+  const id = $select.val();
+  const preset = _query_preset_list.presetById(id);
+  if (preset == null) {
+    return;
+  }
+  const sql = preset.sql;
+  $('#query').val(sql);
+  _query_history.append(_QUERY_PREFIX_DISPLAY + sql);
   applyFilter();
 }

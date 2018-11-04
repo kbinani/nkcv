@@ -13,6 +13,7 @@ const keys = {
   'shipWindowSort': 'any',
   'shipWindowFilter': 'any',
   'mute': 'bool',
+  'sqlPresetlist': 'any',
 };
 
 const VERSION = 0;
@@ -120,6 +121,10 @@ Config.prototype.shipWindowFilter = function() {
 
 Config.prototype.mute = function() {
   return _.get(this._data, ['mute'], false) == true;
+};
+
+Config.prototype.sqlPresetlist = function() {
+  return _.get(this._data, ['sqlPresetlist'], {});
 };
 
 Config.prototype.data = function() {
