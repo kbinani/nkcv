@@ -95,6 +95,11 @@ function onload() {
     queryHistoryChanged();
   };
 
+  _query_preset_list.onChange = function() {
+    loadQueryPresetList();
+    ipcRenderer.send('app.patchConfig', {'sqlPresetList': _query_preset_list.toJSON()});
+  };
+
   ipcRenderer.on('app.shipWindowSort', function(event, data) {
     sort_order.splice(0, sort_order.length);
     const sort = _.get(data, ['orders'], []);
@@ -125,13 +130,14 @@ function onload() {
   ipcRenderer.on('app.sqlPresetList', function(event, data) {
     // ここは 1 回しか来ないはず
     _query_preset_list.patch(data);
-    initQueryPresetList();
+    loadQueryPresetList();
   });
 }
 
-function initQueryPresetList() {
+function loadQueryPresetList() {
   const preset_list = _query_preset_list.list;
   const $query_preset_choice = $('#query_preset_choice');
+  const current = $query_preset_choice.val();
   $query_preset_choice.empty();
   $query_preset_choice.append('<option value="empty">-</option>');
 
@@ -144,6 +150,8 @@ function initQueryPresetList() {
                             .replace(/{title}/g, preset.title);
     $query_preset_choice.append(element);
   });
+
+  $query_preset_choice.val(current);
 };
 
 function shipTypeCheckboxClicked() {
@@ -684,4 +692,44 @@ function queryPresetSelected() {
   $('#query').val(sql);
   _query_history.append(_QUERY_PREFIX_DISPLAY + sql);
   applyFilter();
+}
+
+function registerSqlPreset() {
+  const title = $('#preset_name').val();
+  const sql_part = $('#query').val();
+  const sql = _QUERY_PREFIX_ALASQL + sql_part;
+  var error_messages = [];
+
+  try {
+    alasql.compile(sql);
+  } catch (e) {
+    error_messages.push('SQL にエラーがあります.');
+  }
+
+  if (title.length == 0) {
+    error_messages.push('プリセット名を設定してください.');
+  }
+
+  if (error_messages.length > 0) {
+    var {dialog} = require('electron').remote;
+    const opt = {
+      type: 'error',
+      title: 'エラー',
+      message: error_messages.join('\n')
+    };
+    dialog.showMessageBox(opt);
+    return;
+  }
+
+  _query_preset_list.append(title, sql_part);
+}
+
+function deleteSqlPreset() {
+  const $select = $('#query_preset_choice');
+  const id = $select.val();
+  if (_query_preset_list.isBuiltin(id)) {
+    return;
+  }
+  $select.val('empty');
+  _query_preset_list.remove(id);
 }

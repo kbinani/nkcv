@@ -24,7 +24,8 @@
     "stream-transcoder": "0.0.5",
     "strftime": "^0.10.0",
     "tlds": "^1.203.1",
-    "tmp": "0.0.33"
+    "tmp": "0.0.33",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "electron-installer-dmg": "^2.0.0",
