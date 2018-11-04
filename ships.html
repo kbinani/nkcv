@@ -120,25 +120,25 @@
         </div>
         <div style="flex: 0 0 auto; margin: 5px 10px 0px 10px; font-family: monospace;">SELECT * FROM ships WHERE</div>
         <div style="flex: 0 0 auto; margin: 5px 10px 0px 10px; display: flex; font-family: monospace;">
-          <textarea class="QueryInputGroup" id="query" style="flex: 1 1 auto; min-height: 50px; resize: vertical; cursor: default; background-color: #ddd; font-family: monospace; font-size: 14px;" readonly="true" disabled title="Enterキーを押すとクエリーが実行されます"></textarea>
+          <textarea id="query" style="flex: 1 1 auto; min-height: 50px; resize: vertical; cursor: default; background-color: #ddd; font-family: monospace; font-size: 14px;" readonly="true" disabled title="Enterキーを押すとクエリーが実行されます"></textarea>
         </div>
         <div style="flex: 0 0 auto; margin: 10px 10px 0px 10px; height: 25px; line-height: 25px; display: flex;">
           <div style="display: flex; height: 25px; line-height: 25px;">
             <div>プリセット</div>
-            <select id="query_preset_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 0 0 auto; height: 25px; width: 100px; margin: 0px 5px 5px 5px;" onchange="">
+            <select id="query_preset_choice" class="ThemeContainerActive ThemeContainerBorder" style="flex: 0 0 auto; height: 25px; width: 100px; margin: 0px 5px 5px 5px;" onchange="">
             </select>
           </div>
           <div style="flex: 1 1 auto;"><!-- spacer --></div>
           <div style="margin-right: 5px;">名前をつけてプリセット登録</div>
           <label for="preset_name">
-            <input class="QueryInputGroup" id="preset_name" type="text" style="width: 300px;">
+            <input id="preset_name" type="text" style="width: 300px;">
           </label>
-          <div class="ThemeRectButton QueryInputGroup" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;">登録</div>
-          <div class="ThemeRectButton QueryInputGroup" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;">削除</div>
+          <div class="ThemeRectButton" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;">登録</div>
+          <div class="ThemeRectButton" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;">削除</div>
         </div>
         <div style="flex: 0 0 auto; margin: 5px 10px 5px 10px; height: 25px; line-height: 25px; display: flex;">
           <div style="flex: 0 0 auto; margin-right: 10px;">履歴</div>
-          <select id="query_history_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 1 1 auto;" onchange="queryHistorySelected()">
+          <select id="query_history_choice" class="ThemeContainerActive ThemeContainerBorder" style="flex: 1 1 auto;" onchange="queryHistorySelected()">
           </select>
         </div>
       </div>
