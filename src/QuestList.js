@@ -4,43 +4,34 @@ const _ = require('lodash'),
       Quest = require(__dirname + '/Quest.js');
 
 function QuestList() {
-  this._data = [];
+  this._list = [];
 }
 
 QuestList.prototype.update = function(data) {
   const count = _.get(data, ['api_data', 'api_count'], -1);
-  if (count < 0) {
+  if (count <= 0) {
+    this._list = [];
     return;
-  }
-  const delta = count - this._data.length;
-  if (delta > 0) {
-    for (var i = 0; i < delta; i++) {
-      this._data.push(null);
-    }
-  } else if (delta < 0) {
-    this._data.splice(this._data.length + delta, -delta);
   }
 
-  const page = _.get(data, ['api_data', 'api_disp_page'], -1);
-  if (page < 0) {
-    return;
-  }
   const list = _.get(data, ['api_data', 'api_list'], []);
   for (var i = 0; i < list.length; i++) {
-    const index = page * 5 + i;
-    this._data[index] = list[i];
+    const quest = new Quest(list[i]);
+    const idx = _.findIndex(this._list, (it) => it.no() == quest.no());
+    if (idx >= 0) {
+      this._list[idx] = quest;
+    } else {
+      this._list.push(quest);
+    }
   }
+
+  this._list.sort((a, b) => {
+    return a.no() - b.no();
+  });
 };
 
 QuestList.prototype.get = function() {
-  const list = this._data.map((data) => {
-    if (data) {
-      return new Quest(data);
-    } else {
-      return null;
-    }
-  }).filter((it) => it != null);
-  return _.uniqBy(list, (it) => it.no());
+  return this._list.slice();
 };
 
 module.exports = QuestList;
