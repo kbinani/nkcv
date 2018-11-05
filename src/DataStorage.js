@@ -76,6 +76,7 @@ function DataStorage() {
     'api_req_combined_battle/ec_battle',
     'api_req_combined_battle/ld_airbattle',
     'api_req_battle_midnight/sp_midnight',
+    'api_req_quest/clearitemget',
   ].forEach((api) => {
     ipcRenderer.on(api, (_, response, request) => {
       const port = self.port;
@@ -591,6 +592,12 @@ DataStorage.prototype.handle_req_hensei_combined = function(params, response, po
   const type = parseInt(params.get('api_combined_type'), 10);
   port.set_combined_type(type);
   this.notify_port();
+};
+
+DataStorage.prototype.handle_req_quest_clearitemget = function(params, response, port) {
+  const id = parseInt(params.get('api_quest_id'), 10);
+  this.questlist.complete(id);
+  this.notify_questlist();
 };
 
 module.exports = DataStorage;

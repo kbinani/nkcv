@@ -34,4 +34,12 @@ QuestList.prototype.get = function() {
   return this._list.slice();
 };
 
+QuestList.prototype.complete = function(id) {
+  const idx = _.findIndex(this._list, (it) => it.no() == id);
+  if (idx < 0) {
+    return;
+  }
+  this._list.splice(idx, 1);
+};
+
 module.exports = QuestList;
