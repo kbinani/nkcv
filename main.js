@@ -6,7 +6,8 @@ const Port = require('./src/Port.js'),
       Rat = require('./src/Rat.js'),
       Dialog = require('./src/Dialog.js'),
       BattleCell = require('./src/BattleCell.js'),
-      SallyArea = require('./src/SallyArea.js');
+      SallyArea = require('./src/SallyArea.js'),
+      Notification = require('./src/Notification.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       fs = require('fs'),
@@ -172,6 +173,7 @@ function onload() {
           $('.ndock_' + i + '_countdown').addClass('CountdownLabel');
           $('.ndock_' + i + '_countdown').attr('data-timer-finish', ndock_ship.complete_time().getTime());
           $('.ndock_' + i + '_countdown').attr('data-timer-complete-message', '完了');
+          $('.ndock_' + i + '_countdown').attr('data-timer-complete-notification-message', ship.name() + 'の入渠が完了しました');
           break;
         }
       }
@@ -210,11 +212,17 @@ function onload() {
       const remaining = finish - now.getTime();
       if (remaining <= 0) {
         $(this).removeClass('CountdownLabel');
+
         const label = $(this).attr('data-timer-complete-message');
         if (label) {
           $(this).html(label);
         } else {
           $(this).html('');
+        }
+
+        const notify_message = $(this).attr('data-timer-complete-notification-message');
+        if (notify_message) {
+          Notification.show(notify_message);
         }
       } else {
         const label = timeLabel(remaining);
@@ -249,7 +257,8 @@ function updateDeckStatus(decks) {
         name += ' (' + cell_name + ')';
       }
     }
-    $('.deck_' + i + '_title').html(name.length == 0 ? '第' + kanji[i] + '艦隊' : name);
+    const deck_title = name.length == 0 ? '第' + kanji[i] + '艦隊' : name;
+    $('.deck_' + i + '_title').html(deck_title);
 
     const mission_finish_time = deck.mission_finish_time();
     var color = "";
@@ -257,6 +266,7 @@ function updateDeckStatus(decks) {
       color = 'blue';
       $('.deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
       $('.deck_' + i + '_countdown').attr('data-timer-complete-message', '帰還');
+      $('.deck_' + i + '_countdown').attr('data-timer-complete-notification-message', '[' + i + '] ' + deck_title + 'が遠征から帰還しました');
       $('.deck_' + i + '_countdown').addClass('CountdownLabel');
     } else {
       if (deck.battle_cell != null) {
