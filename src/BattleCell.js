@@ -6,6 +6,17 @@ const https = require('https'),
 
 const mapping = require(__dirname + '/../data/battle_cell_mapping.js');
 
+function _assign(data) {
+  for (var area in data) {
+    for (var map in data[area]) {
+      for (var cell in data[area][map]) {
+        const name = data[area][map][cell];
+        _.set(mapping, [area, map, cell], name);
+      }
+    }
+  }
+};
+
 function BattleCell(area, map, cell) {
   this.area = area;
   this.map = map;
@@ -19,6 +30,9 @@ BattleCell.prototype.name = function() {
 };
 
 BattleCell.load_remote_mapping = function() {
+  const local = require(__dirname + '/../data/battle_cell_mapping.js');
+  _assign(local);
+
   const url = 'https://gist.githubusercontent.com/kbinani/ac6e84a846385537f951c362b8b2f8c4/raw/kc_map_cell_name.hjson';
   const req = https.request(url, (res) => {
     var body = '';
@@ -27,14 +41,7 @@ BattleCell.load_remote_mapping = function() {
     });
     res.on('end', (res) => {
       const data = HJSON.parse(body);
-      for (var area in data) {
-        for (var map in data[area]) {
-          for (var cell in data[area][map]) {
-            const name = data[area][map][cell];
-            _.set(mapping, [area, map, cell], name);
-          }
-        }
-      }
+      _assign(data);
     });
   });
   req.on('error', (e) => {
