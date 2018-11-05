@@ -45,9 +45,13 @@ function handle(api, data, request_body) {
         console.trace(err)
         return;
       }
-      const stream = fs.createWriteStream(file);
-      stream.write(JSON.stringify(log, null, 2));
-      stream.end();
+      try {
+        const stream = fs.createWriteStream(file);
+        stream.write(JSON.stringify(log, null, 2));
+        stream.end();
+      } catch (e) {
+        console.trace(e);
+      }
     });
     if (api == 'api_req_map/start' || api == 'api_req_map/next') {
       const area = _.get(json, ['api_data', 'api_maparea_id'], -1);
