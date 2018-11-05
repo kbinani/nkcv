@@ -27,7 +27,14 @@ BattleCell.load_remote_mapping = function() {
     });
     res.on('end', (res) => {
       const data = HJSON.parse(body);
-      Object.assign(mapping, data);
+      for (var area in data) {
+        for (var map in data[area]) {
+          for (var cell in data[area][map]) {
+            const name = data[area][map][cell];
+            _.set(mapping, [area, map, cell], name);
+          }
+        }
+      }
     });
   });
   req.on('error', (e) => {
