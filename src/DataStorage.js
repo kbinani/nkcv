@@ -66,6 +66,7 @@ function DataStorage() {
     'api_req_nyukyo/start',
     'api_req_map/next',
     'api_req_sortie/battle',
+    'api_req_sortie/airbattle',
     'api_req_sortie/ld_airbattle',
     'api_req_hensei/combined',
     'api_req_combined_battle/battle',
@@ -256,6 +257,7 @@ DataStorage.prototype.handle = function(api, params, response, port) {
       this.handle_get_member_ship_deck(params, response, port);
       break;
     case 'api_req_sortie/battle':
+    case 'api_req_sortie/airbattle':
     case 'api_req_sortie/ld_airbattle':
     case 'api_req_combined_battle/battle':
     case 'api_req_combined_battle/battle_water':
