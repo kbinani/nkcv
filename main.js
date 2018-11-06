@@ -168,12 +168,16 @@ function onload() {
         }
         case 1:
         case 2: {
+          const now = new Date();
+          const finish_time = ndock_ship.complete_time().getTime();
           const ship = ndock_ship.ship();
           $('.ndock_' + i + '_title').html(ship.name());
           $('.ndock_' + i + '_countdown').addClass('CountdownLabel');
-          $('.ndock_' + i + '_countdown').attr('data-timer-finish', ndock_ship.complete_time().getTime());
+          $('.ndock_' + i + '_countdown').attr('data-timer-finish', finish_time);
           $('.ndock_' + i + '_countdown').attr('data-timer-complete-message', '完了');
-          $('.ndock_' + i + '_countdown').attr('data-timer-complete-notification-message', ship.name() + 'の入渠が完了しました');
+          if (finish_time > now.getTime()) {
+            $('.ndock_' + i + '_countdown').attr('data-timer-complete-notification-message', ship.name() + 'の入渠が完了しました');
+          }
           break;
         }
       }
@@ -203,6 +207,7 @@ function onload() {
   });
 
   setInterval(function() {
+    var messages = [];
     const now = new Date();
     $('.CountdownLabel').each(function() {
       const finish = $(this).attr('data-timer-finish');
@@ -222,13 +227,18 @@ function onload() {
 
         const notify_message = $(this).attr('data-timer-complete-notification-message');
         if (notify_message) {
-          Notification.show(notify_message);
+          messages.push(notify_message);
         }
+
+        $(this).removeAttr('data-timer-finish');
+        $(this).removeAttr('data-timer-complete-message');
+        $(this).removeAttr('data-timer-complete-notification-message');
       } else {
         const label = timeLabel(remaining);
         $(this).html(label);
       }
     });
+    Notification.show(_.uniq(messages).join("\n"));
   }, 1000);
 }
 
@@ -266,7 +276,10 @@ function updateDeckStatus(decks) {
       color = 'blue';
       $('.deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
       $('.deck_' + i + '_countdown').attr('data-timer-complete-message', '帰還');
-      $('.deck_' + i + '_countdown').attr('data-timer-complete-notification-message', '[' + i + '] ' + deck_title + 'が遠征から帰還しました');
+      const now = new Date();
+      if (mission_finish_time > now.getTime()) {
+        $('.deck_' + i + '_countdown').attr('data-timer-complete-notification-message', '[' + i + '] ' + deck_title + 'が遠征から帰還しました');
+      }
       $('.deck_' + i + '_countdown').addClass('CountdownLabel');
     } else {
       if (deck.battle_cell != null) {
