@@ -36,6 +36,9 @@ const sort_order = [
 var sort_order_inverted = false;
 const _query_history = new QueryHistory(50);
 const _query_preset_list = new QueryPresetList({});
+var _filter_config_received = false;
+var _sort_config_received = false;
+var _sql_preset_list_received = false;
 
 function onload() {
   require('electron-disable-file-drop');
@@ -97,7 +100,9 @@ function onload() {
 
   _query_preset_list.onChange = function() {
     loadQueryPresetList();
-    ipcRenderer.send('app.patchConfig', {'sqlPresetList': _query_preset_list.toJSON()});
+    if (_sql_preset_list_received) {
+      ipcRenderer.send('app.patchConfig', {'sqlPresetList': _query_preset_list.toJSON()});
+    }
   };
 
   ipcRenderer.on('app.shipWindowSort', function(event, data) {
@@ -108,6 +113,7 @@ function onload() {
     });
     sort_order_inverted = _.get(data, ['inverted'], false);
     applySort();
+    _sort_config_received = true;
   });
 
   ipcRenderer.on('app.shipWindowFilter', function(event, data) {
@@ -125,12 +131,14 @@ function onload() {
       $('#ship_type_' + it.value()).prop('checked', check);
     });
     $("input[name='filter_upgrade']").val([_.get(data, ['upgrade'], 'any')]);
+    _filter_config_received = true;
   });
 
   ipcRenderer.on('app.sqlPresetList', function(event, data) {
     // ここは 1 回しか来ないはず
     _query_preset_list.patch(data);
     loadQueryPresetList();
+    _sql_preset_list_received = true;
   });
 }
 
@@ -425,7 +433,9 @@ function applyFilter() {
     container.append($row);
   });
 
-  ipcRenderer.send('app.patchConfig',{'shipWindowFilter': config_filters});
+  if (_filter_config_received) {
+    ipcRenderer.send('app.patchConfig',{'shipWindowFilter': config_filters});
+  }
 }
 
 function applySort() {
@@ -440,12 +450,14 @@ function applySort() {
     index++;
   });
 
-  ipcRenderer.send('app.patchConfig', {
-    'shipWindowSort': {
-      'orders': sort_order,
-      'inverted': sort_order_inverted
-    }
-  });
+  if (_sort_config_received) {
+    ipcRenderer.send('app.patchConfig', {
+      'shipWindowSort': {
+        'orders': sort_order,
+        'inverted': sort_order_inverted
+      }
+    });
+  }
 }
 
 function createShipCell(ship) {
