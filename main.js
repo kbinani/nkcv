@@ -238,7 +238,10 @@ function onload() {
         $(this).html(label);
       }
     });
-    Notification.show(_.uniq(messages).join("\n"));
+    const message = _.uniq(messages).join("\n");
+    if (message != "") {
+      Notification.show(message);
+    }
   }, 1000);
 }
 

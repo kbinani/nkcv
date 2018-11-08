@@ -14,9 +14,14 @@ Notification.show = function(message) {
       'sound': true,
     });
   } else {
-    const {Notification} = require('electron');
-    const n = new Notification({'title': 'nkcv', 'body': message});
-    n.show();
+    const {ipcMain, ipcRenderer} = require('electron');
+    if (ipcMain) {
+      const NativeNotification = require('electron').Notification;
+      const n = new NativeNotification({'title': 'nkcv', 'body': message});
+      n.show();
+    } else {
+      ipcRenderer.send('app._notification', message);
+    }
   }
 };
 

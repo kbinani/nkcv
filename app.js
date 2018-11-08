@@ -220,6 +220,14 @@ ipcMain.on('app.recorded', function(event, input_filepath) {
     .stream().pipe(writer);
 });
 
+ipcMain.on('app.notification', function(event, message) {
+  const {Notification} = require('electron');
+  if (Notification) {
+    const n = new Notification({'title': 'nkcv', 'body': message});
+    n.show();
+  }
+});
+
 function incrementNumFilesEncoding(num) {
   _numFilesEncoding++;
   updateWindowTitle();
