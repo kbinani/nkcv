@@ -31,7 +31,7 @@ const builtin = [
   {
     'id': 'c08f5824-57a7-4d6e-b66e-f8d3774a2f00',
     'title': '明石さん修理可能な艦娘',
-    'sql': 'hp / maxhp >= 0.5 and is_mission = false and repair_seconds > 0 order by repair_seconds desc'
+    'sql': 'hp / maxhp > 0.5 and is_mission = false and repair_seconds > 0 order by repair_seconds desc'
   }
 ];
 
