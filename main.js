@@ -474,24 +474,42 @@ function createGeneralShipCell(ship_id) {
 
 function deckMenuClicked(index) {
   for (var i = 0; i < 4; i++) {
-    const id = '#deck_' + i + '_ships';
-    const menuId = '#deck_' + i + '_menu';
+    const $deck_panel = $('#deck_' + i + '_ships');
+    const $deck_menu = $('#deck_' + i + '_menu');
+
+    const $general_panel = $('.general_deck_' + i);
+    const $general_menu = $('#general_deck_menu_' + i);
+
     if (i == index) {
-      $(id).removeClass('DeckTable');
-      $(id).addClass('DeckTableActive');
+      $deck_panel.removeClass('DeckTable');
+      $deck_panel.addClass('DeckTableActive');
 
-      $(menuId).removeClass('ThemeContainer');
-      $(menuId).addClass('ThemeContainerActive');
-      $(menuId).removeClass('ThemeContainerBorderB');
-      $(menuId).css('cursor', 'default');
+      $deck_menu.removeClass('ThemeContainer');
+      $deck_menu.addClass('ThemeContainerActive');
+      $deck_menu.removeClass('ThemeContainerBorderB');
+      $deck_menu.css('cursor', 'default');
+
+      $general_panel.css('display', 'flex');
+
+      $general_menu.removeClass('ThemeContainer');
+      $general_menu.addClass('ThemeContainerActive');
+      $general_menu.removeClass('ThemeContainerBorderB');
+      $general_menu.css('cursor', 'default');
     } else {
-      $(id).addClass('DeckTable');
-      $(id).removeClass('DeckTableActive');
+      $deck_panel.addClass('DeckTable');
+      $deck_panel.removeClass('DeckTableActive');
 
-      $(menuId).removeClass('ThemeContainerActive');
-      $(menuId).addClass('ThemeContainer');
-      $(menuId).addClass('ThemeContainerBorderB');
-      $(menuId).css('cursor', 'pointer');
+      $deck_menu.removeClass('ThemeContainerActive');
+      $deck_menu.addClass('ThemeContainer');
+      $deck_menu.addClass('ThemeContainerBorderB');
+      $deck_menu.css('cursor', 'pointer');
+
+      $general_panel.css('display', 'none');
+
+      $general_menu.removeClass('ThemeContainerActive');
+      $general_menu.addClass('ThemeContainer');
+      $general_menu.addClass('ThemeContainerBorderB');
+      $general_menu.css('cursor', 'pointer');
     }
   }
 }
@@ -525,27 +543,6 @@ function takeScreenshot(sender) {
 
 function showShipList(sender) {
   ipcRenderer.send('app.openShipList');
-}
-
-function generalDeckMenuClicked(index) {
-  for (var i = 0; i < 4; i++) {
-    const $panel = $('.general_deck_' + i);
-    const $menu = $('#general_deck_menu_' + i);
-
-    if (i == index) {
-      $panel.css('display', 'flex');
-      $menu.removeClass('ThemeContainer');
-      $menu.addClass('ThemeContainerActive');
-      $menu.removeClass('ThemeContainerBorderB');
-      $menu.css('cursor', 'default');
-    } else {
-      $panel.css('display', 'none');
-      $menu.removeClass('ThemeContainerActive');
-      $menu.addClass('ThemeContainer');
-      $menu.addClass('ThemeContainerBorderB');
-      $menu.css('cursor', 'pointer');
-    }
-  }
 }
 
 function scaleSelected(sender) {
