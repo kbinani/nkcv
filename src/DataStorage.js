@@ -393,6 +393,8 @@ DataStorage.prototype.handle_req_hensei_preset_select = function(params, respons
   deck.ships = ship_id_list.filter((id) => id > 0)
                            .map((id) => port.ship(id))
                            .filter((ship) => ship != null);
+  const name = _.get(response, ['api_data', 'api_name'], '');
+  deck.set_name(name);
   this.notify_port();
 };
 
