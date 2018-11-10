@@ -2,7 +2,9 @@
 
 const https = require('https'),
       HJSON = require('hjson'),
-      _ = require('lodash');
+      _ = require('lodash'),
+      is_dev = require('electron-is-dev');
+const Notification = require(__dirname + '/Notification.js');
 
 const mapping = require(__dirname + '/../data/battle_cell_mapping.js');
 
@@ -26,6 +28,9 @@ function BattleCell(area, map, cell) {
 BattleCell.prototype.name = function() {
   const area_name = _.get(mapping, [this.area, 'name'], this.area + '-');
   const name = _.get(mapping, [this.area, this.map, this.cell], this.cell);
+  if (is_dev && name == this.cell + "") {
+    Notification.show("セル名が未設定です. " + area_name + this.map + "-" + this.cell);
+  }
   return area_name + this.map + '-' + name;
 };
 
