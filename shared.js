@@ -81,7 +81,7 @@ function updateSlotitemStatus(slotitems) {
   slotitems.forEach(function(slotitem) {
     const id = slotitem.id();
     const element = $('.slotitem_' + id + '_icon');
-    element.css('background-image', "url('img/" + slotitem.type() + ".svg')");
+    element.css('background-image', "url('img/slotitem/" + slotitem.icon_type() + ".svg')");
 
     var title = slotitem.name();
 

@@ -15,58 +15,245 @@ Slotitem.prototype.name = function() {
   return _.get(this._master_data, ['api_name'], '');
 };
 
+const mapping = {
+  1: {
+    name: "small_caliber_main_gun",
+    title: "小口径主砲",
+  },
+  2: {
+    name: "medium_caliber_main_gun",
+    title: "中口径主砲",
+  },
+  3: {
+    name: "large_caliber_main_gun",
+    title: "大口径主砲",
+  },
+  4: {
+    name: "secondary_gun",
+    title: "副砲",
+  },
+  5: {
+    name: "torpedo",
+    title: "魚雷",
+  },
+  6: {
+    name: "carrier-based_fighter_aircraft",
+    title: "艦上戦闘機",
+  },
+  7: {
+    name: "carrier-based_dive_bomber",
+    title: "艦上爆撃機",
+  },
+  8: {
+    name: "carrier-based_torpedo_bomber",
+    title: "艦上攻撃機",
+  },
+  9: {
+    name: "carrier-based_reconnaissance_aircraft",
+    title: "艦上偵察機",
+  },
+  10: {
+    name: "reconnaissance_seaplane",
+    title: "水上偵察機",
+  },
+  11: {
+    name: "seaplane_bomber",
+    title: "水上爆撃機",
+  },
+  12: {
+    name: "small_radar",
+    title: "小型電探",
+  },
+  13: {
+    name: "large_radar",
+    title: "大型電探",
+  },
+  14: {
+    name: "sonar",
+    title: "ソナー",
+  },
+  15: {
+    name: "depth_charge",
+    title: "爆雷",
+  },
+  16: {
+    name: "",
+    title: "追加装甲",
+  },
+  17: {
+    name: "engine_improvement",
+    title: "機関部強化",
+  },
+  18: {
+    name: "anti-aircraft_shell",
+    title: "対空強化弾",
+  },
+  19: {
+    name: "armor_piercing_shell",
+    title: "対艦強化弾",
+  },
+  20: {
+    name: "",
+    title: "VT信管",
+  },
+  21: {
+    name: "anti-aircraft_gun",
+    title: "対空機銃",
+  },
+  22: {
+    name: "midget_submarine",
+    title: "特殊潜航艇",
+  },
+  23: {
+    name: "emergency_repair_personnel",
+    title: "応急修理要員",
+  },
+  24: {
+    name: "landing_craft",
+    title: "上陸用舟艇",
+  },
+  25: {
+    name: "autogyro",
+    title: "オートジャイロ",
+  },
+  26: {
+    name: "anti-submarine_patrol_aircraft",
+    title: "対潜哨戒機",
+  },
+  27: {
+    name: "extra_armor_(medium)",
+    title: "追加装甲(中型)",
+  },
+  28: {
+    name: "extra_armor_(large)",
+    title: "追加装甲(大型)",
+  },
+  29: {
+    name: "searchlight",
+    title: "探照灯",
+  },
+  30: {
+    name: "supply_transport_container",
+    title: "簡易輸送部材",
+  },
+  31: {
+    name: "ship_repair_facility",
+    title: "艦艇修理施設",
+  },
+  32: {
+    name: "submarine_torpedo",
+    title: "潜水艦魚雷",
+  },
+  33: {
+    name: "star_shell",
+    title: "照明弾",
+  },
+  34: {
+    name: "command_facility",
+    title: "司令部施設",
+  },
+  35: {
+    name: "aviation_personnel",
+    title: "航空要員",
+  },
+  36: {
+    name: "anti-aircraft_fire_director",
+    title: "高射装置",
+  },
+  37: {
+    name: "anti-ground_equipment",
+    title: "対地装備",
+  },
+  38: {
+    name: "large_caliber_main_gun_(II)",
+    title: "大口径主砲（II）",
+  },
+  39: {
+    name: "surface_ship_personnel",
+    title: "水上艦要員",
+  },
+  40: {
+    name: "large_sonar",
+    title: "大型ソナー",
+  },
+  41: {
+    name: "large_flying_boat",
+    title: "大型飛行艇",
+  },
+  42: {
+    name: "large_searchlight",
+    title: "大型探照灯",
+  },
+  43: {
+    name: "combat_ration",
+    title: "戦闘糧食",
+  },
+  44: {
+    name: "supplies",
+    title: "補給物資",
+  },
+  45: {
+    name: "seaplane_fighter",
+    title: "水上戦闘機",
+  },
+  46: {
+    name: "special_amphibious_tank",
+    title: "特型内火艇",
+  },
+  47: {
+    name: "land-based_attack_aircraft",
+    title: "陸上攻撃機",
+  },
+  48: {
+    name: "land-based_fighter",
+    title: "局地戦闘機",
+  },
+  50: {
+    name: "transportation_material",
+    title: "輸送機材",
+  },
+  51: {
+    name: "submarine_equipment",
+    title: "潜水艦装備",
+  },
+  56: {
+    name: "",
+    title: "噴式戦闘機",
+  },
+  57: {
+    name: "jet-powered_fighter-bomber",
+    title: "噴式戦闘爆撃機",
+  },
+  58: {
+    name: "",
+    title: "噴式攻撃機",
+  },
+  59: {
+    name: "",
+    title: "噴式偵察機",
+  },
+  93: {
+    name: "large_radar_(II)",
+    title: "大型電探（II）",
+  },
+  94: {
+    name: "carrier-based_reconnaissance_aircraft_(II)",
+    title: "艦上偵察機（II）",
+  },
+};
+
 Slotitem.prototype.type = function() {
-  const type = _.get(this._master_data, ['api_type', 3], -1);
-  const mapping = {
-    1: "main_canon_light",
-    2: "main_canon_medium",
-    3: "main_canon_heavy",
-    4: "secondary_gun",
-    5: "torpedo",
-    6: "fighter",
-    7: "dive_bomber",
-    8: "torpedo_bomber",
-    9: "recon_plane",
-    10: "recon_seaplane",
-    11: "radar",
-    12: "anti_aircraft_shell", // 三式弾
-    13: "armor_piercing_shell", // 徹甲弾
-    14: "emergency_repair",
-    15: "anti_aircraft_gun",
-    16: "high_angle_gun",
-    17: "depth_charge", // 爆雷投射機
-    18: "sonar",
-    19: "engine_equipment",
-    20: "landing_craft", // 上陸用舟艇
-    21: "autogyro",
-    22: "artillery_spotter", // 指揮連絡機
-    23: "expansion_bulge", // 増設バルジ
-    24: "searchlight",
-    25: "drum_canister", // ドラム缶
-    26: "facility", // 修理施設
-    27: "flare", // 照明弾
-    28: "command_facility", // 司令部施設
-    29: "maintenance_personnel", // 航空要員
-    30: "anti_aircraft_fire_director", // 射撃管制装置
-    31: "anti_ground_artillery", // 対地ロケラン
-    32: "surface_ship_personnel", // 水上艦要員
-    33: "flying_boat", // 大型飛行艇
-    34: "combat_rations", // 戦闘糧食
-    35: "supplies", // 洋上補給
-    36: "amphibious_tank", // 内火艇
-    37: "land_based_attacker", // 陸上攻撃機
-    38: "interceptor_fighter", // 局地戦闘機
-    39: "jet_powereded_bomber1", // 墳式戦闘爆撃機
-    40: "jet_powereded_bomber2",
-    41: "transport_equipment", // 輸送機材
-    42: "submarine_equipment",
-    43: "seaplane_fighter", // 水上戦闘機
-    44: "land_based_fighter", // 陸軍戦闘機
-    45: "night_fighter", // 夜間戦闘機
-    46: "night_attacker", // 夜間攻撃機
-    47: "land_based_anti_submarine_attacker", // 陸上対潜機
-  };
-  return _.get(mapping, [type], "unknown");
+  const type = _.get(this._master_data, ['api_type', 2], -1);
+  const name = _.get(mapping, [type, 'name'], '');
+  if (name.length == 0) {
+    return '' + type;
+  } else {
+    return name;
+  }
+};
+
+Slotitem.prototype.icon_type = function() {
+  return _.get(this._master_data, ['api_type', 3], -1);
 };
 
 Slotitem.prototype.level = function() {
