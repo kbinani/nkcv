@@ -89,4 +89,22 @@ Deck.prototype.taiku = function() {
   return Math.floor(value);
 };
 
+Deck.prototype.sakuteki = function(cell_dependent_coefficient) {
+  if (typeof(cell_dependent_coefficient) == 'undefined') {
+    cell_dependent_coefficient = 1;
+  }
+  var value = 0;
+  this.ships.forEach((ship) => {
+    value += Math.sqrt(ship.sakuteki().numerator());
+
+    const onslot = ship.onslot();
+    _.forEach(ship.slotitems(), (slotitem, index) => {
+      const proficiency = slotitem.proficiency();
+      const sakuteki = slotitem.sakuteki() + slotitem.sakuteki_proficiency_coefficient() * Math.sqrt(proficiency);
+      value += cell_dependent_coefficient * slotitem.sakuteki_coefficient() * sakuteki;
+    });
+  });
+  return Math.floor(value);
+};
+
 module.exports = Deck;

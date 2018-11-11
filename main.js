@@ -298,6 +298,7 @@ function updateDeckStatus(decks) {
     $('.deck_' + i + '_icon').css('background-color', color);
     $('.deck_' + i + '_taiku').html(deck.taiku());
     $('.deck_' + i + '_soku').html(deck.soku().toString());
+    $('.deck_' + i + '_sakuteki').html(deck.sakuteki());
   }
 }
 
@@ -562,7 +563,7 @@ function copyDeckInfo(deck_index) {
     return;
   }
   var lines = [];
-  lines.push('(制空' + deck.taiku() + ')');
+  lines.push('(制空: ' + deck.taiku() + ', 索敵: ' + deck.sakuteki() + ')');
   deck.ships.forEach((ship) => {
     var line = '';
     line += ship.name() + ship.level();

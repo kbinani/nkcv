@@ -282,4 +282,53 @@ Slotitem.prototype.taiku = function() {
   return _.get(this._master_data, ['api_tyku'], 0);
 };
 
+Slotitem.prototype.sakuteki = function() {
+  return _.get(this._master_data, ['api_saku'], 0);
+};
+
+Slotitem.prototype.sakuteki_coefficient = function() {
+  const type = _.get(this._master_data, ['api_type', 2], -1);
+  const title = _.get(mapping, [type, 'title'], '');
+  const coeff_mapping = {
+    "艦上戦闘機": 0.6,
+    "艦上爆撃機": 0.6,
+    "艦上攻撃機": 0.8,
+    "艦上偵察機": 1,
+    "艦上偵察機（II）": 1,
+    "水上偵察機": 1.2,
+    "水上爆撃機": 1.1,
+    "水上戦闘機": 0.6,
+    "噴式戦闘爆撃機": 0.6,
+    "夜間戦闘機": 0.6,
+    "夜間攻撃機": 0.8,
+    "大型飛行艇": 0.6,
+    "対潜哨戒機": 0.6,
+    "小型電探": 0.6,
+    "大型電探": 0.6,
+    "大型電探（II）": 0.6,
+    "潜水艦装備": 0.6,
+    "探照灯": 0.6,
+    "大型探照灯": 0.6,
+    "司令部施設": 0.6,
+    "航空要員": 0.6,
+    "水上艦要員": 0.6,
+    "大型ソナー": 0.6,
+    "魚雷": 0.6,
+  };
+  return _.get(coeff_mapping, [title], 0);
+};
+
+Slotitem.prototype.sakuteki_proficiency_coefficient = function() {
+  const type = _.get(this._master_data, ['api_type', 2], -1);
+  const title = _.get(mapping, [type, 'title'], '');
+  const coeff_mapping = {
+    "小型電探": 1.25,
+    "大型電探": 1.4,
+    "水上偵察機": 1.2,
+    "艦上偵察機（II）": 1.2,
+    "水上爆撃機": 1.15,
+  };
+  return _.get(coeff_mapping, [title], 0);
+};
+
 module.exports = Slotitem;
