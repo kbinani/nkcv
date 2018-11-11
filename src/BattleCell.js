@@ -7,7 +7,7 @@ const https = require('https'),
       fs = require('fs');
 const Notification = require(__dirname + '/Notification.js');
 
-const mapping = require(__dirname + '/../data/battle_cell_mapping.js');
+const mapping = {};
 
 function BattleCell(area, map, cell) {
   this.area = area;
@@ -26,9 +26,9 @@ BattleCell.prototype.name = function() {
 
 BattleCell.load_remote_mapping = function() {
   try {
-    const local_file_path = __dirname + '/../data/battle_cell_mapping.js';
+    const local_file_path = __dirname + '/../data/battle_cell_mapping.hjson';
     const buffer = fs.readFileSync(local_file_path);
-    const local = JSON.parse(buffer);
+    const local = HJSON.parse(buffer.toString());
     _.merge(mapping, local);
   } catch (e) {
     console.trace(e);
