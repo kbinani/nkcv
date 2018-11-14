@@ -228,6 +228,15 @@ ipcMain.on('app.notification', function(event, message) {
   }
 });
 
+ipcMain.on('app.shipWindowDidLoad', function(event, data) {
+  if (shipWindow == null) {
+    return;
+  }
+  shipWindow.webContents.send('app.shipWindowSort', config.shipWindowSort());
+  shipWindow.webContents.send('app.shipWindowFilter', config.shipWindowFilter());
+  shipWindow.webContents.send('app.sqlPresetList', config.sqlPresetList());
+});
+
 function incrementNumFilesEncoding(num) {
   _numFilesEncoding++;
   updateWindowTitle();
@@ -299,9 +308,6 @@ function openShipList() {
         shipWindow.webContents.send(key, data);
       }
     }
-    shipWindow.webContents.send('app.shipWindowSort', config.shipWindowSort());
-    shipWindow.webContents.send('app.shipWindowFilter', config.shipWindowFilter());
-    shipWindow.webContents.send('app.sqlPresetList', config.sqlPresetList());
   });
 
   shipWindow.on('close', function(event) {

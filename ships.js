@@ -64,21 +64,21 @@ function onload() {
     } else {
       $('#sally_area_choices_container').css('display', 'none');
     }
+  });
 
-    const choices = $('#ship_type_choices');
-    const template = `
-      <label for="ship_type_{id}" style="height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap;">
-        <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label">{name}</span>
-      </label>`
-    ShipType.allCases().forEach(function(type) {
-      const element = template.replace(/{id}/g, type.value())
-                              .replace(/{name}/g, type.toString());
-      choices.append(element);
-    });
+  const choices = $('#ship_type_choices');
+  const template = `
+    <label for="ship_type_{id}" style="height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap;">
+      <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label">{name}</span>
+    </label>`
+  ShipType.allCases().forEach(function(type) {
+    const element = template.replace(/{id}/g, type.value())
+                            .replace(/{name}/g, type.toString());
+    choices.append(element);
+  });
 
-    storage.on('port', function(port) {
-      update(port.ships);
-    });
+  storage.on('port', function(port) {
+    update(port.ships);
   });
 
   setQueryEnabled(false);
@@ -140,6 +140,8 @@ function onload() {
     loadQueryPresetList();
     _sql_preset_list_received = true;
   });
+
+  ipcRenderer.send('app.shipWindowDidLoad', {});
 }
 
 function loadQueryPresetList() {
