@@ -232,6 +232,12 @@ ipcMain.on('app.shipWindowDidLoad', function(event, data) {
   if (shipWindow == null) {
     return;
   }
+  for (var key in mandatoryData) {
+    const data = mandatoryData[key];
+    if (data.length > 0) {
+      shipWindow.webContents.send(key, data);
+    }
+  }
   shipWindow.webContents.send('app.shipWindowSort', config.shipWindowSort());
   shipWindow.webContents.send('app.shipWindowFilter', config.shipWindowFilter());
   shipWindow.webContents.send('app.sqlPresetList', config.sqlPresetList());
@@ -300,15 +306,6 @@ function openShipList() {
   Object.assign(options, bounds);
   shipWindow = new BrowserWindow(options);
   shipWindow.loadURL('file://' + __dirname + '/ships.html');
-
-  shipWindow.webContents.on('dom-ready', function() {
-    for (var key in mandatoryData) {
-      const data = mandatoryData[key];
-      if (data.length > 0) {
-        shipWindow.webContents.send(key, data);
-      }
-    }
-  });
 
   shipWindow.on('close', function(event) {
     const bounds = shipWindow.getBounds();
