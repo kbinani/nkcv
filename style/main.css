@@ -59,3 +59,21 @@ html::-webkit-scrollbar {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+#webview_left_panel {
+  left: -225px; /* 5px 余分に*/
+}
+
+#webview_left_panel.hide {
+  left: -200px;
+  transition-property: left;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+
+#webview_left_panel.show {
+  left: 0px;
+  transition-property: left;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
