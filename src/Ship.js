@@ -24,6 +24,10 @@ Ship.prototype.clone = function() {
   return ship;
 };
 
+Ship.prototype.toString = function() {
+  return this.name() + '(' + this.hp() + ')';
+};
+
 Ship.prototype.id = function() {
   return _.get(this._data, ['api_id'], 0);
 };
@@ -43,6 +47,11 @@ Ship.prototype.hp = function() {
     return null;
   }
   return new Rat(nowhp, maxhp);
+};
+
+Ship.prototype.set_hp = function(hp) {
+  _.set(this._data, ['api_nowhp'], hp.numerator());
+  _.set(this._data, ['api_maxhp'], hp.denominator());
 };
 
 Ship.prototype.cond = function() {

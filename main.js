@@ -258,6 +258,22 @@ function onload() {
     SallyArea.load_remote_mapping();
   });
 
+  storage.on('battleresult', (result) => {
+    if (result == null) {
+      _left_panel.setState('normal');
+      return;
+    }
+    $content = $('#webview_lft_panel_content');
+    $content.html(result.enemies().join("<br/>"));
+    // if (result.is_midnight_planned()) {
+      if (_left_panel.state == 'normal') {
+        _left_panel.setState('hide');
+      }
+    // } else {
+    //   _left_panel.setState('normal');
+    // }
+  });
+
   ipcRenderer.on('app.mute', function(event, mute) {
     setMute(mute);
   });
