@@ -26,6 +26,7 @@ function LeftPanel() {
   this.$element = $('#webview_left_panel');
   this.$knotch = $('#webview_left_panel_knotch');
   this.$background = $('#webview_left_panel_background');
+  this.$content = $('#webview_left_panel_content');
 
   this.$knotch.css('width', LeftPanel.KNOTCH_WIDTH + 'px');
   this.$knotch.css('height', LeftPanel.KNOTCH_HEIGHT + 'px');
@@ -33,6 +34,8 @@ function LeftPanel() {
   this.state = '';
   this.setState('normal');
   this.$element.css('display', 'flex'); // 最初にロードしたときに見えてしまわないように dom の初期値が none になっているので flex に設定しています
+
+  this._timerId = null;
 }
 
 LeftPanel.KNOTCH_HEIGHT = 100;
@@ -78,7 +81,30 @@ LeftPanel.prototype.toggle = function() {
       this.setState('show');
       break;
   }
-}
+};
+
+LeftPanel.prototype.set_battle_result = function(result) {
+  if (this._timerId != null) {
+    clearInterval(this._timerId);
+    this._timerId = null;
+  }
+
+  if (result == null) {
+    this.setState('normal');
+    return;
+  }
+
+  this._timerId = setTimeout(() => {
+    this.$content.html(result.enemies().join("<br/>"));
+    // if (result.is_midnight_planned()) {
+      if (this.state == 'normal') {
+        this.setState('hide');
+      }
+    // } else {
+      // this.setState('normal');
+    // }
+  }, result.performance_seconds() * 1000);
+};
 
 function onload() {
   require('electron-disable-file-drop');
@@ -259,19 +285,7 @@ function onload() {
   });
 
   storage.on('battleresult', (result) => {
-    if (result == null) {
-      _left_panel.setState('normal');
-      return;
-    }
-    $content = $('#webview_lft_panel_content');
-    $content.html(result.enemies().join("<br/>"));
-    // if (result.is_midnight_planned()) {
-      if (_left_panel.state == 'normal') {
-        _left_panel.setState('hide');
-      }
-    // } else {
-    //   _left_panel.setState('normal');
-    // }
+    _left_panel.set_battle_result(result);
   });
 
   ipcRenderer.on('app.mute', function(event, mute) {

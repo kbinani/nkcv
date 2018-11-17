@@ -467,8 +467,10 @@ DataStorage.prototype.handle_req_map_next = function(params, response, port) {
   }
 
   this._next_battle_cell = new BattleCell(area, map, no);
-  this._battle_runner = new BattleRunner(this);
   this.notify_port();
+
+  this._battle_runner = null;
+  this.notify_battleresult();
 };
 
 DataStorage.prototype.handle_get_member_deck = function(params, response, port) {
@@ -514,10 +516,10 @@ DataStorage.prototype.handle_battle_started = function(api, params, response, po
     deck.battle_cell = next_battle_cell;
   });
   this._next_battle_cell = null;
-  if (this._battle_runner) {
-    this._battle_runner.append(api, response);
-  }
   this.notify_port();
+
+  this._battle_runner = new BattleRunner(this);
+  this._battle_runner.append(api, response);
   this.notify_battleresult();
 };
 
