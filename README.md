@@ -5,6 +5,7 @@ nkcv
 * 鋭意開発中です。
 
 ![screenshot](https://raw.githubusercontent.com/kbinani/nkcv/master/img/ss1.png)
+![screenshot](https://raw.githubusercontent.com/kbinani/nkcv/master/img/ss3.png)
 ![screenshot](https://raw.githubusercontent.com/kbinani/nkcv/master/img/ss2.png)
 
 主な機能
@@ -16,6 +17,7 @@ nkcv
 * 所属艦娘一覧を表示し、様々な条件で並び替えできます。
   * SQL が書ける方は、SQL でも検索できます。
 * 遠征の残り時間、入渠中、建造中の艦娘の状況を一覧できます。
+* 夜戦に行くかどうかの選択画面で、昼戦の結果を見ることができます。
 
 動作環境
 ----

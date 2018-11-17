@@ -13,7 +13,8 @@ const SlotitemList = require(__dirname + '/SlotitemList.js'),
       Ship = require(__dirname + '/Ship.js'),
       NDock = require(__dirname + '/NDock.js'),
       CreatedSlotitem = require(__dirname + '/CreatedSlotitem.js'),
-      BattleCell = require(__dirname + '/BattleCell.js');
+      BattleCell = require(__dirname + '/BattleCell.js'),
+      BattleRunner = require(__dirname + '/BattleRunner.js');
 
 function DummyBattleCell(area, map, no) {
   this.area = area;
@@ -45,6 +46,7 @@ function DataStorage() {
   this.kdock = null;
   this.ndock = null;
   this._next_battle_cell = null;
+  this._battle_runner = null;
 
   const self = this;
 
@@ -100,12 +102,16 @@ function DataStorage() {
     });
     self.port = port;
     this._next_battle_cell = null;
+    this._battle_runner = null;
 
     self.notify_port();
 
     const ndock_data = _.get(json, ['api_data', 'api_ndock'], []);
     const ndock = new NDock(ndock_data, port);
     self.notify_ndock(ndock);
+
+    self._battle_runner = null;
+    self.notify_battleresult();
   });
 
   ipcRenderer.on('api_get_member/require_info', function(event, data, request_body) {
@@ -244,6 +250,10 @@ DataStorage.prototype.notify_ndock = function(ndock) {
   this.emit('ndock', ndock);
 };
 
+DataStorage.prototype.notify_battleresult = function() {
+  this.emit('battleresult', this._battle_runner);
+};
+
 DataStorage.prototype.handle = function(api, params, response, port) {
   const func_name = 'handle_' + api.substring(4).replace(/\//g, '_');
   const func = this[func_name];
@@ -267,7 +277,7 @@ DataStorage.prototype.handle = function(api, params, response, port) {
     case 'api_req_combined_battle/ec_battle':
     case 'api_req_combined_battle/ld_airbattle':
     case 'api_req_battle_midnight/sp_midnight':
-      this.handle_battle_started(params, response, port);
+      this.handle_battle_started(api, params, response, port);
       break;
     default:
       console.trace('api not handled: api=' + api);
@@ -426,6 +436,7 @@ DataStorage.prototype.handle_req_map_start = function(params, response, port) {
   const map = _.get(response, ['api_data', 'api_mapinfo_no'], -1);
   const no = _.get(response, ['api_data', 'api_no'], -1);
   this._next_battle_cell = new BattleCell(area, map, no);
+  this._battle_runner = new BattleRunner(this);
 
   decks.forEach((deck) => {
     deck.battle_cell = new DummyBattleCell(area, map, no);
@@ -457,6 +468,9 @@ DataStorage.prototype.handle_req_map_next = function(params, response, port) {
 
   this._next_battle_cell = new BattleCell(area, map, no);
   this.notify_port();
+
+  this._battle_runner = null;
+  this.notify_battleresult();
 };
 
 DataStorage.prototype.handle_get_member_deck = function(params, response, port) {
@@ -491,7 +505,7 @@ DataStorage.prototype.handle_req_practice_battle = function(params, response, po
   this.notify_port();
 };
 
-DataStorage.prototype.handle_battle_started = function(params, response, port) {
+DataStorage.prototype.handle_battle_started = function(api, params, response, port) {
   const next_battle_cell = this._next_battle_cell;
   if (next_battle_cell == null) {
     return;
@@ -503,6 +517,10 @@ DataStorage.prototype.handle_battle_started = function(params, response, port) {
   });
   this._next_battle_cell = null;
   this.notify_port();
+
+  this._battle_runner = new BattleRunner(this);
+  this._battle_runner.append(api, response);
+  this.notify_battleresult();
 };
 
 DataStorage.prototype.handle_req_kaisou_slot_deprive = function(params, response, port) {
