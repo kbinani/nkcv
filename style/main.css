@@ -61,7 +61,7 @@ html::-webkit-scrollbar {
 }
 
 #webview_left_panel {
-  left: -225px; /* 5px 余分に*/
+  left: -220px; /* 5px 余分に*/
 }
 
 #webview_left_panel.hide {
