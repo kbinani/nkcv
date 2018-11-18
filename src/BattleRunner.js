@@ -204,7 +204,11 @@ class BattleRunner {
     }
 
     const raigeki = _.get(api_data, ['api_data', 'api_raigeki'], null);
-    if (raigeki != null) {
+    if (raigeki == null) {
+      if (include_submarine) {
+        this.add_performance_seconds('相手に潜水艦がいる時の微妙な間', 1.2);
+      }
+    } else {
       this.add_performance_seconds('雷撃戦', 105 / 29.167);
 
       const fdam = _.get(raigeki, ['api_fdam'], []);
