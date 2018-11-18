@@ -190,7 +190,7 @@ class BattleRunner {
 
     const raigeki = _.get(api_data, ['api_data', 'api_raigeki'], null);
     if (raigeki != null) {
-      this.add_performance_seconds('雷撃戦', 244.0 / 29.167);
+      this.add_performance_seconds('雷撃戦', 105 / 29.167);
 
       const fdam = _.get(raigeki, ['api_fdam'], []);
       const edam = _.get(raigeki, ['api_edam'], []);
@@ -254,7 +254,7 @@ class BattleRunner {
         if (attacker_is_enemy) {
           const additional = this._fdam(defender_index, dam);
           if (additional > 0) {
-            this.add_performance_seconds(defender_description + defender_index + "番艦が大ダメージを受けた", additional);
+            this.add_performance_seconds(defender_description + (defender_index + 1) + "番艦が大ダメージを受けた", additional);
           }
         } else {
           this._edam(defender_index, dam);
