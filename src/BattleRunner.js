@@ -52,8 +52,7 @@ class Damage {
         } else if ([13, 14].indexOf(defender_stype) >= 0) {
           if ([1, 2, 3, 4, 21].indexOf(attacker_stype) >= 0) {
             // 駆逐軽巡海防艦による対潜攻撃
-            // 81f@29.167fps
-            return 81.0 / 29.167;
+            return 77 / 29.167;
           } else {
             // 水上爆撃機による対潜攻撃
             return 110.0 / 29.167;
@@ -90,7 +89,7 @@ class BattleRunner {
 
   // api_req_sortie/battle
   battle(api_data) {
-    this.add_performance_seconds("開幕", PERFORMANCE_OPENING);
+    this.add_performance_seconds("開幕", 86 / 29.167);
     this._battle(api_data);
     this.add_performance_seconds("終了", PERFORMANCE_ENDING);
   }
@@ -136,6 +135,13 @@ class BattleRunner {
       }
     }
 
+    const include_submarine = _.findIndex(this._enemies, (enemy) => [13, 14].indexOf(enemy.type().value()) >= 0) >= 0;
+    if (include_submarine) {
+      this.add_performance_seconds('敵潜水艦が出現', 53 / 29.167);
+    }
+
+    this.add_performance_seconds("索敵", 211 / 29.167);
+
     // 夜戦の必要があるかどうか
     this._midnight = _.get(api_data, ['api_data', 'api_midnight_flag'], 0) != 0;
 
@@ -147,7 +153,16 @@ class BattleRunner {
     }
     const kouku_stage3 = _.get(api_data, ["api_data", "api_kouku", "api_stage3"], null);
     if (kouku_stage3 != null) {
-      this.add_performance_seconds("開幕航空戦", PERFORMANCE_OPENING_KOUKU);
+      let stage3_occur = false;
+      const keys = ['api_frai_flag', 'api_erai_flag', 'api_fbak_flag', 'api_ebak_flag'];
+      keys.forEach((key) => {
+        const flags = kouku_stage3[key];
+        stage3_occur = stage3_occur || flags.indexOf(1) >= 0;
+      });
+
+      if (stage3_occur) {
+        this.add_performance_seconds("開幕航空戦", 328 / 29.167);
+      }
 
       const fdam = _.get(kouku_stage3, ['api_fdam'], []);
       const edam = _.get(kouku_stage3, ['api_edam'], []);
@@ -299,7 +314,7 @@ class BattleRunner {
     const next = new Rat(nowhp, current.denominator());
     if (current.value() > 0.5 && next.value() <= 0.5) {
       // 通常から中破大破になった
-      return PERFORMANCE_FRIEND_DAMAGED;
+      return 136 / 29.167;
     } else {
       return 0;
     }
@@ -356,7 +371,7 @@ class BattleRunner {
     const before = this._performance_seconds;
     this._performance_seconds += delta_seconds;
     if (is_dev) {
-      console.log(message + "\t" + before + "\t" + this._performance_seconds);
+      console.log(delta_seconds + "," + this._performance_seconds + "," + message);
     }
   }
 }
