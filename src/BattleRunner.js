@@ -182,8 +182,8 @@ class BattleRunner {
 
     const raigeki = _.get(api_data, ['api_data', 'api_raigeki'], null);
     if (raigeki != null) {
-      const fdam = _.get(api_data, ['api_data', 'api_fdam'], []);
-      const edam = _.get(api_data, ['api_data', 'api_edam'], []);
+      const fdam = _.get(raigeki, ['api_fdam'], []);
+      const edam = _.get(raigeki, ['api_edam'], []);
 
       for (var i = 0; i < fdam.length; i++) {
         this._fdam(i, fdam[i]);
