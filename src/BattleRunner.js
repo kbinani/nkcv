@@ -140,13 +140,20 @@ class BattleRunner {
     this._midnight = _.get(api_data, ['api_data', 'api_midnight_flag'], 0) != 0;
 
     // 開幕航空戦
-    const kouku_edam = _.get(api_data, ["api_data", "api_kouku", "api_stage3", "api_edam"], []);
-    if (kouku_edam.length > 0) {
+    const air_fire = _.get(api_data, ['api_data', 'api_kouku', 'api_stage2', 'api_air_fire'], null);
+    if (air_fire != null) {
+      // 対空カットインが発生している
+      this.add_performance_seconds('対空カットイン', 86 / 29.167);
+    }
+    const kouku_stage3 = _.get(api_data, ["api_data", "api_kouku", "api_stage3"], null);
+    if (kouku_stage3 != null) {
       this.add_performance_seconds("開幕航空戦", PERFORMANCE_OPENING_KOUKU);
-      for (var i = 0; i < kouku_edam.length; i++) {
-        const edam = kouku_edam[i];
-        this._edam(i, edam);
-      }
+
+      const fdam = _.get(kouku_stage3, ['api_fdam'], []);
+      const edam = _.get(kouku_stage3, ['api_edam'], []);
+
+      this._fdam_list(fdam);
+      this._edam_list(edam);
     }
 
     // 開幕対潜
@@ -158,19 +165,20 @@ class BattleRunner {
     }
 
     // 開幕雷撃
-    const opening_attack_edam = _.get(api_data, ["api_data", "api_opening_atack", "api_edam"], []);
-    for (var i = 0; i < opening_attack_edam.length; i++) {
-      const edam = opening_attack_edam[i];
-      this._edam(i, edam);
-    }
-    if (opening_attack_edam.length > 0) {
+    const opening_attack = _.get(api_data, ["api_data", "api_opening_atack"], null);
+    if (opening_attack != null) {
       this.add_performance_seconds("開幕雷撃", 105 / 29.167);
+
+      const fdam = _.get(opening_attack, ['api_fdam'], []);
+      const edam = _.get(opening_attack, ['api_edam'], []);
+      this._fdam_list(fdam);
+      this._edam_list(edam);
     }
 
     // 砲雷戦
 
     const hourai_flag = _.get(api_data, ["api_data", "api_hourai_flag"], []);
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 3; i++) {
       const flag = hourai_flag[i];
       if (flag != 1) {
         continue;
@@ -182,17 +190,13 @@ class BattleRunner {
 
     const raigeki = _.get(api_data, ['api_data', 'api_raigeki'], null);
     if (raigeki != null) {
+      this.add_performance_seconds('雷撃戦', 244.0 / 29.167);
+
       const fdam = _.get(raigeki, ['api_fdam'], []);
       const edam = _.get(raigeki, ['api_edam'], []);
 
-      for (var i = 0; i < fdam.length; i++) {
-        this._fdam(i, fdam[i]);
-      }
-      for (var i = 0; i < edam.length; i++) {
-        this._edam(i, edam[i]);
-      }
-
-      this.add_performance_seconds('雷撃戦', 244.0 / 29.167);
+      this._fdam_list(fdam);
+      this._edam_list(edam);
     }
   }
 
@@ -245,7 +249,7 @@ class BattleRunner {
 
         const damage = new Damage(type, attacker, defender);
         const seconds = k == 0 ? damage.performance_seconds() : 0;
-        this.add_performance_seconds(attacker_description + attacker_index + '番艦が' + defender_description + defender_index + "番艦に" + damage + "による" + dam + "のダメージ", seconds);
+        this.add_performance_seconds(attacker_description + (attacker_index + 1) + '番艦が' + defender_description + (defender_index + 1) + "番艦に" + damage + "による" + dam + "のダメージ", seconds);
 
         if (attacker_is_enemy) {
           const additional = this._fdam(defender_index, dam);
@@ -256,6 +260,27 @@ class BattleRunner {
           this._edam(defender_index, dam);
         }
       }
+    }
+  }
+
+  _fdam_list(fdam) {
+    let max_seconds = 0;
+    let damaged_f_ships = [];
+    for (let i = 0; i < fdam.length; i++) {
+      let seconds = this._fdam(i, fdam[i]);
+      if (seconds > 0) {
+        damaged_f_ships.push(i + i);
+        max_seconds = Math.max(max_seconds, seconds);
+      }
+    }
+    if (max_seconds > 0) {
+      this.add_performance_seconds(damaged_f_ships.join(', ') + '番艦が大ダメージを受けた', max_seconds);
+    }
+  }
+
+  _edam_list(edam) {
+    for (var i = 0; i < edam.length; i++) {
+      this._edam(i, edam[i]);
     }
   }
 
