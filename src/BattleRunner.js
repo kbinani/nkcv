@@ -1,6 +1,8 @@
 'use strict;'
 
-const _ = require('lodash');
+const _ = require('lodash'),
+      is_dev = require('electron-is-dev');
+
 const Rat = require(__dirname + '/Rat.js'),
       Ship = require(__dirname + '/Ship.js');
 
@@ -11,8 +13,6 @@ const PERFORMANCE_HOUGEKI_ACTION = 1.1;
 const PERFORMANCE_HOUGEKI_PREPARE = 0.6;
 const PERFORMANCE_FRIEND_DAMAGED = 4.6;
 const PERFORMANCE_ENDING = 3.3;
-
-const DEBUG = false;
 
 class Damage {
   constructor(type, attacker, defender) {
@@ -158,6 +158,9 @@ class BattleRunner {
       const edam = opening_attack_edam[i];
       this._edam(i, edam);
     }
+    if (opening_attack_edam.length > 0) {
+      this.add_performance_seconds("開幕雷撃", 105 / 29.167);
+    }
 
     // 砲雷戦
 
@@ -237,7 +240,7 @@ class BattleRunner {
 
         const damage = new Damage(type, attacker, defender);
         const seconds = k == 0 ? damage.performance_seconds() : 0;
-        this.add_performance_seconds(attacker_description + 'が' + defender_description + defender_index + "番艦に" + damage + "による" + dam + "のダメージ", seconds);
+        this.add_performance_seconds(attacker_description + attacker_index + '番艦が' + defender_description + defender_index + "番艦に" + damage + "による" + dam + "のダメージ", seconds);
 
         if (attacker_is_enemy) {
           const additional = this._fdam(defender_index, dam);
@@ -322,7 +325,7 @@ class BattleRunner {
   add_performance_seconds(message, delta_seconds) {
     const before = this._performance_seconds;
     this._performance_seconds += delta_seconds;
-    if (DEBUG == true) {
+    if (is_dev) {
       console.log(message + "\t" + before + "\t" + this._performance_seconds);
     }
   }
