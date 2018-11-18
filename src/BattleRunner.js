@@ -50,9 +50,14 @@ class Damage {
           // 空母による通常攻撃
           return 110.0 / 29.167;
         } else if ([13, 14].indexOf(defender_stype) >= 0) {
-          // 対潜攻撃
-          // 81f@29.167fps
-          return 81.0 / 29.167;
+          if ([1, 2, 3, 4, 21].indexOf(attacker_stype) >= 0) {
+            // 駆逐軽巡海防艦による対潜攻撃
+            // 81f@29.167fps
+            return 81.0 / 29.167;
+          } else {
+            // 水上爆撃機による対潜攻撃
+            return 110.0 / 29.167;
+          }
         } else {
           // 砲撃
           return 51.0 / 29.167;
