@@ -96,13 +96,13 @@ LeftPanel.prototype.set_battle_result = function(result) {
 
   this._timerId = setTimeout(() => {
     this.$content.html(result.enemies().join("<br/>"));
-    // if (result.is_midnight_planned()) {
+    if (result.is_midnight_planned()) {
       if (this.state == 'normal') {
         this.setState('hide');
       }
-    // } else {
-      // this.setState('normal');
-    // }
+    } else {
+      this.setState('normal');
+    }
   }, result.performance_seconds() * 1000);
 };
 
