@@ -2,10 +2,6 @@
 
 const _ = require('lodash');
 
-function Speed(value) {
-  this._value = value;
-}
-
 const mapping = {
   5: '低速',
   10: '高速',
@@ -13,12 +9,18 @@ const mapping = {
   20: '最速',
 };
 
-Speed.prototype.toString = function() {
-  return _.get(mapping, [this._value], '不明(' + this._value + ')');
-};
+class Speed {
+  constructor(value) {
+    this._value = value;
+  }
 
-Speed.prototype.value = function() {
-  return this._value;
-};
+  toString() {
+    return _.get(mapping, [this._value], `不明(${this._value})`);
+  }
+
+  value() {
+    return this._value;
+  }
+}
 
 module.exports = Speed;

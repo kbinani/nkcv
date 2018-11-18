@@ -2,10 +2,6 @@
 
 const _ = require('lodash');
 
-function ShipType(raw) {
-  this._raw = raw;
-}
-
 const mapping = {
   1: "海防",
   2: "駆",
@@ -29,18 +25,24 @@ const mapping = {
   22: "補給",
 };
 
-ShipType.prototype.toString = function() {
-  return _.get(mapping, [this._raw], '不明(' + this._raw + ')');
-};
+class ShipType {
+  constructor(raw) {
+    this._raw = raw;
+  }
 
-ShipType.prototype.value = function() {
-  return this._raw;
-};
+  toString() {
+    return _.get(mapping, [this._raw], `不明(${this._raw})`);
+  }
 
-ShipType.allCases = function() {
-  return Object.keys(mapping).map(function(raw) {
-    return new ShipType(parseInt(raw, 10));
-  });
-};
+  value() {
+    return this._raw;
+  }
+
+  static allCases() {
+    return Object.keys(mapping).map((raw) => {
+      return new ShipType(parseInt(raw, 10));
+    });
+  }
+}
 
 module.exports = ShipType;

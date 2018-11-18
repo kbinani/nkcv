@@ -105,7 +105,7 @@ class BattleRunner {
       const maxhps = _.get(api_data, ["api_data", "api_e_maxhps"], []);
       const enemy_ship_ids = _.get(api_data, ['api_data', 'api_ship_ke'], []);
       if (nowhps.length == maxhps.length && nowhps.length == enemy_ship_ids.length) {
-        for (var i = 0; i < nowhps.length; i++) {
+        for (let i = 0; i < nowhps.length; i++) {
           const ship_id = enemy_ship_ids[i];
           const nowhp = nowhps[i];
           const maxhp = maxhps[i];
@@ -126,7 +126,7 @@ class BattleRunner {
       const maxhps = _.get(api_data, ['api_data', 'api_f_maxhps'], []);
       if (nowhps.length == maxhps.length && 0 <= deck_index && deck_index < this._storage.port.decks.length) {
         const deck = this._storage.port.decks[deck_index];
-        for (var i = 0; i < nowhps.length; i++) {
+        for (let i = 0; i < nowhps.length; i++) {
           const nowhp = nowhps[i];
           const maxhp = maxhps[i];
           this._friends_hp.push(new Rat(nowhp, maxhp));
@@ -193,12 +193,12 @@ class BattleRunner {
     // 砲雷戦
 
     const hourai_flag = _.get(api_data, ["api_data", "api_hourai_flag"], []);
-    for (var i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
       const flag = hourai_flag[i];
       if (flag != 1) {
         continue;
       }
-      const key = 'api_hougeki' + (i + 1);
+      const key = `api_hougeki${i + 1}`;
       const attack = _.get(api_data, ["api_data", key], []);
       this._step(attack);
     }
@@ -225,7 +225,7 @@ class BattleRunner {
     if (df_list.length != count || damage.length != count) {
       return;
     }
-    for (var j = 0; j < count; j++) {
+    for (let j = 0; j < count; j++) {
       const index_list = df_list[j];
       const damage_list = damage[j];
       if (index_list.length != damage_list.length) {
@@ -250,7 +250,7 @@ class BattleRunner {
         defender_description = '敵軍';
       }
 
-      for (var k = 0; k < index_list.length; k++) {
+      for (let k = 0; k < index_list.length; k++) {
         const defender_index = index_list[k];
         const dam = damage_list[k];
 
@@ -371,7 +371,7 @@ class BattleRunner {
     const before = this._performance_seconds;
     this._performance_seconds += delta_seconds;
     if (is_dev) {
-      console.log(delta_seconds + "," + this._performance_seconds + "," + message);
+      console.log(`${delta_seconds},${this._performance_seconds},${message}`);
     }
   }
 }
