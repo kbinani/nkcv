@@ -11,7 +11,8 @@ const Port = require('./src/Port.js'),
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       fs = require('fs'),
-      tmp = require('tmp');
+      tmp = require('tmp'),
+      i18n = require('i18n');
 
 const width = 1200;
 const height = 720;
@@ -109,6 +110,11 @@ LeftPanel.prototype.set_battle_result = function(result) {
 function onload() {
   require('electron-disable-file-drop');
   _left_panel = new LeftPanel();
+  i18n.configure({
+    locales: ['ja', 'en'],
+    directory: __dirname +'/locales',
+  });
+  i18n.setLocale('ja');
 
   const webview = document.querySelector("webview");
   webview.addEventListener("dom-ready", function() {
@@ -219,9 +225,9 @@ function onload() {
       const $container = $('#general_kdock_' + i);
       const state = ship.state();
       if (state == -1) {
-        $container.html('<div style="height: 20px;">ロックされています</div>');
+        $container.html(`<div style="height: 20px;">${i18n.__('Locked')}</div>`);
       } else if (state == 0) {
-        $container.html('<div style="height: 20px;">未使用</div>');
+        $container.html(`<div style="height: 20px;">${i18n.__('Unused')}</div>`);
       } else {
         const template = `
           <div style="display: flex; height: 20px;">
@@ -247,7 +253,7 @@ function onload() {
       const state = ndock_ship.state();
       switch (state) {
         case 0: {
-          $('.ndock_' + i + '_title').html('未使用');
+          $('.ndock_' + i + '_title').html(i18n.__('Unused'));
           $('.ndock_' + i + '_countdown').removeClass('CountdownLabel');
           $('.ndock_' + i + '_countdown').html('');
           break;
