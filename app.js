@@ -241,6 +241,24 @@ ipcMain.on('app.shipWindowDidLoad', function(event, data) {
   shipWindow.webContents.send('app.shipWindowSort', config.shipWindowSort());
   shipWindow.webContents.send('app.shipWindowFilter', config.shipWindowFilter());
   shipWindow.webContents.send('app.sqlPresetList', config.sqlPresetList());
+  shipWindow.webContents.send('app.languageDidChanged', config.language());
+});
+
+ipcMain.on('app.requestLanguageChange', (event, data) => {
+  const language = data;
+  if (mainWindow != null) {
+    mainWindow.webContents.send('app.languageDidChanged', language);
+  }
+  if (shipWindow != null) {
+    shipWindow.webContents.send('app.languageDidChanged', language);
+  }
+  config.patch({'language': language}, (c) => {
+    saveConfig();
+  });
+});
+
+ipcMain.on('app.mainWindowDidLoad', (event, data) => {
+  mainWindow.webContents.send('app.languageDidChanged', config.language());
 });
 
 function incrementNumFilesEncoding(num) {
