@@ -1,5 +1,7 @@
 {
 	"Locked": "ロックされています",
 	"Unused": "未使用",
-	"Language": "言語"
+	"Language": "言語",
+	"Fighter Power": "制空",
+	"LoS": "索敵"
 }
