@@ -11,7 +11,8 @@ const Port = require('./src/Port.js'),
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       fs = require('fs'),
-      tmp = require('tmp');
+      tmp = require('tmp'),
+      i18n = require('i18n');
 
 const width = 1200;
 const height = 720;
@@ -21,6 +22,53 @@ var _port = null;
 var _recording = false;
 var _recorder = null;
 var _left_panel = null;
+var _main_window = null;
+
+class MainWindow {
+  constructor() {
+    this.webview = document.querySelector("webview");
+    this.language = "ja";
+    i18n.configure({
+      locales: ['ja', 'en'],
+      directory: __dirname +'/locales',
+    });
+    i18n.setLocale(this.language);
+
+    this.subscribe();
+    ipcRenderer.send('app.mainWindowDidLoad', {});
+  }
+
+  subscribe() {
+    ipcRenderer.on('app.languageDidChanged', (event, data) => {
+      const language = data;
+      $('#language').val(language);
+      this.setLanguage(language);
+    });
+  }
+
+  setLanguage(language) {
+    this.language = language;
+    i18n.setLocale(language);
+
+    $('[data-i18n]').each((_, element) => {
+      const $element = $(element);
+      const key = $element.attr('data-i18n');
+      const translated = i18n.__(key);
+
+      const attribute = $element.attr('data-i18n-attribute');
+      if (attribute) {
+        $element.attr(attribute, translated);
+      } else {
+        $element.html(translated);
+      }
+    });
+  }
+
+  onLanguageSelected() {
+    const language = $('#language').val();
+    ipcRenderer.send('app.requestLanguageChange', language);
+  }
+}
 
 function LeftPanel() {
   this.$element = $('#webview_left_panel');
@@ -108,6 +156,7 @@ LeftPanel.prototype.set_battle_result = function(result) {
 
 function onload() {
   require('electron-disable-file-drop');
+  _main_window = new MainWindow();
   _left_panel = new LeftPanel();
 
   const webview = document.querySelector("webview");
@@ -219,9 +268,9 @@ function onload() {
       const $container = $('#general_kdock_' + i);
       const state = ship.state();
       if (state == -1) {
-        $container.html('<div style="height: 20px;">ロックされています</div>');
+        $container.html(`<div style="height: 20px;">${i18n.__('Locked')}</div>`);
       } else if (state == 0) {
-        $container.html('<div style="height: 20px;">未使用</div>');
+        $container.html(`<div style="height: 20px;">${i18n.__('Unused')}</div>`);
       } else {
         const template = `
           <div style="display: flex; height: 20px;">
@@ -247,7 +296,7 @@ function onload() {
       const state = ndock_ship.state();
       switch (state) {
         case 0: {
-          $('.ndock_' + i + '_title').html('未使用');
+          $('.ndock_' + i + '_title').html(i18n.__('Unused'));
           $('.ndock_' + i + '_countdown').removeClass('CountdownLabel');
           $('.ndock_' + i + '_countdown').html('');
           break;

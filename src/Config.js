@@ -14,6 +14,7 @@ const keys = {
   'shipWindowFilter': 'any',
   'mute': 'bool',
   'sqlPresetList': 'any',
+  'language': 'string',
 };
 
 const VERSION = 0;
@@ -49,6 +50,12 @@ const sanitizer_mapping = {
     return value;
   },
   'any': function(value) {
+    return value;
+  },
+  'string': function(value) {
+    if (typeof(value) != 'string') {
+      return null;
+    }
     return value;
   },
 };
@@ -140,5 +147,9 @@ Config.prototype.save_to = function(filepath) {
   fs.writeFile(filepath, JSON.stringify(this.data(), null, 2), () => {
   });
 };
+
+Config.prototype.language = function() {
+  return _.get(this._data, ['language'], 'ja');
+}
 
 module.exports = Config;
