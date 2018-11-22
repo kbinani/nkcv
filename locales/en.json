@@ -3,5 +3,8 @@
 	"Locked": "Locked",
 	"Language": "Language",
 	"Fighter Power": "Fighter Power",
-	"LoS": "LoS"
+	"LoS": "LoS",
+	"Speed": "Speed",
+	"Copy fleet information text to clipboard": "Copy fleet information text to clipboard",
+	"Copy": "Copy"
 }

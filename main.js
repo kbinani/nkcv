@@ -54,7 +54,13 @@ class MainWindow {
       const $element = $(element);
       const key = $element.attr('data-i18n');
       const translated = i18n.__(key);
-      $element.html(translated);
+
+      const attribute = $element.attr('data-i18n-attribute');
+      if (attribute) {
+        $element.attr(attribute, translated);
+      } else {
+        $element.html(translated);
+      }
     });
   }
 

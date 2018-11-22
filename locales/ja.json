@@ -3,5 +3,8 @@
 	"Unused": "未使用",
 	"Language": "言語",
 	"Fighter Power": "制空",
-	"LoS": "索敵"
+	"LoS": "索敵",
+	"Speed": "速力",
+	"Copy fleet information text to clipboard": "編成情報をテキスト形式でクリップボードにコピーします",
+	"Copy": "コピー"
 }
