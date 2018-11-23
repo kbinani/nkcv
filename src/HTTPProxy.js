@@ -100,6 +100,8 @@ function handle(api, raw_data, request_body, local_response, remote_response) {
 }
 
 function filter(api, data) {
+  return data;
+
   switch (api) {
     case 'api_start2/getData':
       let obj = clone(data);
