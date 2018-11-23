@@ -8,7 +8,21 @@ const http = require('http'),
       mkdirp = require('mkdirp'),
       path = require('path'),
       fs = require('fs'),
-      _ = require('lodash');
+      _ = require('lodash'),
+      i18n = require('i18n');
+
+function deleteCaseInsensitive(object, key) {
+  const lowerCaseKey = key.toLowerCase();
+  for (let k in object) {
+    if (k.toLowerCase() == lowerCaseKey) {
+      delete(object[k]);
+    }
+  }
+}
+
+function clone(object) {
+  return JSON.parse(JSON.stringify(object));
+}
 
 function HTTPProxy() {
 
@@ -27,17 +41,40 @@ HTTPProxy.removeObserver = function(key) {
   observers[key] = null;
 };
 
-function handle(api, data, request_body) {
-  for (var key in observers) {
-    observers[key](api, data, request_body);
+function handle(api, raw_data, request_body, local_response, remote_response) {
+  let prefix = '';
+  let json = raw_data.toString();
+  let headers = clone(remote_response.headers);
+
+  const possible_prefix = 'svdata=';
+  if (json.indexOf(possible_prefix) === 0) {
+    prefix = possible_prefix;
+    json = json.substring(possible_prefix.length);
   }
+
+  for (var key in observers) {
+    observers[key](api, json, request_body);
+  }
+
+  const obj = JSON.parse(json);
+  const filtered = filter(api, obj);
+  const filtered_data = new Buffer(prefix + JSON.stringify(filtered));
+
+  deleteCaseInsensitive(headers, 'content-encoding');
+  deleteCaseInsensitive(headers, 'content-length');
+  deleteCaseInsensitive(headers, 'transfer-encoding');
+  headers['content-length'] = filtered_data.byteLength;
+
+  local_response.writeHead(remote_response.statusCode, headers);
+  local_response.write(filtered_data);
+  local_response.end();
+
   if (is_dev) {
     console.log(api);
-    const json = JSON.parse(data);
     const log = {
       'api': api,
       'request': request_body,
-      'response': json,
+      'response': filtered,
     };
     const file = path.join(path.dirname(__dirname), 'api_log', api + '.json');
     mkdirp(path.dirname(file), (err) => {
@@ -54,11 +91,41 @@ function handle(api, data, request_body) {
       }
     });
     if (api == 'api_req_map/start' || api == 'api_req_map/next') {
-      const area = _.get(json, ['api_data', 'api_maparea_id'], -1);
-      const map = _.get(json, ['api_data', 'api_mapinfo_no'], -1);
-      const no = _.get(json, ['api_data', 'api_no'], -1);
+      const area = _.get(filtered, ['api_data', 'api_maparea_id'], -1);
+      const map = _.get(filtered, ['api_data', 'api_mapinfo_no'], -1);
+      const no = _.get(filtered, ['api_data', 'api_no'], -1);
       console.log([area, map, no].join("-"));
     }
+  }
+}
+
+function filter(api, data) {
+  switch (api) {
+    case 'api_start2/getData':
+      let obj = clone(data);
+      const ship_master = _.get(obj, ['api_data', 'api_mst_ship'], []);
+      for (let i = 0; i < ship_master.length; i++) {
+        const master = ship_master[i];
+        const name = _.get(master, ['api_name'], null);
+        if (name == null) {
+          continue;
+        }
+        const translated = i18n.__(name);
+        master['api_name'] = translated;
+      }
+      const stype_master = _.get(obj, ['api_data', 'api_mst_stype'], []);
+      for (let i = 0; i < stype_master.length; i++) {
+        const master = stype_master[i];
+        const name = _.get(master, ['api_name'], null);
+        if (name == null) {
+          continue;
+        }
+        const translated = i18n.__(name);
+        master['api_name'] = translated;
+      }
+      return obj;
+    default:
+      return data;
   }
 }
 
@@ -89,13 +156,12 @@ HTTPProxy.launch = function(port, complete) {
 
     var self = this;
     var svrReq = http.request(options, function onSvrRes(svrRes) {
-      cliRes.writeHead(svrRes.statusCode, svrRes.headers);
-      svrRes.pipe(cliRes);
       if (kcsapiIndex >= 0) {
-        var api = cliReq.url.substring(kcsapiIndex + "/kcsapi/".length);
+        const api = cliReq.url.substring(kcsapiIndex + "/kcsapi/".length);
+        let headers = svrRes.headers;
         var isGzip = false;
-        for (var header in svrRes.headers) {
-          if (header.toLowerCase() === "content-encoding" && svrRes.headers[header].toLowerCase() === "gzip") {
+        for (var header in headers) {
+          if (header.toLowerCase() === "content-encoding" && headers[header].toLowerCase() === "gzip") {
             isGzip = true;
             break;
           }
@@ -110,28 +176,25 @@ HTTPProxy.launch = function(port, complete) {
         });
         svrRes.on('end', function() {
           try {
+            let prefix = '';
+            let json = null;
             if (isGzip) {
               zlib.gunzip(data, function(error, result) {
                 if (error) {
                   console.log("error=" + error);
                 }
-                var json = result.toString();
-                if (json.indexOf("svdata=") === 0) {
-                  json = json.substring("svdata=".length);
-                }
-                handle(api, json, request_body);
+                handle(api, result, request_body, cliRes, svrRes);
               });
             } else {
-              var json = data.toString();
-              if (json.indexOf("svdata=") === 0) {
-                json = json.substring("svdata=".length);
-              }
-              handle(api, json, request_body);
+              handle(api, data, request_body, cliRes, svrRes);
             }
           } catch (e) {
             console.trace(e);
           }
         });
+      } else {
+        cliRes.writeHead(svrRes.statusCode, svrRes.headers);
+        svrRes.pipe(cliRes);
       }
     });
     cliReq.on('data', (data) => {

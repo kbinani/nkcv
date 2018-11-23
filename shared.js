@@ -2,8 +2,8 @@ function updateShipStatus(ships) {
   ships.forEach(function(ship) {
     const id = ship.id();
     $('.ship_' + id + '_level').html(ship.level());
-    $('.ship_' + id + '_name').html(i18n.__(`ship.${ship.name()}`));
-    $('.ship_' + id + '_name').attr('data-i18n', `ship.${ship.name()}`);
+    $('.ship_' + id + '_name').html(i18n.__(ship.name()));
+    $('.ship_' + id + '_name').attr('data-i18n', ship.name());
 
     const hp = ship.hp();
     $('.ship_' + id + '_hp_numerator').html(hp.numerator());

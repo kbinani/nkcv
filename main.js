@@ -147,13 +147,14 @@ function onload() {
       } else {
         const template = `
           <div style="display: flex; height: 20px;">
-            <div style="flex: 1 1 auto;">{name}</div>
+            <div style="flex: 1 1 auto;" data-i18n="{name}">{localized_name}</div>
             <div class="{class}" style="flex: 1 1 auto; text-align: right;" data-timer-finish="{complete}" data-timer-complete-message="完成" data-i18n="Complete" data-i18n-attribute="data-timer-complete-message">{label}</div>
           </div>`;
         const complete = ship.complete_time().getTime();
         const cls = (complete <= 0) ? '' : 'CountdownLabel';
         const label = (complete <= 0) ? i18n.__('Complete') : '';
         const html = template.replace(/{name}/g, ship.name())
+                             .replace(/{localized_name}/g, i18n.__(ship.name()))
                              .replace(/{complete}/g, complete)
                              .replace(/{label}/g, label)
                              .replace(/{class}/g, cls);
@@ -180,14 +181,15 @@ function onload() {
           const now = new Date();
           const finish_time = ndock_ship.complete_time().getTime();
           const ship = ndock_ship.ship();
-          $('.ndock_' + i + '_title').html(ship.name());
+          $('.ndock_' + i + '_title').html(i18n.__(ship.name()));
+          $('.ndock_' + i + '_title').attr('data-i18n', ship.name());
           $('.ndock_' + i + '_countdown').addClass('CountdownLabel');
           $('.ndock_' + i + '_countdown').attr('data-timer-finish', finish_time);
           $('.ndock_' + i + '_countdown').attr('data-timer-complete-message', i18n.__('Complete'));
           $('.ndock_' + i + '_countdown').attr('data-i18n', 'Complete');
           $('.ndock_' + i + '_countdown').attr('data-i18n-attribute', 'data-timer-complete-message');
           if (finish_time > now.getTime()) {
-            $('.ndock_' + i + '_countdown').attr('data-timer-complete-notification-message', ship.name() + 'の入渠が完了しました');
+            $('.ndock_' + i + '_countdown').attr('data-timer-complete-notification-message', i18n.__(ship.name()) + 'の入渠が完了しました');
           }
           break;
         }
@@ -388,7 +390,7 @@ function createDeckShipCell(ship_id, name) {
   const template = `
     <tr class="DeckShipCell ThemeContainerBorderB">
       <td class="ship_{ship_id}_type FontNormal" style="padding: 5px;" nowrap>艦種</td>
-      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap>{ship_name_label}</span></td>
+      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap><span data-i18n="{name}">{localized_name}</span></td>
       <td style="padding: 5px;" nowrap>
         <div style="display: flex; flex-direction: column;">
           <div style="flex: 1 1 auto;">Lv. <span class="ship_{ship_id}_level">1</span></div>
@@ -433,7 +435,7 @@ function createDeckShipCell(ship_id, name) {
     </tr>`;
     return template.replace(/{ship_id}/g, ship_id)
                    .replace(/{name}/g, name)
-                   .replace(/{ship_name_label}/g, createLocalizationLabel(name, 'ship.'));
+                   .replace(/{localized_name}/g, i18n.__(name));
 }
 
 function createDeckShipSlotitemCell(slotitem_id, size) {
@@ -460,7 +462,7 @@ function createDeckShipSlotitemCell(slotitem_id, size) {
 function createGeneralShipCell(ship_id, name) {
   const template = `
     <div style="display: table-row; height: 40px;">
-      <div class="ship_{ship_id}_name ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;"><span data-i18n="ship.{name}">{ship_name}</span></div>
+      <div class="ship_{ship_id}_name ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;"><span data-i18n="{name}">{localized_name}</span></div>
       <div class="ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;">
         <div class="FontNormal">Lv. <span class="ship_{ship_id}_level">1</span></div>
       </div>
@@ -490,7 +492,7 @@ function createGeneralShipCell(ship_id, name) {
     </div>`;
   return template.replace(/{ship_id}/g, ship_id)
                  .replace(/{name}/g, name)
-                 .replace(/{ship_name}/g, i18n.__(`ship.${name}`));
+                 .replace(/{localized_name}/g, i18n.__(name));
 }
 
 function deckMenuClicked(index) {

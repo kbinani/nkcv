@@ -472,7 +472,7 @@ function createShipCell(ship) {
       <div class="ThemeTableCell"><span class="ship_{ship_id}_index"></span></div>
       <div class="ThemeTableCell">{ship_id}</div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_type" data-i18n="{type_key}">{type}</span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_name" data-i18n="ship.{name}">{ship_name}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_name" data-i18n="{name}">{localized_name}</span></div>
       <div class="ThemeTableCell">Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span></div>
       <div class="ThemeTableCell"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond">{cond}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_karyoku">{karyoku}</span></div>
@@ -511,7 +511,7 @@ function createShipCell(ship) {
                  .replace(/{sally_area}/, ship.sally_area().name())
                  .replace(/{sally_area_background_color}/, sally_area.id() == 0 ? 'transparent' : sally_area.background_color())
                  .replace(/{sally_area_text_color}/, sally_area.text_color())
-                 .replace(/{ship_name}/g, i18n.__(`ship.${ship.name()}`));
+                 .replace(/{localized_name}/g, i18n.__(ship.name()));
 }
 
 function createSlotitemCell(slotitem_id) {

@@ -9,7 +9,8 @@ const electron = require('electron'),
       tlds = require('tlds'),
       Transcoder = require('stream-transcoder'),
       tmp = require('tmp'),
-      uuidv4 = require('uuid/v4');
+      uuidv4 = require('uuid/v4'),
+      i18n = require('i18n');
 const HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
@@ -36,6 +37,11 @@ app.on('ready', function() {
   loadConfig();
   saveConfig();
   const scale = Rat.fromString(config.scale());
+  i18n.configure({
+    locales: ['ja', 'en'],
+    directory: __dirname + '/locales',
+  });
+  i18n.setLocale(config.language());
 
   if (false) {  // オフラインで作業する時有効にする
     mandatoryApiData.forEach((it) => {
