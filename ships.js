@@ -482,7 +482,7 @@ function createShipCell(ship) {
       <div class="ThemeTableCell"><span class="ship_{ship_id}_lucky">{lucky}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_sakuteki">{sakuteki}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_taisen">{taisen}</span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_soku">{soku}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_soku" data-i18n="{soku}">{localized_soku}</span></div>
       <div class="ThemeTableCell" sylte="vertical-align: middle;">
         <div style="display: flex; height: 25px; line-height: 25px;">
           <div class="ship_{ship_id}_sally_area FontNormal" style="flex: 1 1 auto; height: 19px; line-height: 19px; margin-top: 3px; margin-bottom: 3px; color: {sally_area_text_color}; background-color: {sally_area_background_color}; text-align: center; vertical-align: middle; padding: 0px 5px 0px 5px;">{sally_area}</div>
@@ -506,7 +506,8 @@ function createShipCell(ship) {
                  .replace(/{lucky}/, ship.lucky().numerator())
                  .replace(/{sakuteki}/, ship.sakuteki().numerator())
                  .replace(/{taisen}/, ship.taisen().numerator())
-                 .replace(/{soku}/, ship.soku().toString())
+                 .replace(/{soku}/, `speed.${ship.soku().toString()}`)
+                 .replace(/{localized_soku}/g, i18n.__(`speed.${ship.soku().toString()}`))
                  .replace(/{repair}/, ship.repair_seconds() > 0 ? timeLabel(ship.repair_seconds()) : '')
                  .replace(/{sally_area}/, ship.sally_area().name())
                  .replace(/{sally_area_background_color}/, sally_area.id() == 0 ? 'transparent' : sally_area.background_color())

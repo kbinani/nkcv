@@ -314,7 +314,8 @@ function updateDeckStatus(decks) {
     }
     $('.deck_' + i + '_icon').css('background-color', color);
     $('.deck_' + i + '_taiku').html(deck.taiku());
-    $('.deck_' + i + '_soku').html(deck.soku().toString());
+    $('.deck_' + i + '_soku').html(i18n.__(`speed.${deck.soku().toString()}`));
+    $('.deck_' + i + '_soku').attr('data-i18n', `speed.${deck.soku().toString()}`);
     $('.deck_' + i + '_sakuteki').html(deck.sakuteki());
   }
 }

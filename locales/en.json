@@ -741,5 +741,9 @@
 	"装甲空母": "CVB",
 	"工作艦": "AR",
 	"潜水母艦": "AS",
-	"練習巡洋艦": "CL"
+	"練習巡洋艦": "CL",
+	"speed.高速": "Fast",
+	"speed.低速": "Slow",
+	"speed.高速+": "Fast+",
+	"speed.最速": "Fastest"
 }
