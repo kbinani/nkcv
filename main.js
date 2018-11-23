@@ -7,7 +7,9 @@ const Port = require('./src/Port.js'),
       Dialog = require('./src/Dialog.js'),
       BattleCell = require('./src/BattleCell.js'),
       SallyArea = require('./src/SallyArea.js'),
-      Notification = require('./src/Notification.js');
+      Notification = require('./src/Notification.js'),
+      MainWindow = require('./src/renderer/main/MainWindow.js'),
+      LeftPanel = require('./src/renderer/main/LeftPanel.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       fs = require('fs'),
@@ -23,136 +25,6 @@ var _recording = false;
 var _recorder = null;
 var _left_panel = null;
 var _main_window = null;
-
-class MainWindow {
-  constructor() {
-    this.webview = document.querySelector("webview");
-    this.language = "ja";
-    i18n.configure({
-      locales: ['ja', 'en'],
-      directory: __dirname +'/locales',
-    });
-    i18n.setLocale(this.language);
-
-    this.subscribe();
-    ipcRenderer.send('app.mainWindowDidLoad', {});
-  }
-
-  subscribe() {
-    ipcRenderer.on('app.languageDidChanged', (event, data) => {
-      const language = data;
-      $('#language').val(language);
-      this.setLanguage(language);
-    });
-  }
-
-  setLanguage(language) {
-    this.language = language;
-    i18n.setLocale(language);
-
-    $('[data-i18n]').each((_, element) => {
-      const $element = $(element);
-      const key = $element.attr('data-i18n');
-      const translated = i18n.__(key);
-
-      const attribute = $element.attr('data-i18n-attribute');
-      if (attribute) {
-        $element.attr(attribute, translated);
-      } else {
-        $element.html(translated);
-      }
-    });
-  }
-
-  onLanguageSelected() {
-    const language = $('#language').val();
-    ipcRenderer.send('app.requestLanguageChange', language);
-  }
-}
-
-function LeftPanel() {
-  this.$element = $('#webview_left_panel');
-  this.$knotch = $('#webview_left_panel_knotch');
-  this.$background = $('#webview_left_panel_background');
-  this.$content = $('#webview_left_panel_content');
-
-  this.$knotch.css('width', LeftPanel.KNOTCH_WIDTH + 'px');
-  this.$knotch.css('height', LeftPanel.KNOTCH_HEIGHT + 'px');
-
-  this.state = '';
-  this.setState('normal');
-  this.$element.css('display', 'flex'); // 最初にロードしたときに見えてしまわないように dom の初期値が none になっているので flex に設定しています
-
-  this._timerId = null;
-}
-
-LeftPanel.KNOTCH_HEIGHT = 100;
-LeftPanel.KNOTCH_WIDTH = 20;
-
-LeftPanel.prototype.applyScale = function(scale) {
-  this.$element.css('height', (height * scale) + 'px');
-  this.$knotch.css('top', (height * scale * 0.5 - LeftPanel.KNOTCH_HEIGHT * 0.5) + 'px');
-  this.$background.css('height', (height * scale) + 'px');
-};
-
-LeftPanel.prototype.setState = function(state) {
-  switch (state) {
-    case 'show':
-      this.$element.removeClass('hide');
-      this.$element.addClass('show');
-      this.$background.css('display', 'block');
-      break;
-    case 'hide':
-      this.$element.removeClass('show');
-      this.$element.addClass('hide');
-      this.$background.css('display', 'none');
-      break;
-    case 'normal':
-      this.$element.removeClass('hide');
-      this.$element.removeClass('show');
-      this.$background.css('display', 'none');
-      break;
-    default:
-      return;
-  }
-  this.state = state;
-};
-
-LeftPanel.prototype.toggle = function() {
-  switch (this.state) {
-    case 'normal':
-      return;
-    case 'show':
-      this.setState('hide');
-      break;
-    case 'hide':
-      this.setState('show');
-      break;
-  }
-};
-
-LeftPanel.prototype.set_battle_result = function(result) {
-  if (this._timerId != null) {
-    clearInterval(this._timerId);
-    this._timerId = null;
-  }
-
-  if (result == null) {
-    this.setState('normal');
-    return;
-  }
-
-  this._timerId = setTimeout(() => {
-    this.$content.html(result.enemies().join("<br/>"));
-    if (result.is_midnight_planned()) {
-      if (this.state == 'normal') {
-        this.setState('hide');
-      }
-    } else {
-      this.setState('normal');
-    }
-  }, result.performance_seconds() * 1000);
-};
 
 function onload() {
   require('electron-disable-file-drop');
