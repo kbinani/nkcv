@@ -745,5 +745,21 @@
 	"speed.高速": "Fast",
 	"speed.低速": "Slow",
 	"speed.高速+": "Fast+",
-	"speed.最速": "Fastest"
+	"speed.最速": "Fastest",
+	"Any": "Any",
+	"Damage.Damaged": "Damaged",
+	"Damage.Not-damaged": "Not-damaged",
+	"Lock.Locked": "Locked",
+	"Lock.Not-locked": "Not-locked",
+	"Upgrade.Completed": "Completed",
+	"Upgrade.Not-completed": "Not-completed",
+	"Cond.>=50": ">= 50",
+	"Cond.<50": "< 50",
+	"Modernization.Completed": "Completed",
+	"Modernization.Not-completed": "Not-completed",
+	"Level.>=2": ">= 2",
+	"Level.1": "1",
+	"Exclude expedition ships": "Exclude expedition ships",
+	"Select All": "Select All",
+	"Deselect All": "Deselect All"
 }

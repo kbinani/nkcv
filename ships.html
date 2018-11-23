@@ -28,8 +28,8 @@
             <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([13, 14])" data-i18n="SS">潜水艦</div>
             <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([16, 17, 19, 20, 22])" data-i18n="AV/AO/AS..">補助艦艇</div>
             <div style="flex: 1 1 auto;"><!-- spacer --></div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 18, 19, 20, 21, 22])">全て選択</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([])">全て解除</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 18, 19, 20, 21, 22])" data-i18n="Select All">全て選択</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([])" data-i18n="Deselect All">全て解除</div>
           </div>
         </div>
         <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 0px 5px 5px 5px;">
@@ -37,9 +37,9 @@
             <tr>
               <td align="right" nowrap><span data-i18n="Level">レベル</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_level" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-                <label><input type="radio" name="filter_level" value="2_or_grater" onchange="applyFilter()">Lv.2以上</label>
-                <label><input type="radio" name="filter_level" value="1" onchange="applyFilter()">Lv.1</label>
+                <label><input type="radio" name="filter_level" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_level" value="2_or_grater" onchange="applyFilter()"><span data-i18n="Level.>=2">Lv.2以上</span></label>
+                <label><input type="radio" name="filter_level" value="1" onchange="applyFilter()"><span data-i18n="Level.1">Lv.1</span></label>
               </td>
               <td align="right" nowrap><span data-i18n="Speed">速力</span>:</td>
               <td width="33.3%" nowrap>
@@ -50,41 +50,41 @@
               </td>
               <td align="right" nowrap><span data-i18n="Damage">損傷</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_damage" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-                <label><input type="radio" name="filter_damage" value="damaged" onchange="applyFilter()">あり</label>
-                <label><input type="radio" name="filter_damage" value="non_damaged" onchange="applyFilter()">なし</label>
+                <label><input type="radio" name="filter_damage" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_damage" value="damaged" onchange="applyFilter()"><span data-i18n="Damage.Damaged">あり</span></label>
+                <label><input type="radio" name="filter_damage" value="non_damaged" onchange="applyFilter()"><span data-i18n="Damage.Not-damaged">なし</span></label>
               </td>
             </tr>
             <tr>
               <td align="right" nowrap><span data-i18n="Lock">ロック</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_lock" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-                <label><input type="radio" name="filter_lock" value="locked" onchange="applyFilter()">している</label>
-                <label><input type="radio" name="filter_lock" value="non_locked" onchange="applyFilter()">していない</label>
+                <label><input type="radio" name="filter_lock" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_lock" value="locked" onchange="applyFilter()"><span data-i18n="Lock.Locked">している</span></label>
+                <label><input type="radio" name="filter_lock" value="non_locked" onchange="applyFilter()"><span data-i18n="Lock.Not-locked">していない</span></label>
               </td>
               <td align="right" nowrap><span data-i18n="Upgrade">改造</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_upgrade" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-                <label><input type="radio" name="filter_upgrade" value="upgraded" onchange="applyFilter()">改造完了</label>
-                <label><input type="radio" name="filter_upgrade" value="non_upgraded" onchange="applyFilter()">改造未完</label>
+                <label><input type="radio" name="filter_upgrade" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_upgrade" value="upgraded" onchange="applyFilter()"><span data-i18n="Upgrade.Completed">改造完了</span></label>
+                <label><input type="radio" name="filter_upgrade" value="non_upgraded" onchange="applyFilter()"><span data-i18n="Upgrade.Not-completed">改造未完</span></label>
               </td>
               <td align="right" nowrap>cond:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_cond" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-                <label><input type="radio" name="filter_cond" value="50_or_grater" onchange="applyFilter()">50以上</label>
-                <label><input type="radio" name="filter_cond" value="lower_than_50" onchange="applyFilter()">50未満</label>
+                <label><input type="radio" name="filter_cond" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_cond" value="50_or_grater" onchange="applyFilter()"><span data-i18n="Cond.>=50">50以上</span></label>
+                <label><input type="radio" name="filter_cond" value="lower_than_50" onchange="applyFilter()"><span data-i18n="Cond.<50">50未満</span></label>
               </td>
             </tr>
             <tr>
               <td align="right" nowrap><span data-i18n="Expedition">遠征</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="checkbox" name="filter_mission" checked="checked" onchange="applyFilter()">遠征中の艦を除外する</label>
+                <label><input type="checkbox" name="filter_mission" checked="checked" onchange="applyFilter()"><span data-i18n="Exclude expedition ships">遠征中の艦を除外する</span></label>
               </td>
               <td align="right" nowrap><span data-i18n="Modernization">近代化改修</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_remodel" checked="checked" value="any" onchange="applyFilter()">すべて</label>
-                <label><input type="radio" name="filter_remodel" value="remodelled" onchange="applyFilter()">改修完了</label>
-                <label><input type="radio" name="filter_remodel" value="non_remodelled" onchange="applyFilter()">改修未完</label>
+                <label><input type="radio" name="filter_remodel" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_remodel" value="remodelled" onchange="applyFilter()"><span data-i18n="Modernization.Completed">改修完了</span></label>
+                <label><input type="radio" name="filter_remodel" value="non_remodelled" onchange="applyFilter()"><span data-i18n="Modernization.Not-completed">改修未完</span></label>
               </td>
             </tr>
           </table>
