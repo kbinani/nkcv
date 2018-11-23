@@ -26,18 +26,7 @@ class ShipsWindow {
     this.language = language;
     i18n.setLocale(language);
 
-    $('[data-i18n]').each((_, element) => {
-      const $element = $(element);
-      const key = $element.attr('data-i18n');
-      const translated = i18n.__(key);
-
-      const attribute = $element.attr('data-i18n-attribute');
-      if (attribute) {
-        $element.attr(attribute, translated);
-      } else {
-        $element.html(translated);
-      }
-    });
+    applyLanguageToView(language);
   }
 }
 

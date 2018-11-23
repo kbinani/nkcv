@@ -105,6 +105,7 @@ function filter(api, data) {
   switch (api) {
     case 'api_start2/getData':
       let obj = clone(data);
+
       const ship_master = _.get(obj, ['api_data', 'api_mst_ship'], []);
       for (let i = 0; i < ship_master.length; i++) {
         const master = ship_master[i];
@@ -115,6 +116,7 @@ function filter(api, data) {
         const translated = i18n.__(name);
         master['api_name'] = translated;
       }
+
       const stype_master = _.get(obj, ['api_data', 'api_mst_stype'], []);
       for (let i = 0; i < stype_master.length; i++) {
         const master = stype_master[i];
@@ -125,6 +127,18 @@ function filter(api, data) {
         const translated = i18n.__(name);
         master['api_name'] = translated;
       }
+
+      const slotitem_master = _.get(obj, ['api_data', 'api_mst_slotitem'], []);
+      for (let i = 0; i < slotitem_master.length; i++) {
+        const master = slotitem_master[i];
+        const name = _.get(master, ['api_name'], null);
+        if (name == null) {
+          continue;
+        }
+        const translated = i18n.__(name);
+        master['api_name'] = translated;
+      }
+
       return obj;
     default:
       return data;

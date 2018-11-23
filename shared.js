@@ -86,7 +86,7 @@ function updateSlotitemStatus(slotitems) {
     const element = $('.slotitem_' + id + '_icon');
     element.css('background-image', "url('img/slotitem/" + slotitem.icon_type() + ".svg')");
 
-    var title = slotitem.name();
+    let format = '%s';
 
     const level = slotitem.level();
     var level_label = '';
@@ -97,7 +97,7 @@ function updateSlotitemStatus(slotitems) {
       level_label = '★' + level;
     }
     if (level_label != '') {
-      title += ' ' + level_label;
+      format += ' ' + level_label;
     }
     const $level_element = $('.slotitem_' + id + '_level');
     $level_element.html(level_label);
@@ -121,10 +121,13 @@ function updateSlotitemStatus(slotitems) {
     $proficiency_element.html(proficiency_label);
     $proficiency_element.css('color', proficiency_color);
     if (proficiency_label != '') {
-      title += ' (' + proficiency_label + ')';
+      format += ' (' + proficiency_label + ')';
     }
 
-    element.attr('title', title);
+    element.attr('data-i18n-format', format);
+    element.attr('data-i18n-attribute', 'title');
+    element.attr('data-i18n', slotitem.name());
+    element.attr('title', sprintf(format, i18n.__(slotitem.name())));
   });
 }
 
@@ -157,4 +160,25 @@ function createLocalizationLabel(key, prefix) {
     actual_key = prefix + key;
   }
   return `<span data-i18n="${actual_key}">${i18n.__(actual_key)}</span>`;
+}
+
+function applyLanguageToView(language) {
+  $('[data-i18n]').each((_, element) => {
+    const $element = $(element);
+    const key = $element.attr('data-i18n');
+    let translated = i18n.__(key);
+    const format = $element.attr('data-i18n-format');
+    if (format) {
+      translated = sprintf(format, i18n.__(key));
+    } else {
+      translated = i18n.__(key);
+    }
+
+    const attribute = $element.attr('data-i18n-attribute');
+    if (attribute) {
+      $element.attr(attribute, translated);
+    } else {
+      $element.html(translated);
+    }
+  });
 }
