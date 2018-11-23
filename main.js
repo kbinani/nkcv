@@ -387,7 +387,7 @@ function createDeckShipCell(ship_id, name) {
   const template = `
     <tr class="DeckShipCell ThemeContainerBorderB">
       <td class="ship_{ship_id}_type FontNormal" style="padding: 5px;" nowrap>艦種</td>
-      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap><span data-i18n="ship.{name}">{ship_name}</span></td>
+      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap>{ship_name_label}</span></td>
       <td style="padding: 5px;" nowrap>
         <div style="display: flex; flex-direction: column;">
           <div style="flex: 1 1 auto;">Lv. <span class="ship_{ship_id}_level">1</span></div>
@@ -432,7 +432,7 @@ function createDeckShipCell(ship_id, name) {
     </tr>`;
     return template.replace(/{ship_id}/g, ship_id)
                    .replace(/{name}/g, name)
-                   .replace(/{ship_name}/g, i18n.__(`ship.${name}`));
+                   .replace(/{ship_name_label}/g, createLocalizationLabel(name, 'ship.'));
 }
 
 function createDeckShipSlotitemCell(slotitem_id, size) {

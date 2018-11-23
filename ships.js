@@ -72,11 +72,12 @@ function onload() {
   const choices = $('#ship_type_choices');
   const template = `
     <label for="ship_type_{id}" style="height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap;">
-      <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label">{name}</span>
+      <input id="ship_type_{id}" type="checkbox" onclick="shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label" data-i18n="{name_key}">{name}</span>
     </label>`
   ShipType.allCases().forEach(function(type) {
     const element = template.replace(/{id}/g, type.value())
-                            .replace(/{name}/g, type.toString());
+                            .replace(/{name}/g, i18n.__(`shiptype.${type.toString()}`))
+                            .replace(/{name_key}/g, `shiptype.${type.toString()}`);
     choices.append(element);
   });
 
@@ -470,7 +471,7 @@ function createShipCell(ship) {
     <div id="ship_{ship_id}_row" class="ThemeTableRow" style="display: table-row;">
       <div class="ThemeTableCell"><span class="ship_{ship_id}_index"></span></div>
       <div class="ThemeTableCell">{ship_id}</div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_type">{type}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_type" data-i18n="{type_key}">{type}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_name" data-i18n="ship.{name}">{ship_name}</span></div>
       <div class="ThemeTableCell">Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span></div>
       <div class="ThemeTableCell"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond">{cond}</span></div>
@@ -493,7 +494,8 @@ function createShipCell(ship) {
   const sally_area = ship.sally_area();
   return template.replace(/{ship_id}/g, ship.id())
                  .replace(/{level}/, ship.level())
-                 .replace(/{type}/, ship.type().toString())
+                 .replace(/{type}/g, i18n.__(`shiptype.${ship.type().toString()}`))
+                 .replace(/{type_key}/g, `shiptype.${ship.type().toString()}`)
                  .replace(/{name}/g, ship.name())
                  .replace(/{next_exp}/, ship.next_exp())
                  .replace(/{cond}/, ship.cond())

@@ -26,7 +26,8 @@ function updateShipStatus(ships) {
     $('.ship_' + id + '_bull_percentage').css('width', (bull.value() * 100) + '%');
     $('.ship_' + id + '_bull_percentage').css('background-color', barColor(bull));
 
-    $('.ship_' + id + '_type').html(ship.type().toString());
+    $('.ship_' + id + '_type').html(i18n.__(`shiptype.${ship.type().toString()}`));
+    $('.ship_' + id + '_type').attr('data-i18n', `shiptype.${ship.type().toString()}`);
 
     $('.ship_' + id + '_karyoku').html(ship.karyoku().numerator());
     $('.ship_' + id + '_raisou').html(ship.raisou().numerator());
@@ -147,4 +148,12 @@ function timeLabel(seconds_) {
   }
   label += sprintf('%02d', s);
   return label;
+}
+
+function createLocalizationLabel(key, prefix) {
+  let actual_key = key;
+  if (typeof(prefix) == 'string') {
+    actual_key = prefix + key;
+  }
+  return `<span data-i18n="${actual_key}">${i18n.__(actual_key)}</span>`;
 }
