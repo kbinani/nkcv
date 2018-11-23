@@ -74,7 +74,8 @@ function onload() {
     $('#user_name').html(port.nickname());
     $('#user_level').html(port.level());
     $('#user_comment').html(port.comment());
-    $('#user_rank').html(port.rank());
+    $('#user_rank').html(i18n.__(port.rank()));
+    $('#user_rank').attr('data-i18n', port.rank());
   });
 
   storage.on('questlist', (questlist) => {

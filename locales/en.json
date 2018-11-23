@@ -322,5 +322,15 @@
 	"Lock": "Lock",
 	"Upgrade": "Upgrade",
 	"Modernization": "Modernization",
-	"Event Maps": "Event Maps"
+	"Event Maps": "Event Maps",
+	"元帥": "Marshal Admiral",
+	"大将": "Admiral",
+	"中将": "Vice-Admiral",
+	"少将": "Rear-Admiral",
+	"大佐": "Captain",
+	"中佐": "Commander",
+	"新米中佐": "Commander (Novice)",
+	"少佐": "Lieutenant-Commander",
+	"中堅少佐": "Vice Lieutenant-Commander",
+	"新米少佐": "Lieutenant-Commander (Novice)"
 }
