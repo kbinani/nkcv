@@ -1,8 +1,9 @@
 'use strict;'
 
-class MainWindow {
+const i18n = require('i18n');
+
+class ShipsWindow {
   constructor() {
-    this.webview = document.querySelector("webview");
     this.language = "ja";
     i18n.configure({
       locales: ['ja', 'en'],
@@ -17,7 +18,6 @@ class MainWindow {
   subscribe() {
     ipcRenderer.on('app.languageDidChanged', (event, data) => {
       const language = data;
-      $('#language').val(language);
       this.setLanguage(language);
     });
   }
@@ -39,11 +39,6 @@ class MainWindow {
       }
     });
   }
-
-  onLanguageSelected() {
-    const language = $('#language').val();
-    ipcRenderer.send('app.requestLanguageChange', language);
-  }
 }
 
-module.exports = MainWindow;
+module.exports = ShipsWindow;

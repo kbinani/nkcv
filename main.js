@@ -140,18 +140,18 @@ function onload() {
       const $container = $('#general_kdock_' + i);
       const state = ship.state();
       if (state == -1) {
-        $container.html(`<div style="height: 20px;">${i18n.__('Locked')}</div>`);
+        $container.html(`<div style="height: 20px;" data-i18n="Locked">${i18n.__('Locked')}</div>`);
       } else if (state == 0) {
-        $container.html(`<div style="height: 20px;">${i18n.__('Unused')}</div>`);
+        $container.html(`<div style="height: 20px;" data-i18n="Unused">${i18n.__('Unused')}</div>`);
       } else {
         const template = `
           <div style="display: flex; height: 20px;">
             <div style="flex: 1 1 auto;">{name}</div>
-            <div class="{class}" style="flex: 1 1 auto; text-align: right;" data-timer-finish="{complete}" data-timer-complete-message="完成">{label}</div>
+            <div class="{class}" style="flex: 1 1 auto; text-align: right;" data-timer-finish="{complete}" data-timer-complete-message="完成" data-i18n="Complete" data-i18n-attribute="data-timer-complete-message">{label}</div>
           </div>`;
         const complete = ship.complete_time().getTime();
         const cls = (complete <= 0) ? '' : 'CountdownLabel';
-        const label = (complete <= 0) ? '完成' : '';
+        const label = (complete <= 0) ? i18n.__('Complete') : '';
         const html = template.replace(/{name}/g, ship.name())
                              .replace(/{complete}/g, complete)
                              .replace(/{label}/g, label)
@@ -169,6 +169,7 @@ function onload() {
       switch (state) {
         case 0: {
           $('.ndock_' + i + '_title').html(i18n.__('Unused'));
+          $('.ndock_' + i + '_title').attr('data-i18n', 'Unused');
           $('.ndock_' + i + '_countdown').removeClass('CountdownLabel');
           $('.ndock_' + i + '_countdown').html('');
           break;
@@ -181,7 +182,9 @@ function onload() {
           $('.ndock_' + i + '_title').html(ship.name());
           $('.ndock_' + i + '_countdown').addClass('CountdownLabel');
           $('.ndock_' + i + '_countdown').attr('data-timer-finish', finish_time);
-          $('.ndock_' + i + '_countdown').attr('data-timer-complete-message', '完了');
+          $('.ndock_' + i + '_countdown').attr('data-timer-complete-message', i18n.__('Complete'));
+          $('.ndock_' + i + '_countdown').attr('data-i18n', 'Complete');
+          $('.ndock_' + i + '_countdown').attr('data-i18n-attribute', 'data-timer-complete-message');
           if (finish_time > now.getTime()) {
             $('.ndock_' + i + '_countdown').attr('data-timer-complete-notification-message', ship.name() + 'の入渠が完了しました');
           }
@@ -267,10 +270,10 @@ function updateDeckStatus(decks) {
     for (var j = 0; j < deck.ships.length; j++) {
       const ship = deck.ships[j];
 
-      const html = createDeckShipCell(ship.id());
+      const html = createDeckShipCell(ship.id(), ship.name());
       container.append(html);
 
-      const general = createGeneralShipCell(ship.id());
+      const general = createGeneralShipCell(ship.id(), ship.name());
       general_deck_container.append(general);
     }
 
@@ -380,11 +383,11 @@ function applyScale() {
   _left_panel.applyScale(scale);
 }
 
-function createDeckShipCell(ship_id) {
+function createDeckShipCell(ship_id, name) {
   const template = `
     <tr class="DeckShipCell ThemeContainerBorderB">
       <td class="ship_{ship_id}_type FontNormal" style="padding: 5px;" nowrap>艦種</td>
-      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap>艦名</td>
+      <td class="ship_{ship_id}_name FontLarge" style="padding: 5px;" nowrap><span data-i18n="ship.{name}">{ship_name}</span></td>
       <td style="padding: 5px;" nowrap>
         <div style="display: flex; flex-direction: column;">
           <div style="flex: 1 1 auto;">Lv. <span class="ship_{ship_id}_level">1</span></div>
@@ -427,7 +430,9 @@ function createDeckShipCell(ship_id) {
       </td>
       <td style="padding: 5px; overflow: hidden;" width="99999"></td>
     </tr>`;
-    return template.replace(/{ship_id}/g, ship_id);
+    return template.replace(/{ship_id}/g, ship_id)
+                   .replace(/{name}/g, name)
+                   .replace(/{ship_name}/g, i18n.__(`ship.${name}`));
 }
 
 function createDeckShipSlotitemCell(slotitem_id, size) {
@@ -451,10 +456,10 @@ function createDeckShipSlotitemCell(slotitem_id, size) {
   }
 }
 
-function createGeneralShipCell(ship_id) {
+function createGeneralShipCell(ship_id, name) {
   const template = `
     <div style="display: table-row; height: 40px;">
-      <div class="ship_{ship_id}_name ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;">艦名</div>
+      <div class="ship_{ship_id}_name ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;"><span data-i18n="ship.{name}">{ship_name}</span></div>
       <div class="ThemeContainerBorderB" style="display: table-cell; vertical-align: middle; padding: 5px;">
         <div class="FontNormal">Lv. <span class="ship_{ship_id}_level">1</span></div>
       </div>
@@ -482,7 +487,9 @@ function createGeneralShipCell(ship_id) {
         </div>
       </div>
     </div>`;
-  return template.replace(/{ship_id}/g, ship_id);
+  return template.replace(/{ship_id}/g, ship_id)
+                 .replace(/{name}/g, name)
+                 .replace(/{ship_name}/g, i18n.__(`ship.${name}`));
 }
 
 function deckMenuClicked(index) {

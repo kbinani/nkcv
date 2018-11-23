@@ -6,10 +6,12 @@ const Port = require('./src/Port.js'),
       ShipType = require('./src/ShipType.js'),
       SallyArea = require('./src/SallyArea.js'),
       QueryHistory = require('./src/QueryHistory.js'),
-      QueryPresetList = require('./src/QueryPresetList.js');
+      QueryPresetList = require('./src/QueryPresetList.js'),
+      ShipsWindow = require('./src/renderer/ships/ShipsWindow.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
-      alasql = require('alasql');
+      alasql = require('alasql'),
+      i18n = require('i18n');
 
 var _ships = [];
 const storage = new DataStorage();
@@ -39,6 +41,7 @@ const _query_preset_list = new QueryPresetList({});
 var _filter_config_received = false;
 var _sort_config_received = false;
 var _sql_preset_list_received = false;
+var _ships_window = new ShipsWindow();
 
 function onload() {
   require('electron-disable-file-drop');
@@ -468,7 +471,7 @@ function createShipCell(ship) {
       <div class="ThemeTableCell"><span class="ship_{ship_id}_index"></span></div>
       <div class="ThemeTableCell">{ship_id}</div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_type">{type}</span></div>
-      <div class="ThemeTableCell"><span class="ship_{ship_id}_name">{name}</span></div>
+      <div class="ThemeTableCell"><span class="ship_{ship_id}_name" data-i18n="ship.{name}">{ship_name}</span></div>
       <div class="ThemeTableCell">Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span></div>
       <div class="ThemeTableCell"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond">{cond}</span></div>
       <div class="ThemeTableCell"><span class="ship_{ship_id}_karyoku">{karyoku}</span></div>
@@ -491,7 +494,7 @@ function createShipCell(ship) {
   return template.replace(/{ship_id}/g, ship.id())
                  .replace(/{level}/, ship.level())
                  .replace(/{type}/, ship.type().toString())
-                 .replace(/{name}/, ship.name())
+                 .replace(/{name}/g, ship.name())
                  .replace(/{next_exp}/, ship.next_exp())
                  .replace(/{cond}/, ship.cond())
                  .replace(/{karyoku}/, ship.karyoku().numerator())
@@ -505,7 +508,8 @@ function createShipCell(ship) {
                  .replace(/{repair}/, ship.repair_seconds() > 0 ? timeLabel(ship.repair_seconds()) : '')
                  .replace(/{sally_area}/, ship.sally_area().name())
                  .replace(/{sally_area_background_color}/, sally_area.id() == 0 ? 'transparent' : sally_area.background_color())
-                 .replace(/{sally_area_text_color}/, sally_area.text_color());
+                 .replace(/{sally_area_text_color}/, sally_area.text_color())
+                 .replace(/{ship_name}/g, i18n.__(`ship.${ship.name()}`));
 }
 
 function createSlotitemCell(slotitem_id) {
