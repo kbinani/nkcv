@@ -1,5 +1,8 @@
 'use strict;'
 
+const is_dev = require('electron-is-dev'),
+      i18n = require('i18n');
+
 function LeftPanel() {
   this.$element = $('#webview_left_panel');
   this.$knotch = $('#webview_left_panel_knotch');
@@ -73,8 +76,15 @@ LeftPanel.prototype.set_battle_result = function(result) {
   }
 
   this._timerId = setTimeout(() => {
-    this.$content.html(result.enemies().join("<br/>"));
-    if (result.is_midnight_planned()) {
+    const contents = result.enemies().map((enemy) => {
+      const name = enemy.name();
+      const translated = i18n.__(name);
+      const hp = enemy.hp();
+      return `<span data-i18n="${name}">${translated}</span> (${hp.toString()})`;
+    }).join('<br/>');
+
+    this.$content.html(contents);
+    if (result.is_midnight_planned() || is_dev) {
       if (this.state == 'normal') {
         this.setState('hide');
       }
