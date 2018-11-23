@@ -761,5 +761,19 @@
 	"Level.1": "1",
 	"Exclude expedition ships": "Exclude expedition ships",
 	"Select All": "Select All",
-	"Deselect All": "Deselect All"
+	"Deselect All": "Deselect All",
+	"SortConfig.Reset": "Reset",
+	"SortConfig.Invert": "Invert",
+	"Ship.Type": "Type",
+	"Ship.Name": "Name",
+	"Ship.Firepower": "Firepower",
+	"Ship.Torpedo": "Torpedo",
+	"Ship.AA": "AA",
+	"Ship.Armor": "Armor",
+	"Ship.Luck": "Luck",
+	"Ship.LoS": "LoS",
+	"Ship.ASW": "ASW",
+	"Ship.Speed": "Speed",
+	"Repair duration": "Repair",
+	"Equipments": "Equipments"
 }

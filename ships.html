@@ -102,8 +102,8 @@
         <div style="flex: 0 0 auto; margin-left: 5px;" data-i18n="Sort">並べ替え設定</div>
       </div>
       <div id="sort_panel" style="flex: 0 0 auto; display: flex;">
-        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="resetSortOrder()">ソート条件をリセット</div>
-        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="invertSortOrder()">ソート条件を反転</div>
+        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="resetSortOrder()" data-i18n="SortConfig.Reset">ソート条件をリセット</div>
+        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="invertSortOrder()" data-i18n="SortConfig.Invert">ソート条件を反転</div>
         <div style="flex: 1 1 auto;"></div>
       </div>
     </div>
@@ -154,19 +154,19 @@
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('type')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">艦種</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Type">艦種</div>
               <div id="sort_order_type" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('name')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">艦名</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Name">艦名</div>
               <div id="sort_order_name" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('level')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">レベル</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Level">レベル</div>
               <div id="sort_order_level" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
@@ -178,67 +178,67 @@
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('karyoku')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">火力</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Firepower">火力</div>
               <div id="sort_order_karyoku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('raisou')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">雷装</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Torpedo">雷装</div>
               <div id="sort_order_raisou" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('taiku')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">対空</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.AA">対空</div>
               <div id="sort_order_taiku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('soukou')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">装甲</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Armor">装甲</div>
               <div id="sort_order_soukou" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('lucky')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">運</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Luck">運</div>
               <div id="sort_order_lucky" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('sakuteki')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">索敵</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.LoS">索敵</div>
               <div id="sort_order_sakuteki" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('taisen')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">対潜</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.ASW">対潜</div>
               <div id="sort_order_taisen" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('soku')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">速力</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Speed">速力</div>
               <div id="sort_order_soku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">出撃海域</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Event Maps">出撃海域</div>
               <div id="sort_order_sally_area" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('repair_seconds')">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">修復時間</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Repair duration">修復時間</div>
               <div id="sort_order_repair_seconds" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
           <div class="ThemeTableHeader ThemeContainerBorderL">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">装備</div>
+              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Equipments">装備</div>
             </div>
           </div>
         </div>

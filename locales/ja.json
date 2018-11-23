@@ -761,5 +761,19 @@
 	"Modernization.Completed": "改修完了",
 	"Modernization.Not-completed": "改修未完",
 	"Select All": "全て選択",
-	"Deselect All": "全て解除"
+	"Deselect All": "全て解除",
+	"SortConfig.Reset": "ソート条件をリセット",
+	"SortConfig.Invert": "ソート条件を反転",
+	"Ship.Type": "艦種",
+	"Ship.Name": "艦名",
+	"Ship.Firepower": "火力",
+	"Ship.Torpedo": "雷装",
+	"Ship.AA": "対空",
+	"Ship.Armor": "装甲",
+	"Ship.Luck": "運",
+	"Ship.LoS": "索敵",
+	"Ship.ASW": "対潜",
+	"Ship.Speed": "速力",
+	"Repair duration": "修復時間",
+	"Equipments": "装備"
 }
