@@ -10,19 +10,7 @@ const http = require('http'),
       fs = require('fs'),
       _ = require('lodash'),
       i18n = require('i18n');
-
-function deleteCaseInsensitive(object, key) {
-  const lowerCaseKey = key.toLowerCase();
-  for (let k in object) {
-    if (k.toLowerCase() == lowerCaseKey) {
-      delete(object[k]);
-    }
-  }
-}
-
-function clone(object) {
-  return JSON.parse(JSON.stringify(object));
-}
+const util = require(__dirname + '/util.js');
 
 function HTTPProxy() {
 
@@ -44,7 +32,7 @@ HTTPProxy.removeObserver = function(key) {
 function handle(api, raw_data, request_body, local_response, remote_response) {
   let prefix = '';
   let json = raw_data.toString();
-  let headers = clone(remote_response.headers);
+  let headers = util.clone(remote_response.headers);
 
   const possible_prefix = 'svdata=';
   if (json.indexOf(possible_prefix) === 0) {
@@ -60,9 +48,9 @@ function handle(api, raw_data, request_body, local_response, remote_response) {
   const filtered = filter(api, obj);
   const filtered_data = new Buffer(prefix + JSON.stringify(filtered));
 
-  deleteCaseInsensitive(headers, 'content-encoding');
-  deleteCaseInsensitive(headers, 'content-length');
-  deleteCaseInsensitive(headers, 'transfer-encoding');
+  util.delete(headers, 'content-encoding', {case_sensitive: false});
+  util.delete(headers, 'content-length', {case_sensitive: false});
+  util.delete(headers, 'transfer-encoding', {case_sensitive: false});
   headers['content-length'] = filtered_data.byteLength;
 
   local_response.writeHead(remote_response.statusCode, headers);
@@ -104,40 +92,20 @@ function filter(api, data) {
 
   switch (api) {
     case 'api_start2/getData':
-      let obj = clone(data);
+      let obj = util.clone(data);
 
-      const ship_master = _.get(obj, ['api_data', 'api_mst_ship'], []);
-      for (let i = 0; i < ship_master.length; i++) {
-        const master = ship_master[i];
-        const name = _.get(master, ['api_name'], null);
-        if (name == null) {
-          continue;
+      ['api_mst_ship', 'api_mst_stype', 'api_mst_slotitem'].forEach((key) => {
+        const master_list = _.get(obj, ['api_data', key], []);
+        for (let i = 0; i < master_list.length; i++) {
+          const master = master_list[i];
+          const name = _.get(master, ['api_name'], null);
+          if (name == null) {
+            continue;
+          }
+          const translated = i18n.__(name);
+          master['api_name'] = translated;
         }
-        const translated = i18n.__(name);
-        master['api_name'] = translated;
-      }
-
-      const stype_master = _.get(obj, ['api_data', 'api_mst_stype'], []);
-      for (let i = 0; i < stype_master.length; i++) {
-        const master = stype_master[i];
-        const name = _.get(master, ['api_name'], null);
-        if (name == null) {
-          continue;
-        }
-        const translated = i18n.__(name);
-        master['api_name'] = translated;
-      }
-
-      const slotitem_master = _.get(obj, ['api_data', 'api_mst_slotitem'], []);
-      for (let i = 0; i < slotitem_master.length; i++) {
-        const master = slotitem_master[i];
-        const name = _.get(master, ['api_name'], null);
-        if (name == null) {
-          continue;
-        }
-        const translated = i18n.__(name);
-        master['api_name'] = translated;
-      }
+      });
 
       return obj;
     default:
