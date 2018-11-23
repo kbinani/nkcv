@@ -775,5 +775,12 @@
 	"Ship.ASW": "対潜",
 	"Ship.Speed": "速力",
 	"Repair duration": "修復時間",
-	"Equipments": "装備"
+	"Equipments": "装備",
+	"Hit enter key to execute query": "Enterキーを押すとクエリーが実行されます",
+	"Preset": "プリセット",
+	"Register preset": "名前をつけてプリセット登録",
+	"Register": "登録",
+	"Delete": "削除",
+	"History": "履歴",
+	"Enable query": "クエリーを使用する"
 }

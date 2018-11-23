@@ -775,5 +775,12 @@
 	"Ship.ASW": "ASW",
 	"Ship.Speed": "Speed",
 	"Repair duration": "Repair",
-	"Equipments": "Equipments"
+	"Equipments": "Equipments",
+	"Enable query": "Enable query",
+	"Hit enter key to execute query": "Hit enter key to execute query",
+	"Preset": "Preset",
+	"Register preset": "Register preset",
+	"Register": "Register",
+	"Delete": "Delete",
+	"History": "History"
 }
