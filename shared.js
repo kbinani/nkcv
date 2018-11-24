@@ -1,5 +1,10 @@
+'use strict;'
+
+const i18n = require('i18n');
+const sprintf = require('sprintf');
+
 function updateShipStatus(ships) {
-  ships.forEach(function(ship) {
+  ships.forEach((ship) => {
     const id = ship.id();
     $('.ship_' + id + '_level').html(ship.level());
     $('.ship_' + id + '_name').html(i18n.__(ship.name()));
@@ -81,7 +86,7 @@ function shipToString(ship) {
 };
 
 function updateSlotitemStatus(slotitems) {
-  slotitems.forEach(function(slotitem) {
+  slotitems.forEach((slotitem) => {
     const id = slotitem.id();
     const element = $('.slotitem_' + id + '_icon');
     element.css('background-image', "url('img/slotitem/" + slotitem.icon_type() + ".svg')");
@@ -182,3 +187,14 @@ function applyLanguageToView(language) {
     }
   });
 }
+
+const container = {};
+container.updateShipStatus = updateShipStatus;
+container.shipToString = shipToString;
+container.updateSlotitemStatus = updateSlotitemStatus;
+container.barColor = barColor;
+container.timeLabel = timeLabel;
+container.createLocalizationLabel = createLocalizationLabel;
+container.applyLanguageToView = applyLanguageToView;
+
+module.exports = container;

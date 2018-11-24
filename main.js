@@ -9,7 +9,8 @@ const Port = require('./src/Port.js'),
       SallyArea = require('./src/SallyArea.js'),
       Notification = require('./src/Notification.js'),
       MainWindow = require('./src/renderer/main/MainWindow.js'),
-      LeftPanel = require('./src/renderer/main/LeftPanel.js');
+      LeftPanel = require('./src/renderer/main/LeftPanel.js'),
+      shared = require('./shared.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       fs = require('fs'),
@@ -50,7 +51,7 @@ function onload() {
     _port = port;
 
     updateDeckStatus(port.decks);
-    updateShipStatus(port.ships);
+    shared.updateShipStatus(port.ships);
     port.ships.forEach(function(ship) {
       const slotitems = ship.slotitems();
       const slotitem_ids = slotitems.map((it) => it.id());
@@ -68,7 +69,7 @@ function onload() {
         $('#deck_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it, size_normal));
         $('#general_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it, size_small));
       });
-      updateSlotitemStatus(slotitems);
+      shared.updateSlotitemStatus(slotitems);
     });
 
     $('#user_name').html(port.nickname());
@@ -251,7 +252,7 @@ function onload() {
         $(this).removeAttr('data-timer-complete-message');
         $(this).removeAttr('data-timer-complete-notification-message');
       } else {
-        const label = timeLabel(remaining);
+        const label = shared.timeLabel(remaining);
         $(this).html(label);
       }
     });

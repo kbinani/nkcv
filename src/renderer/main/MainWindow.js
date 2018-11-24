@@ -1,5 +1,7 @@
 'use strict;'
 
+const shared = require(__dirname + '/../../../shared.js');
+
 class MainWindow {
   constructor() {
     this.webview = document.querySelector("webview");
@@ -26,7 +28,7 @@ class MainWindow {
     this.language = language;
     i18n.setLocale(language);
 
-    applyLanguageToView(language);
+    shared.applyLanguageToView(language);
   }
 
   onLanguageSelected() {

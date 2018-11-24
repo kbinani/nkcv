@@ -5,13 +5,12 @@
 <title data-i18n="Ship List">艦娘一覧</title>
 <link href="./style/ships.css" rel="stylesheet"/>
 <link href="./style/theme/default.css" rel="stylesheet"/>
-<script src="./shared.js"></script>
 <script src="./ships.js"></script>
 </head>
 <body class="ThemeContainerActive" style="margin: 0; padding: 0; width: 100vw; height: 100vh;" onload="onload()">
   <div style="width: 100vw; height: 100vh; display: flex; flex-direction: column; overflow: hidden;">
     <div class="ThemeContainerBorder" style="flex: 0 0 auto; display: flex; flex-direction: column; margin: 10px 10px 0px 10px;">
-      <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="togglePanel('filter_panel_title_icon', 'filter_panel')">
+      <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="_ships_window.togglePanel('filter_panel_title_icon', 'filter_panel')">
         <div id="filter_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_more-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
         <div style="flex: 0 0 auto; margin-left: 5px;" data-i18n="Filter">フィルタ設定</div>
       </div>
@@ -19,17 +18,17 @@
         <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 5px; display: flex; flex-direction: column;">
           <div id="ship_type_choices" style="flex: 1 1 auto; padding: 5px;"></div>
           <div style="flex: 1 1 auto; display: flex;">
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([8, 9, 10])" data-i18n="BB/BC">戦艦級</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([7, 11, 18])" data-i18n="CV/CVL">航空母艦</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([5, 6])" data-i18n="CA">重巡級</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([3, 4, 21])" data-i18n="CL">軽巡級</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([2])" data-i18n="DD">駆逐艦</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([1])" data-i18n="DE">海防艦</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([13, 14])" data-i18n="SS">潜水艦</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([16, 17, 19, 20, 22])" data-i18n="AV/AO/AS..">補助艦艇</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([8, 9, 10])" data-i18n="BB/BC">戦艦級</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([7, 11, 18])" data-i18n="CV/CVL">航空母艦</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([5, 6])" data-i18n="CA">重巡級</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([3, 4, 21])" data-i18n="CL">軽巡級</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([2])" data-i18n="DD">駆逐艦</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([1])" data-i18n="DE">海防艦</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([13, 14])" data-i18n="SS">潜水艦</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([16, 17, 19, 20, 22])" data-i18n="AV/AO/AS..">補助艦艇</div>
             <div style="flex: 1 1 auto;"><!-- spacer --></div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 18, 19, 20, 21, 22])" data-i18n="Select All">全て選択</div>
-            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="selectShipType([])" data-i18n="Deselect All">全て解除</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 18, 19, 20, 21, 22])" data-i18n="Select All">全て選択</div>
+            <div class="ThemeRectButton" style="margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.selectShipType([])" data-i18n="Deselect All">全て解除</div>
           </div>
         </div>
         <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 0px 5px 5px 5px;">
@@ -37,54 +36,54 @@
             <tr>
               <td align="right" nowrap><span data-i18n="Level">レベル</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_level" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
-                <label><input type="radio" name="filter_level" value="2_or_grater" onchange="applyFilter()"><span data-i18n="Level.>=2">Lv.2以上</span></label>
-                <label><input type="radio" name="filter_level" value="1" onchange="applyFilter()"><span data-i18n="Level.1">Lv.1</span></label>
+                <label><input type="radio" name="filter_level" checked="checked" value="any" onchange="_ships_window.applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_level" value="2_or_grater" onchange="_ships_window.applyFilter()"><span data-i18n="Level.>=2">Lv.2以上</span></label>
+                <label><input type="radio" name="filter_level" value="1" onchange="_ships_window.applyFilter()"><span data-i18n="Level.1">Lv.1</span></label>
               </td>
               <td align="right" nowrap><span data-i18n="Speed">速力</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="checkbox" name="filter_soku" checked="checked" value="20" onchange="applyFilter()"><span data-i18n="speed.最速">最速</span></label>
-                <label><input type="checkbox" name="filter_soku" checked="checked" value="15" onchange="applyFilter()"><span data-i18n="speed.高速+">高速+</span></label>
-                <label><input type="checkbox" name="filter_soku" checked="checked" value="10" onchange="applyFilter()"><span data-i18n="speed.高速">高速</span></label>
-                <label><input type="checkbox" name="filter_soku" checked="checked" value="5" onchange="applyFilter()"><span data-i18n="speed.低速">低速</span></label>
+                <label><input type="checkbox" name="filter_soku" checked="checked" value="20" onchange="_ships_window.applyFilter()"><span data-i18n="speed.最速">最速</span></label>
+                <label><input type="checkbox" name="filter_soku" checked="checked" value="15" onchange="_ships_window.applyFilter()"><span data-i18n="speed.高速+">高速+</span></label>
+                <label><input type="checkbox" name="filter_soku" checked="checked" value="10" onchange="_ships_window.applyFilter()"><span data-i18n="speed.高速">高速</span></label>
+                <label><input type="checkbox" name="filter_soku" checked="checked" value="5" onchange="_ships_window.applyFilter()"><span data-i18n="speed.低速">低速</span></label>
               </td>
               <td align="right" nowrap><span data-i18n="Damage">損傷</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_damage" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
-                <label><input type="radio" name="filter_damage" value="damaged" onchange="applyFilter()"><span data-i18n="Damage.Damaged">あり</span></label>
-                <label><input type="radio" name="filter_damage" value="non_damaged" onchange="applyFilter()"><span data-i18n="Damage.Not-damaged">なし</span></label>
+                <label><input type="radio" name="filter_damage" checked="checked" value="any" onchange="_ships_window.applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_damage" value="damaged" onchange="_ships_window.applyFilter()"><span data-i18n="Damage.Damaged">あり</span></label>
+                <label><input type="radio" name="filter_damage" value="non_damaged" onchange="_ships_window.applyFilter()"><span data-i18n="Damage.Not-damaged">なし</span></label>
               </td>
             </tr>
             <tr>
               <td align="right" nowrap><span data-i18n="Lock">ロック</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_lock" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
-                <label><input type="radio" name="filter_lock" value="locked" onchange="applyFilter()"><span data-i18n="Lock.Locked">している</span></label>
-                <label><input type="radio" name="filter_lock" value="non_locked" onchange="applyFilter()"><span data-i18n="Lock.Not-locked">していない</span></label>
+                <label><input type="radio" name="filter_lock" checked="checked" value="any" onchange="_ships_window.applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_lock" value="locked" onchange="_ships_window.applyFilter()"><span data-i18n="Lock.Locked">している</span></label>
+                <label><input type="radio" name="filter_lock" value="non_locked" onchange="_ships_window.applyFilter()"><span data-i18n="Lock.Not-locked">していない</span></label>
               </td>
               <td align="right" nowrap><span data-i18n="Upgrade">改造</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_upgrade" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
-                <label><input type="radio" name="filter_upgrade" value="upgraded" onchange="applyFilter()"><span data-i18n="Upgrade.Completed">改造完了</span></label>
-                <label><input type="radio" name="filter_upgrade" value="non_upgraded" onchange="applyFilter()"><span data-i18n="Upgrade.Not-completed">改造未完</span></label>
+                <label><input type="radio" name="filter_upgrade" checked="checked" value="any" onchange="_ships_window.applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_upgrade" value="upgraded" onchange="_ships_window.applyFilter()"><span data-i18n="Upgrade.Completed">改造完了</span></label>
+                <label><input type="radio" name="filter_upgrade" value="non_upgraded" onchange="_ships_window.applyFilter()"><span data-i18n="Upgrade.Not-completed">改造未完</span></label>
               </td>
               <td align="right" nowrap>cond:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_cond" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
-                <label><input type="radio" name="filter_cond" value="50_or_grater" onchange="applyFilter()"><span data-i18n="Cond.>=50">50以上</span></label>
-                <label><input type="radio" name="filter_cond" value="lower_than_50" onchange="applyFilter()"><span data-i18n="Cond.<50">50未満</span></label>
+                <label><input type="radio" name="filter_cond" checked="checked" value="any" onchange="_ships_window.applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_cond" value="50_or_grater" onchange="_ships_window.applyFilter()"><span data-i18n="Cond.>=50">50以上</span></label>
+                <label><input type="radio" name="filter_cond" value="lower_than_50" onchange="_ships_window.applyFilter()"><span data-i18n="Cond.<50">50未満</span></label>
               </td>
             </tr>
             <tr>
               <td align="right" nowrap><span data-i18n="Expedition">遠征</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="checkbox" name="filter_mission" checked="checked" onchange="applyFilter()"><span data-i18n="Exclude expedition ships">遠征中の艦を除外する</span></label>
+                <label><input type="checkbox" name="filter_mission" checked="checked" onchange="_ships_window.applyFilter()"><span data-i18n="Exclude expedition ships">遠征中の艦を除外する</span></label>
               </td>
               <td align="right" nowrap><span data-i18n="Modernization">近代化改修</span>:</td>
               <td width="33.3%" nowrap>
-                <label><input type="radio" name="filter_remodel" checked="checked" value="any" onchange="applyFilter()"><span data-i18n="Any">すべて</span></label>
-                <label><input type="radio" name="filter_remodel" value="remodelled" onchange="applyFilter()"><span data-i18n="Modernization.Completed">改修完了</span></label>
-                <label><input type="radio" name="filter_remodel" value="non_remodelled" onchange="applyFilter()"><span data-i18n="Modernization.Not-completed">改修未完</span></label>
+                <label><input type="radio" name="filter_remodel" checked="checked" value="any" onchange="_ships_window.applyFilter()"><span data-i18n="Any">すべて</span></label>
+                <label><input type="radio" name="filter_remodel" value="remodelled" onchange="_ships_window.applyFilter()"><span data-i18n="Modernization.Completed">改修完了</span></label>
+                <label><input type="radio" name="filter_remodel" value="non_remodelled" onchange="_ships_window.applyFilter()"><span data-i18n="Modernization.Not-completed">改修未完</span></label>
               </td>
             </tr>
           </table>
@@ -97,25 +96,25 @@
       </div>
     </div>
     <div class="ThemeContainerBorder" style="flex: 0 0 auto; display: flex; flex-direction: column; margin: 5px 10px 0px 10px;">
-      <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="togglePanel('sort_panel_title_icon', 'sort_panel')">
+      <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="_ships_window.togglePanel('sort_panel_title_icon', 'sort_panel')">
         <div id="sort_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_more-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
         <div style="flex: 0 0 auto; margin-left: 5px;" data-i18n="Sort">並べ替え設定</div>
       </div>
       <div id="sort_panel" style="flex: 0 0 auto; display: flex;">
-        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="resetSortOrder()" data-i18n="SortConfig.Reset">ソート条件をリセット</div>
-        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="invertSortOrder()" data-i18n="SortConfig.Invert">ソート条件を反転</div>
+        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.resetSortOrder()" data-i18n="SortConfig.Reset">ソート条件をリセット</div>
+        <div class="ThemeRectButton" style="flex: 0 0 auto; margin: 5px; padding: 2px 10px 2px 10px;" onclick="_ships_window.invertSortOrder()" data-i18n="SortConfig.Invert">ソート条件を反転</div>
         <div style="flex: 1 1 auto;"></div>
       </div>
     </div>
     <div class="ThemeContainerBorder" style="flex: 0 0 auto; display: flex; flex-direction: column; margin: 5px 10px 0px 10px;">
-      <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="togglePanel('query_panel_title_icon', 'query_panel')">
+      <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px; display: flex; cursor: pointer;" onclick="_ships_window.togglePanel('query_panel_title_icon', 'query_panel')">
         <div id="query_panel_title_icon" style="flex: 0 0 auto; width: 17px; height: 17px; padding-top: 4px; padding-bottom: 4px;background-image: url('img/baseline-unfold_less-24px.svg'); background-repeat: no-repeat; background-position: 50%; background-size: contain;"></div>
         <div style="flex: 0 0 auto; margin-left: 5px;" data-i18n="Query">クエリー</div>
       </div>
       <div id="query_panel" style="flex: 0 0 auto; display: none;flex-direction: column;">
         <div style="flex: 0 0 auto; display: flex; margin: 5px 5px 0px 5px; padding-left: 5px;">
           <label for="use_query">
-            <input id="use_query" type="checkbox" onclick="toggleQuery()" style="height: 25px; line-height: 25px; vertical-align: middle;"/><span data-i18n="Enable query">クエリーを使用する</span>
+            <input id="use_query" type="checkbox" onclick="_ships_window.toggleQuery()" style="height: 25px; line-height: 25px; vertical-align: middle;"/><span data-i18n="Enable query">クエリーを使用する</span>
           </label>
         </div>
         <div style="flex: 0 0 auto; margin: 5px 10px 0px 10px; font-family: monospace;">SELECT * FROM ships WHERE</div>
@@ -125,19 +124,19 @@
         <div style="flex: 0 0 auto; margin: 10px 10px 0px 10px; height: 25px; line-height: 25px; display: flex;">
           <div style="display: flex; height: 25px; line-height: 25px; flex: 1 1 auto;">
             <div data-i18n="Preset">プリセット</div>
-            <select id="query_preset_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 1 1 auto; height: 25px; margin: 0px 5px 5px 5px;" onchange="queryPresetSelected()">
+            <select id="query_preset_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 1 1 auto; height: 25px; margin: 0px 5px 5px 5px;" onchange="_ships_window.queryPresetSelected()">
             </select>
           </div>
           <div style="margin-right: 5px; margin-left: 10px;" data-i18n="Register preset">名前をつけてプリセット登録</div>
           <label for="preset_name">
             <input class="QueryInputGroup" id="preset_name" type="text" style="width: 300px;">
           </label>
-          <div class="ThemeRectButton QueryInputGroup" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;" onclick="registerSqlPreset()" data-i18n="Register">登録</div>
-          <div class="ThemeRectButton QueryInputGroup" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;" onclick="deleteSqlPreset()" data-i18n="Delete">削除</div>
+          <div class="ThemeRectButton QueryInputGroup" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;" onclick="_ships_window.registerSqlPreset()" data-i18n="Register">登録</div>
+          <div class="ThemeRectButton QueryInputGroup" style="margin-left: 5px; padding-left: 10px; padding-right: 10px;" onclick="_ships_window.deleteSqlPreset()" data-i18n="Delete">削除</div>
         </div>
         <div style="flex: 0 0 auto; margin: 5px 10px 5px 10px; height: 25px; line-height: 25px; display: flex;">
           <div style="flex: 0 0 auto; margin-right: 10px;" data-i18n="History">履歴</div>
-          <select id="query_history_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 1 1 auto;" onchange="queryHistorySelected()">
+          <select id="query_history_choice" class="ThemeContainerActive ThemeContainerBorder QueryInputGroup" style="flex: 1 1 auto;" onchange="_ships_window.queryHistorySelected()">
           </select>
         </div>
       </div>
@@ -146,79 +145,79 @@
       <div id="ship_table" style="display: table; min-width: 100%;">
         <div id="ship_table_header" style="display: table-row; cursor: pointer;">
           <div class="ThemeTableHeader"></div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('id')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('id')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;">ID</div>
               <div id="sort_order_id" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('type')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('type')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Type">艦種</div>
               <div id="sort_order_type" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('name')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('name')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Name">艦名</div>
               <div id="sort_order_name" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('level')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('level')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Level">レベル</div>
               <div id="sort_order_level" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('cond')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('cond')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;">cond</div>
               <div id="sort_order_cond" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('karyoku')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('karyoku')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Firepower">火力</div>
               <div id="sort_order_karyoku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('raisou')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('raisou')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Torpedo">雷装</div>
               <div id="sort_order_raisou" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('taiku')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('taiku')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.AA">対空</div>
               <div id="sort_order_taiku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('soukou')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('soukou')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Armor">装甲</div>
               <div id="sort_order_soukou" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('lucky')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('lucky')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Luck">運</div>
               <div id="sort_order_lucky" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('sakuteki')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('sakuteki')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.LoS">索敵</div>
               <div id="sort_order_sakuteki" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('taisen')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('taisen')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.ASW">対潜</div>
               <div id="sort_order_taisen" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('soku')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('soku')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Speed">速力</div>
               <div id="sort_order_soku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
@@ -230,7 +229,7 @@
               <div id="sort_order_sally_area" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
             </div>
           </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="sortOrderClicked('repair_seconds')">
+          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('repair_seconds')">
             <div style="display: flex;">
               <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Repair duration">修復時間</div>
               <div id="sort_order_repair_seconds" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
