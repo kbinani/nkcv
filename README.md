@@ -28,7 +28,7 @@ nkcv
 License
 ----
 
-* MIT
+* GPLv3
 
 Acknowledgements
 ----
