@@ -8,9 +8,9 @@ const http = require('http'),
       mkdirp = require('mkdirp'),
       path = require('path'),
       fs = require('fs'),
-      _ = require('lodash'),
-      i18n = require('i18n');
-const util = require(__dirname + '/util.js');
+      _ = require('lodash');
+const util = require(__dirname + '/util.js'),
+      i18n = require(__dirname + '/i18n.js');
 
 class HTTPProxy {
   constructor(port, complete) {

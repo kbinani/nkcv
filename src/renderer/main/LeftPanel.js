@@ -1,7 +1,7 @@
 'use strict;'
 
-const is_dev = require('electron-is-dev'),
-      i18n = require('i18n');
+const is_dev = require('electron-is-dev');
+const i18n = require(__dirname + '/../../i18n.js');
 
 function LeftPanel() {
   this.$element = $('#webview_left_panel');

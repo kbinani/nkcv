@@ -10,12 +10,12 @@ const Port = require('./src/Port.js'),
       Notification = require('./src/Notification.js'),
       MainWindow = require('./src/renderer/main/MainWindow.js'),
       LeftPanel = require('./src/renderer/main/LeftPanel.js'),
-      shared = require('./shared.js');
+      shared = require('./shared.js'),
+      i18n = require('./src/i18n.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       fs = require('fs'),
-      tmp = require('tmp'),
-      i18n = require('i18n');
+      tmp = require('tmp');
 
 const width = 1200;
 const height = 720;

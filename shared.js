@@ -1,7 +1,7 @@
 'use strict;'
 
-const i18n = require('i18n');
 const sprintf = require('sprintf');
+const i18n = require(__dirname + '/src/i18n.js');
 
 function updateShipStatus(ships) {
   ships.forEach((ship) => {
