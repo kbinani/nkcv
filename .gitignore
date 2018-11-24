@@ -1,5 +1,4 @@
 /node_modules
 *.log
-*.json
 /api_log
 /release-builds
