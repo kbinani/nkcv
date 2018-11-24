@@ -249,6 +249,7 @@ ipcMain.on('app.shipWindowDidLoad', function(event, data) {
 
 ipcMain.on('app.requestLanguageChange', (event, data) => {
   const language = data;
+  i18n.setLocale(language);
   if (mainWindow != null) {
     mainWindow.webContents.send('app.languageDidChanged', language);
   }
