@@ -9,11 +9,11 @@ const Port = require(__dirname + '/../../Port.js'),
       SallyArea = require(__dirname + '/../../SallyArea.js'),
       QueryHistory = require(__dirname + '/../../QueryHistory.js'),
       QueryPresetList = require(__dirname + '/../../QueryPresetList.js'),
-      shared = require(__dirname + '/../../../shared.js');
+      shared = require(__dirname + '/../../../shared.js'),
+      i18n = require(__dirname + '/../../i18n.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
-      alasql = require('alasql'),
-      i18n = require('i18n');
+      alasql = require('alasql');
 
 class FilterPanel {
   constructor() {
@@ -83,10 +83,6 @@ class ShipsWindow {
     this._sql_preset_list_received = false;
 
     this.language = "ja";
-    i18n.configure({
-      locales: ['ja', 'en'],
-      directory: __dirname + '/../../../locales',
-    });
     i18n.setLocale(this.language);
 
     this._filterPanel = new FilterPanel();

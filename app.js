@@ -9,14 +9,14 @@ const electron = require('electron'),
       tlds = require('tlds'),
       Transcoder = require('stream-transcoder'),
       tmp = require('tmp'),
-      uuidv4 = require('uuid/v4'),
-      i18n = require('i18n');
+      uuidv4 = require('uuid/v4');
 const HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
       Rat = require(__dirname + '/src/Rat.js'),
       Dialog = require(__dirname + '/src/Dialog.js'),
-      Config = require(__dirname + '/src/Config.js');
+      Config = require(__dirname + '/src/Config.js'),
+      i18n = require(__dirname + '/src/i18n.js');
 
 const {app, BrowserWindow, session, ipcMain, dialog} = require('electron');
 
@@ -38,10 +38,6 @@ app.on('ready', function() {
   loadConfig();
   saveConfig();
   const scale = Rat.fromString(config.scale());
-  i18n.configure({
-    locales: ['ja', 'en'],
-    directory: __dirname + '/locales',
-  });
   i18n.setLocale(config.language());
 
   if (false) {  // オフラインで作業する時有効にする
