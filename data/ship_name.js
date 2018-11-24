@@ -284,7 +284,7 @@ module.exports = {
   "綾波": "Ayanami",
   "敷波": "Shikinami",
   "曙": "Akebono",
-  "陽炎": "kagerou",
+  "陽炎": "Kagerou",
   "不知火": "Shiranui",
   "黒潮": "Kuroshio",
   "雪風": "Yukikaze",
