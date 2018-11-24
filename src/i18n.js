@@ -31,7 +31,8 @@ function reload() {
 
 const builtin = _.merge({},
   require(__dirname + '/../data/ship_name.js'),
-  require(__dirname + '/../data/slotitem_name.js'));
+  require(__dirname + '/../data/slotitem_name.js'),
+  require(__dirname + '/../data/quest.js'));
 
 let locale = 'ja';
 const container = {};
@@ -70,10 +71,12 @@ container.__ = function(key) {
   } else {
     const result = _.get(data, [locale, key], null);
     if (result == null) {
-      if (ipcRenderer) {
-        ipcRenderer.send('i18n.add', {locale: locale, key: key});
-      } else {
-        add(locale, key);
+      if (key.indexOf('quest.') != 0) {
+        if (ipcRenderer) {
+          ipcRenderer.send('i18n.add', {locale: locale, key: key});
+        } else {
+          add(locale, key);
+        }
       }
       return key;
     } else {

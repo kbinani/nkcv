@@ -10,13 +10,16 @@ const http = require('http'),
       fs = require('fs'),
       _ = require('lodash');
 const util = require(__dirname + '/util.js'),
-      i18n = require(__dirname + '/i18n.js');
+      i18n = require(__dirname + '/i18n.js'),
+      json = require(__dirname + '/json.js');
 
 class HTTPProxy {
   constructor(port, complete) {
     this._observers = {};
     this._maxObserverId = -1;
     this._launch(port, complete);
+    this._quest_mapping_file = __dirname + '/../data/quest_mapping.json';
+    this._quest_mapping = json.fromFile(this._quest_mapping_file);
   }
 
   addObserver(callback) {
@@ -92,22 +95,72 @@ class HTTPProxy {
 
     switch (api) {
       case 'api_start2/getData':
-        let obj = util.clone(data);
+        return (() => {
+          let obj = util.clone(data);
 
-        ['api_mst_ship', 'api_mst_stype', 'api_mst_slotitem'].forEach((key) => {
-          const masterList = _.get(obj, ['api_data', key], []);
-          for (let i = 0; i < masterList.length; i++) {
-            const master = masterList[i];
-            const name = _.get(master, ['api_name'], null);
-            if (name == null) {
+          ['api_mst_ship', 'api_mst_stype', 'api_mst_slotitem'].forEach((key) => {
+            const masterList = _.get(obj, ['api_data', key], []);
+            for (let i = 0; i < masterList.length; i++) {
+              const master = masterList[i];
+              const name = _.get(master, ['api_name'], null);
+              if (name == null) {
+                continue;
+              }
+              const translated = i18n.__(name);
+              master['api_name'] = translated;
+            }
+          });
+
+          return obj;
+        })();
+      case 'api_get_member/questlist':
+        return (() => {
+          if (isDev) {
+            this._quest_mapping = json.fromFile(this._quest_mapping_file);
+          }
+
+          let obj = util.clone(data);
+          const list = _.get(obj, ['api_data', 'api_list'], []);
+          for (let i = 0; i < list.length; i++) {
+            const d = list[i];
+            const api_no = _.get(d, ['api_no'], -1);
+            if (api_no == -1) {
               continue;
             }
-            const translated = i18n.__(name);
-            master['api_name'] = translated;
+            const name = _.get(this._quest_mapping, [api_no], null);
+            if (name == null) {
+              if (isDev) {
+                let missing = {};
+                const file = __dirname + '/quest_mapping_missiong.json';
+                try {
+                  missing = json.fromFile(file);
+                } catch (e) {
+                  console.trace(e);
+                }
+                missing[api_no] = {
+                  title: _.get(d, ['api_title'], ''),
+                  detail: _.get(d, ['api_detail'], ''),
+                };
+                try {
+                  json.toFile(missing, file);
+                } catch (e) {
+                  console.trace(e);
+                }
+              }
+              continue;
+            }
+            const title = i18n.__(`quest.${name}.title`);
+            const detail = i18n.__(`quest.${name}.detail`);
+            if (title.indexOf('quest.') < 0) {
+              d['api_title'] = title;
+            }
+            if (detail.indexOf('quest.') < 0) {
+              d['api_detail'] = detail;
+            }
           }
-        });
-
-        return obj;
+          data['api_data']['api_list'] = list;
+          return data;
+        })();
       default:
         return data;
     }
