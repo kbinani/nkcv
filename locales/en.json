@@ -126,5 +126,14 @@
   "Register preset": "Register preset",
   "Register": "Register",
   "Delete": "Delete",
-  "History": "History"
+  "History": "History",
+  "Confirmation": "Confirmation",
+  "Exit application?": "Exit application?",
+  "Exit": "Exit",
+  "Back to previous page?": "Back to previous page?",
+  "Back": "Back",
+  "Reload page?": "Reload page?",
+  "Reload": "Reload",
+  "Encoding media files": "Encoding media files",
+  "Encoding %d media file(s)": "Encoding %d media file(s)"
 }

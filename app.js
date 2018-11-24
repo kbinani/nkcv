@@ -9,7 +9,8 @@ const electron = require('electron'),
       tlds = require('tlds'),
       Transcoder = require('stream-transcoder'),
       tmp = require('tmp'),
-      uuidv4 = require('uuid/v4');
+      uuidv4 = require('uuid/v4'),
+      sprintf = require('sprintf');
 const HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
@@ -110,7 +111,7 @@ app.on('ready', function() {
       const {dialog} = require('electron');
       dialog.showMessageBox({
         type: 'info',
-        message: '動画をエンコード中です',
+        message: i18n.__('Encoding media files'),
       });
       event.preventDefault();
       return;
@@ -122,10 +123,10 @@ app.on('ready', function() {
     });
 
     const response = Dialog.confirm({
-      title: '確認',
-      message: '終了しますか?',
-      yes: '終了',
-      no: 'キャンセル'
+      title: i18n.__('Confirmation'),
+      message: i18n.__('Exit application?'),
+      yes: i18n.__('Exit'),
+      no: 'Cancel'
     });
     if (!response) {
       event.preventDefault();
@@ -278,7 +279,7 @@ function decrementNumFilesEncoding(num) {
 function updateWindowTitle() {
   var title = app.getName();
   if (_numFilesEncoding > 0) {
-    title += ' - ' + _numFilesEncoding + ' 個のファイルをエンコード中';
+    title += ' - ' + sprintf(i18n.__('Encoding %d media file(s)'), _numFilesEncoding);
   }
   if (_screenRecordingToken) {
     title += ' - [' + _screenRecordingToken + ']';

@@ -126,5 +126,14 @@
   "Register": "登録",
   "Delete": "削除",
   "History": "履歴",
-  "Enable query": "クエリーを使用する"
+  "Enable query": "クエリーを使用する",
+  "Confirmation": "確認",
+  "Exit application?": "終了しますか?",
+  "Exit": "終了",
+  "Reload page?": "ページをリロードします。よろしいですか?",
+  "Reload": "リロード",
+  "Back to previous page?": "前のページに戻ります。よろしいですか?",
+  "Back": "戻る",
+  "Encoding media files": "動画をエンコード中です",
+  "Encoding %d media file(s)": "%d 個のファイルをエンコード中"
 }

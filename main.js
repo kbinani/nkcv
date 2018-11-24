@@ -349,10 +349,10 @@ function menuItemClicked(sender) {
 
 function browserBackClicked(sender) {
   const response = Dialog.confirm({
-    title: '確認',
-    message: '前のページに戻ります。よろしいですか?',
-    yes: '戻る',
-    no: 'キャンセル'
+    title: i18n.__('Confirmation'),
+    message: i18n.__('Back to previous page?'),
+    yes: i18n.__('Back'),
+    no: 'Cancel'
   });
   if (response) {
     document.querySelector("webview").goBack();
@@ -361,10 +361,10 @@ function browserBackClicked(sender) {
 
 function browserReloadClicked(sender) {
   const response = Dialog.confirm({
-    title: '確認',
-    message: 'ページをリロードします。よろしいですか?',
-    yes: 'リロード',
-    no: 'キャンセル'
+    title: i18n.__('Confirmation'),
+    message: i18n.__('Reload page?'),
+    yes: i18n.__('Reload'),
+    no: 'Cancel'
   });
   if (response) {
     document.querySelector("webview").reload();
