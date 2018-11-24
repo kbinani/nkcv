@@ -1,7 +1,6 @@
 'use strict;'
 
-const HTTPProxy = require(__dirname + '/HTTPProxy.js'),
-      _ = require('lodash');
+const _ = require('lodash');
 const {ipcRenderer} = require('electron');
 
 

@@ -28,6 +28,7 @@ var mainWindowClosed = false;
 const config = new Config({});
 var _numFilesEncoding = 0;
 var _screenRecordingToken = null;
+let _proxy = null;
 
 app.on('window-all-closed', function() {
   app.quit();
@@ -69,15 +70,27 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow(options);
 
   find_free_port(8000, function(err, port) {
-    HTTPProxy.launch(port, function(e) {
+    _proxy = new HTTPProxy(port, (e) => {
       const ses = session.fromPartition('persist:nkcv');
       const proxyOptions = {
         proxyRules: 'http=localhost:' + port + ';https=direct://',
         proxyBypassRules: tlds.map((it) => '.' + it).join(','),
       };
-      ses.setProxy(proxyOptions, function() {
+      ses.setProxy(proxyOptions, () => {
         mainWindow.loadURL('file://' + __dirname + '/main.html');
       });
+    });
+
+    _proxy.addObserver((api, data, request_body) => {
+      if (mandatoryApiData.indexOf(api) >= 0) {
+        mandatoryData[api] = data;
+      }
+      if (mainWindow) {
+        mainWindow.webContents.send(api, data, request_body);
+      }
+      if (shipWindow) {
+        shipWindow.webContents.send(api, data, request_body);
+      }
     });
   });
 
@@ -129,18 +142,6 @@ app.on('ready', function() {
       shipWindow.close();
     }
     mainWindow = null;
-  });
-
-  HTTPProxy.addObserver(function(api, data, request_body) {
-    if (mandatoryApiData.indexOf(api) >= 0) {
-      mandatoryData[api] = data;
-    }
-    if (mainWindow) {
-      mainWindow.webContents.send(api, data, request_body);
-    }
-    if (shipWindow) {
-      shipWindow.webContents.send(api, data, request_body);
-    }
   });
 });
 

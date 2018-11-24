@@ -4,7 +4,7 @@ const http = require('http'),
       url = require('url'),
       net = require('net'),
       zlib = require('zlib'),
-      is_dev = require('electron-is-dev'),
+      isDev = require('electron-is-dev'),
       mkdirp = require('mkdirp'),
       path = require('path'),
       fs = require('fs'),
@@ -12,205 +12,205 @@ const http = require('http'),
       i18n = require('i18n');
 const util = require(__dirname + '/util.js');
 
-function HTTPProxy() {
-
-}
-
-const observers = {};
-var maxObserverId = -1;
-
-HTTPProxy.addObserver = function(callback) {
-  maxObserverId++;
-  observers[maxObserverId] = callback;
-  return maxObserverId;
-};
-
-HTTPProxy.removeObserver = function(key) {
-  observers[key] = null;
-};
-
-function handle(api, raw_data, request_body, local_response, remote_response) {
-  let prefix = '';
-  let json = raw_data.toString();
-  let headers = util.clone(remote_response.headers);
-
-  const possible_prefix = 'svdata=';
-  if (json.indexOf(possible_prefix) === 0) {
-    prefix = possible_prefix;
-    json = json.substring(possible_prefix.length);
+class HTTPProxy {
+  constructor(port, complete) {
+    this._observers = {};
+    this._maxObserverId = -1;
+    this._launch(port, complete);
   }
 
-  for (var key in observers) {
-    observers[key](api, json, request_body);
+  addObserver(callback) {
+    this._maxObserverId++;
+    this._observers[this._maxObserverId] = callback;
+    return this._maxObserverId;
   }
 
-  const obj = JSON.parse(json);
-  const filtered = filter(api, obj);
-  const filtered_data = new Buffer(prefix + JSON.stringify(filtered));
+  removeObserver(key) {
+    this._observers[key] = null;
+  }
 
-  util.delete(headers, 'content-encoding', {case_sensitive: false});
-  util.delete(headers, 'content-length', {case_sensitive: false});
-  util.delete(headers, 'transfer-encoding', {case_sensitive: false});
-  headers['content-length'] = filtered_data.byteLength;
+  _handle(api, rawData, requestBody, localResponse, remoteResponse) {
+    let prefix = '';
+    let json = rawData.toString();
+    let headers = util.clone(remoteResponse.headers);
 
-  local_response.writeHead(remote_response.statusCode, headers);
-  local_response.write(filtered_data);
-  local_response.end();
-
-  if (is_dev) {
-    console.log(api);
-    const log = {
-      'api': api,
-      'request': request_body,
-      'response': filtered,
-    };
-    const file = path.join(path.dirname(__dirname), 'api_log', api + '.json');
-    mkdirp(path.dirname(file), (err) => {
-      if (err) {
-        console.trace(err)
-        return;
-      }
-      try {
-        const stream = fs.createWriteStream(file);
-        stream.write(JSON.stringify(log, null, 2));
-        stream.end();
-      } catch (e) {
-        console.trace(e);
-      }
-    });
-    if (api == 'api_req_map/start' || api == 'api_req_map/next') {
-      const area = _.get(filtered, ['api_data', 'api_maparea_id'], -1);
-      const map = _.get(filtered, ['api_data', 'api_mapinfo_no'], -1);
-      const no = _.get(filtered, ['api_data', 'api_no'], -1);
-      console.log([area, map, no].join("-"));
+    const possiblePrefix = 'svdata=';
+    if (json.indexOf(possiblePrefix) === 0) {
+      prefix = possiblePrefix;
+      json = json.substring(possiblePrefix.length);
     }
-  }
-}
 
-function filter(api, data) {
-  return data;
+    for (let key in this._observers) {
+      this._observers[key](api, json, requestBody);
+    }
 
-  switch (api) {
-    case 'api_start2/getData':
-      let obj = util.clone(data);
+    const obj = JSON.parse(json);
+    const filtered = this._filter(api, obj);
+    const filteredData = new Buffer(prefix + JSON.stringify(filtered));
 
-      ['api_mst_ship', 'api_mst_stype', 'api_mst_slotitem'].forEach((key) => {
-        const master_list = _.get(obj, ['api_data', key], []);
-        for (let i = 0; i < master_list.length; i++) {
-          const master = master_list[i];
-          const name = _.get(master, ['api_name'], null);
-          if (name == null) {
-            continue;
-          }
-          const translated = i18n.__(name);
-          master['api_name'] = translated;
+    util.delete(headers, 'content-encoding', {case_sensitive: false});
+    util.delete(headers, 'content-length', {case_sensitive: false});
+    util.delete(headers, 'transfer-encoding', {case_sensitive: false});
+    headers['content-length'] = filteredData.byteLength;
+
+    localResponse.writeHead(remoteResponse.statusCode, headers);
+    localResponse.write(filteredData);
+    localResponse.end();
+
+    if (isDev) {
+      console.log(api);
+      const log = {
+        'api': api,
+        'request': requestBody,
+        'response': filtered,
+      };
+      const file = path.join(path.dirname(__dirname), 'api_log', api + '.json');
+      mkdirp(path.dirname(file), (err) => {
+        if (err) {
+          console.trace(err)
+          return;
+        }
+        try {
+          const stream = fs.createWriteStream(file);
+          stream.write(JSON.stringify(log, null, 2));
+          stream.end();
+        } catch (e) {
+          console.trace(e);
         }
       });
+      if (api == 'api_req_map/start' || api == 'api_req_map/next') {
+        const area = _.get(filtered, ['api_data', 'api_maparea_id'], -1);
+        const map = _.get(filtered, ['api_data', 'api_mapinfo_no'], -1);
+        const no = _.get(filtered, ['api_data', 'api_no'], -1);
+        console.log([area, map, no].join("-"));
+      }
+    }
+  }
 
-      return obj;
-    default:
-      return data;
+  _filter(api, data) {
+    return data;
+
+    switch (api) {
+      case 'api_start2/getData':
+        let obj = util.clone(data);
+
+        ['api_mst_ship', 'api_mst_stype', 'api_mst_slotitem'].forEach((key) => {
+          const masterList = _.get(obj, ['api_data', key], []);
+          for (let i = 0; i < masterList.length; i++) {
+            const master = masterList[i];
+            const name = _.get(master, ['api_name'], null);
+            if (name == null) {
+              continue;
+            }
+            const translated = i18n.__(name);
+            master['api_name'] = translated;
+          }
+        });
+
+        return obj;
+      default:
+        return data;
+    }
+  }
+
+  _launch(port, complete) {
+    this._server = http.createServer((clientRequest, clientResponse) => {
+      let clientConnection = clientRequest.socket || clientRequest.connection;
+      const remoteAddress = clientRequest.connection.remoteAddress;
+
+      const whitelist = ['::1', '::ffff:127.0.0.1'];
+      if (whitelist.indexOf(remoteAddress) < 0) {
+        clientRequest.destroy();
+        return;
+      }
+
+      let x = url.parse(clientRequest.url);
+      const options = {
+        host: x.hostname,
+        port: x.port || 80,
+        path: x.path,
+        method: clientRequest.method,
+        headers: clientRequest.headers,
+        agent: clientConnection.$agent
+      };
+
+      const kcsapiIndex = clientRequest.url.indexOf("/kcsapi/");
+
+      let requestBody = null;
+
+      let serverRequest = http.request(options, (serverResponse) => {
+        if (kcsapiIndex >= 0) {
+          const api = clientRequest.url.substring(kcsapiIndex + "/kcsapi/".length);
+          let headers = serverResponse.headers;
+          let isGzip = false;
+          for (let header in headers) {
+            if (header.toLowerCase() === "content-encoding" && headers[header].toLowerCase() === "gzip") {
+              isGzip = true;
+              break;
+            }
+          }
+          let data = null;
+          serverResponse.on('data', (chunk) => {
+            if (data == null) {
+              data = chunk;
+            } else {
+              data = Buffer.concat([data, chunk]);
+            }
+          });
+          serverResponse.on('end', () => {
+            try {
+              let prefix = '';
+              let json = null;
+              if (isGzip) {
+                zlib.gunzip(data, (error, result) => {
+                  if (error) {
+                    console.log("error=" + error);
+                  }
+                  this._handle(api, result, requestBody, clientResponse, serverResponse);
+                });
+              } else {
+                this._handle(api, data, requestBody, clientResponse, serverResponse);
+              }
+            } catch (e) {
+              console.trace(e);
+            }
+          });
+        } else {
+          clientResponse.writeHead(serverResponse.statusCode, serverResponse.headers);
+          serverResponse.pipe(clientResponse);
+        }
+      });
+      clientRequest.on('data', (data) => {
+        if (requestBody == null) {
+          requestBody = data;
+        } else {
+          requestBody += data;
+        }
+        serverRequest.write(data);
+      });
+      clientRequest.on('end', () => {
+        if (requestBody == null) {
+          requestBody = '';
+        } else {
+          requestBody = '' + requestBody;
+        }
+        serverRequest.end();
+      });
+      serverRequest.on('error', (err) => {
+        clientResponse.writeHead(400, err.message, {'content-type': 'text/html'});
+        clientResponse.end('<h1>' + err.message + '<br/>' + clientRequest.url + '</h1>');
+      });
+      serverRequest.on('data', (chunk) => {
+        console.log(chunk.toString());
+      });
+    }).listen(port, (e) => {
+      complete(e);
+    });
+
+    this._server.on('clientError', (err, clientConnection) => {
+      clientConnection.end();
+    });
   }
 }
-
-HTTPProxy.launch = function(port, complete) {
-  var server = http.createServer(function onCliReq(cliReq, cliRes) {
-    var cliSoc = cliReq.socket || cliReq.connection;
-    const remoteAddress = cliReq.connection.remoteAddress;
-
-    const whitelist = ['::1', '::ffff:127.0.0.1'];
-    if (whitelist.indexOf(remoteAddress) < 0) {
-      cliReq.destroy();
-      return;
-    }
-
-    var x = url.parse(cliReq.url);
-    var options = {
-      host: x.hostname,
-      port: x.port || 80,
-      path: x.path,
-      method: cliReq.method,
-      headers: cliReq.headers,
-      agent: cliSoc.$agent
-    };
-
-    const kcsapiIndex = cliReq.url.indexOf("/kcsapi/");
-
-    var request_body = null;
-
-    var self = this;
-    var svrReq = http.request(options, function onSvrRes(svrRes) {
-      if (kcsapiIndex >= 0) {
-        const api = cliReq.url.substring(kcsapiIndex + "/kcsapi/".length);
-        let headers = svrRes.headers;
-        var isGzip = false;
-        for (var header in headers) {
-          if (header.toLowerCase() === "content-encoding" && headers[header].toLowerCase() === "gzip") {
-            isGzip = true;
-            break;
-          }
-        }
-        var data = null;
-        svrRes.on('data', function(chunk) {
-          if (data == null) {
-            data = chunk;
-          } else {
-            data = Buffer.concat([data, chunk]);
-          }
-        });
-        svrRes.on('end', function() {
-          try {
-            let prefix = '';
-            let json = null;
-            if (isGzip) {
-              zlib.gunzip(data, function(error, result) {
-                if (error) {
-                  console.log("error=" + error);
-                }
-                handle(api, result, request_body, cliRes, svrRes);
-              });
-            } else {
-              handle(api, data, request_body, cliRes, svrRes);
-            }
-          } catch (e) {
-            console.trace(e);
-          }
-        });
-      } else {
-        cliRes.writeHead(svrRes.statusCode, svrRes.headers);
-        svrRes.pipe(cliRes);
-      }
-    });
-    cliReq.on('data', (data) => {
-      if (request_body == null) {
-        request_body = data;
-      } else {
-        request_body += data;
-      }
-      svrReq.write(data);
-    });
-    cliReq.on('end', () => {
-      if (request_body == null) {
-        request_body = '';
-      } else {
-        request_body = '' + request_body;
-      }
-      svrReq.end();
-    });
-    svrReq.on('error', function onSvrReqErr(err) {
-      cliRes.writeHead(400, err.message, {'content-type': 'text/html'});
-      cliRes.end('<h1>' + err.message + '<br/>' + cliReq.url + '</h1>');
-    });
-    svrReq.on('data', function(chunk) {
-      console.log(chunk.toString());
-    });
-  }).listen(port, (e) => {
-    complete(e);
-  });
-
-  server.on('clientError', function onCliErr(err, cliSoc) {
-    cliSoc.end();
-  });
-};
 
 module.exports = HTTPProxy;
