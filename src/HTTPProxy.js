@@ -18,8 +18,7 @@ class HTTPProxy {
     this._observers = {};
     this._maxObserverId = -1;
     this._launch(port, complete);
-    this._quest_mapping_file = __dirname + '/../data/quest_mapping.json';
-    this._quest_mapping = json.fromFile(this._quest_mapping_file);
+    this._quest_en_translation = json.fromFile(__dirname + '/../ext/kc3-translations/data/en/quests.json');
   }
 
   addObserver(callback) {
@@ -115,8 +114,8 @@ class HTTPProxy {
         })();
       case 'api_get_member/questlist':
         return (() => {
-          if (isDev) {
-            this._quest_mapping = json.fromFile(this._quest_mapping_file);
+          if (i18n.getLocale() != 'en') {
+            return data;
           }
 
           let obj = util.clone(data);
@@ -127,39 +126,16 @@ class HTTPProxy {
             if (api_no == -1) {
               continue;
             }
-            const name = _.get(this._quest_mapping, [api_no], null);
-            if (name == null) {
-              if (isDev) {
-                let missing = {};
-                const file = __dirname + '/quest_mapping_missiong.json';
-                try {
-                  missing = json.fromFile(file);
-                } catch (e) {
-                  console.trace(e);
-                }
-                missing[api_no] = {
-                  title: _.get(d, ['api_title'], ''),
-                  detail: _.get(d, ['api_detail'], ''),
-                };
-                try {
-                  json.toFile(missing, file);
-                } catch (e) {
-                  console.trace(e);
-                }
-              }
+            const title = _.get(this._quest_en_translation, [api_no, 'name'], null);
+            const detail = _.get(this._quest_en_translation, [api_no, 'desc'], null);
+            if (title == null || detail == null) {
               continue;
             }
-            const title = i18n.__(`quest.${name}.title`);
-            const detail = i18n.__(`quest.${name}.detail`);
-            if (title.indexOf('quest.') < 0) {
-              d['api_title'] = title;
-            }
-            if (detail.indexOf('quest.') < 0) {
-              d['api_detail'] = detail;
-            }
+            d['api_title'] = title;
+            d['api_detail'] = detail;
           }
-          data['api_data']['api_list'] = list;
-          return data;
+          obj['api_data']['api_list'] = list;
+          return obj;
         })();
       default:
         return data;
