@@ -1,0 +1,3 @@
+[submodule "ext/kc3-translations"]
+	path = ext/kc3-translations
+	url = https://github.com/KC3Kai/kc3-translations.git
