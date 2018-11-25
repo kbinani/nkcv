@@ -11,7 +11,8 @@ const http = require('http'),
       _ = require('lodash');
 const util = require(__dirname + '/util.js'),
       i18n = require(__dirname + '/i18n.js'),
-      json = require(__dirname + '/json.js');
+      json = require(__dirname + '/json.js'),
+      text = require(__dirname + '/text.js');
 
 class HTTPProxy {
   constructor(port, complete) {
@@ -132,7 +133,7 @@ class HTTPProxy {
               continue;
             }
             d['api_title'] = title;
-            d['api_detail'] = detail;
+            d['api_detail'] = text.wrap(detail, 96);
           }
           obj['api_data']['api_list'] = list;
           return obj;
