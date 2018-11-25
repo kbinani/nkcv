@@ -1,6 +1,6 @@
 'use strict;'
 
-const HJSON = require('HJSON'),
+const HJSON = require('hjson'),
       fs = require('fs');
 
 function save(object, filepath) {
