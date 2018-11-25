@@ -145,5 +145,8 @@
   "Nth(3) expedition fleet has returned": "3rd expedition fleet has returned",
   "Nth(4) expedition fleet has returned": "4th expedition fleet has returned",
   "Expedition fleet \"%s\" has returned": "Expedition fleet \"%s\" has returned",
-  "Returned": "Returned"
+  "Returned": "Returned",
+  "Repairs Complete: %s": "Repairs Complete: %s",
+  "Fail": "Fail",
+  "To be refreshed": "To be refreshed"
 }

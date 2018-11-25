@@ -145,5 +145,8 @@
   "Nth(3) expedition fleet has returned": "第三艦隊が遠征から帰還しました",
   "Nth(4) expedition fleet has returned": "第四艦隊が遠征から帰還しました",
   "Expedition fleet \"%s\" has returned": "%sが遠征から帰還しました",
-  "Returned": "Returned"
+  "Returned": "帰還",
+  "Repairs Complete: %s": "%s の入渠が完了しました",
+  "Fail": "失敗",
+  "To be refreshed": "未取得"
 }

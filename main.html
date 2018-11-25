@@ -160,7 +160,13 @@
             </div>
             <div style="flex: 0 0 auto; display: flex; flex-direction: column; width: 160px; max-width: 160px;">
               <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 5px 0px 5px 5px;">
-                <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px;"><span data-i18n="Expedition">遠征</span></div>
+                <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px;">
+                  <span data-i18n="Expedition">遠征</span>
+                  <span class="deck_1_notification" style="display: none;"></span>
+                  <span class="deck_2_notification" style="display: none;"></span>
+                  <span class="deck_3_notification" style="display: none;"></span>
+                  <span class="deck_4_notification" style="display: none;"></span>
+                </div>
                 <div id="general_mission" class="FontNormal" style="flex: 0 0 auto; margin: 5px 10px 5px 10px; display: flex;">
                   <div style="display: table; flex: 1 1 auto; width: 100%;">
                     <div style="display: table-row; height: 20px;">
@@ -180,14 +186,18 @@
               </div>
               <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 0px 0px 5px 5px;">
                 <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px;"><span data-i18n="Quests">任務</span></div>
-                <div id="general_quest" class="FontNormal" style="flex: 0 0 auto; margin: 5px 10px 5px 5px;">
-                  (未取得)
-                </div>
+                <div id="general_quest" class="FontNormal" style="flex: 0 0 auto; margin: 5px 10px 5px 5px;">(<span data-i18n="To be refreshed">未取得</span>)</div>
               </div>
             </div>
             <div style="flex: 0 0 auto; display: flex; flex-direction: column; width: 160px; max-width: 160px;">
               <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 5px 5px 5px 5px;">
-                <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px;"><span data-i18n="Repair">入渠</span></div>
+                <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px;">
+                  <span data-i18n="Repair">入渠</span>
+                  <span class="ndock_1_notification" style="display: none;"></span>
+                  <span class="ndock_2_notification" style="display: none;"></span>
+                  <span class="ndock_3_notification" style="display: none;"></span>
+                  <span class="ndock_4_notification" style="display: none;"></span>
+                </div>
                 <div id="general_ndock" style="flex: 0 0 auto; margin: 5px 10px 5px 10px; width: 130px;">
                   <div id="general_ndock_0" style="display: flex;">
                     <div class="ndock_0_title FontNormal EllipsisLabel" style="flex: 1 1 auto; height: 20px; line-height: 20px;">
@@ -217,32 +227,36 @@
               </div>
               <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 0px 5px 5px 5px;">
                 <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px;"><span data-i18n="Construction">建造</span></div>
-                <div id="general_kdock" style="flex: 0 0 auto; margin: 5px 10px 5px 10px;">
-                  <div style="display: table-row;">
-                    <div id="general_kdock_0" class="FontNormal" style="display: table-cell; height: 20px;">
-                      <div style="height: 20px; line-height: 20px;" data-i18n="Locked">ロックされています</div>
+                <div id="general_kdock" style="flex: 0 0 auto; margin: 5px 10px 5px 10px; display: flex;">
+                  <div style="display: table; flex: 1 1 auto; width: 100%;">
+                    <div style="display: table-row;">
+                      <div id="general_kdock_0" class="FontNormal" style="display: table-cell; height: 20px;">
+                        <div style="height: 20px; line-height: 20px;" data-i18n="Locked">ロックされています</div>
+                      </div>
                     </div>
-                  </div>
-                  <div style="display: table-row;">
-                    <div id="general_kdock_1" class="FontNormal" style="display: table-cell; height: 20px;">
-                      <div style="height: 20px; line-height: 20px;" data-i18n="Locked">ロックされています</div>
+                    <div style="display: table-row;">
+                      <div id="general_kdock_1" class="FontNormal" style="display: table-cell; height: 20px;">
+                        <div style="height: 20px; line-height: 20px;" data-i18n="Locked">ロックされています</div>
+                      </div>
                     </div>
-                  </div>
-                  <div style="display: table-row;">
-                    <div id="general_kdock_2" class="FontNormal" style="display: table-cell; height: 20px;">
-                      <div style="height: 20px; line-height: 20px;" data-i18n="Locked">ロックされています</div>
+                    <div style="display: table-row;">
+                      <div id="general_kdock_2" class="FontNormal" style="display: table-cell; height: 20px;">
+                        <div style="height: 20px; line-height: 20px;" data-i18n="Locked">ロックされています</div>
+                      </div>
                     </div>
-                  </div>
-                  <div style="display: table-row;">
-                    <div id="general_kdock_3" class="FontNormal" style="display: table-cell; height: 20px;">
-                      <div style="height: 20px; line-height: 20px;" data-i18n="Locked">ロックされています</div>
+                    <div style="display: table-row;">
+                      <div id="general_kdock_3" class="FontNormal" style="display: table-cell; height: 20px;">
+                        <div style="height: 20px; line-height: 20px;" data-i18n="Locked">ロックされています</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="ThemeContainerBorder" style="flex: 0 0 auto; margin: 0px 5px 5px 5px;">
                 <div class="ThemeContainer" style="flex: 0 0 auto; height: 25px; line-height: 25px; padding-left: 5px;"><span data-i18n="Development">開発</span></div>
-                <div id="general_develop" class="EllipsisLabel FontNormal" style="flex: 0 0 auto; margin: 5px 10px 5px 10px;">
+                <div class="EllipsisLabel FontNormal" style="flex: 0 0 auto; margin: 5px 10px 5px 10px;">
+                  <span id="general_develop_fail" style="display: none;">(<span data-i18n="Fail">失敗</span>)</span>
+                  <span id="general_develop"></span>
                 </div>
               </div>
             </div>

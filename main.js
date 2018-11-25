@@ -148,8 +148,11 @@ function onload() {
       } else {
         const template = `
           <div style="display: flex; height: 20px;">
-            <div style="flex: 1 1 auto;" data-i18n="{name}">{localized_name}</div>
-            <div class="{class}" style="flex: 1 1 auto; text-align: right;" data-timer-finish="{complete}" data-timer-complete-message="完成" data-i18n="Complete" data-i18n-attribute="data-timer-complete-message">{label}</div>
+            <div style="flex: 0 0 auto;">
+              <span data-i18n="{name}">{localized_name}</span>
+              <span class="{class}" style="display: none;" data-timer-finish="{complete}" data-timer-complete-message="完成" data-i18n="Complete" data-i18n-attribute="data-timer-complete-message"></span>
+            </div>
+            <div class="{class}" style="flex: 1 1 auto; text-align: right;" data-timer-finish="{complete}" data-i18n="Complete">{label}</div>
           </div>`;
         const complete = ship.complete_time().getTime();
         const cls = (complete <= 0) ? '' : 'CountdownLabel';
@@ -190,7 +193,13 @@ function onload() {
           $('.ndock_' + i + '_countdown').attr('data-i18n', 'Complete');
           $('.ndock_' + i + '_countdown').attr('data-i18n-attribute', 'data-timer-complete-message');
           if (finish_time > now.getTime()) {
-            $('.ndock_' + i + '_countdown').attr('data-timer-complete-notification-message', i18n.__(ship.name()) + 'の入渠が完了しました');
+            const key = `Repairs Complete: %s`;
+            $('.ndock_' + i + '_notification').attr('data-timer-finish', finish_time);
+            $('.ndock_' + i + '_notification').attr('data-i18n', key);
+            $('.ndock_' + i + '_notification').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
+            $('.ndock_' + i + '_notification').attr('data-i18n-translated-key-as-format', i18n.__(ship.name()));
+            $('.ndock_' + i + '_notification').attr('data-timer-complete-notification-message', sprintf(key, i18n.__(ship.name())));
+            $('.ndock_' + i + '_notification').addClass('CountdownLabel');
           }
           break;
         }
@@ -201,9 +210,13 @@ function onload() {
   storage.on('created_slotitem', (created_slotitem) => {
     const slotitem = created_slotitem.slotitem;
     if (slotitem == null) {
-      $('#general_develop').html('(失敗) ' + created_slotitem.name());
+      $('#general_develop_fail').css('display', 'inline');
+      $('#general_develop').html(i18n.__(created_slotitem.name()));
+      $('#general_develop').attr('data-i18n', created_slotitem.name());
     } else {
-      $('#general_develop').html(slotitem.name());
+      $('#general_develop_fail').css('display', 'none');
+      $('#general_develop').html(i18n.__(slotitem.name()));
+      $('#general_develop').attr('data-i18n', slotitem.name());
     }
   });
 
@@ -305,19 +318,20 @@ function updateDeckStatus(decks) {
         if (name.length == 0) {
           const format = `[${i}] %s`;
           const key = `Nth(${i}) expedition fleet has returned`;
-          $('.deck_' + i + '_title').attr('data-timer-complete-notification-message', sprintf(format, i18n.__(key)));
-          $('.deck_' + i + '_title').attr('data-i18n', key);
-          $('.deck_' + i + '_title').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
-          $('.deck_' + i + '_title').attr('data-i18n-format', format);
-          $('.deck_' + i + '_title').removeAttr('data-i18n-translated-key-as-format');
+          $('.deck_' + i + '_notification').attr('data-timer-complete-notification-message', sprintf(format, i18n.__(key)));
+          $('.deck_' + i + '_notification').attr('data-i18n', key);
+          $('.deck_' + i + '_notification').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
+          $('.deck_' + i + '_notification').attr('data-i18n-format', format);
+          $('.deck_' + i + '_notification').removeAttr('data-i18n-translated-key-as-format');
         } else {
           const key = 'Expedition fleet "%s" has returned';
-          $('.deck_' + i + '_title').attr('data-timer-complete-notification-message', sprintf(i18n.__(key), name));
-          $('.deck_' + i + '_title').attr('data-i18n', key);
-          $('.deck_' + i + '_title').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
-          $('.deck_' + i + '_title').attr('data-i18n-translated-key-as-format', name);
+          $('.deck_' + i + '_notification').attr('data-timer-complete-notification-message', sprintf(i18n.__(key), name));
+          $('.deck_' + i + '_notification').attr('data-i18n', key);
+          $('.deck_' + i + '_notification').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
+          $('.deck_' + i + '_notification').attr('data-i18n-translated-key-as-format', name);
         }
-        $('.deck_' + i + '_title').addClass('CountdownLabel');
+        $('.deck_' + i + '_notification').attr('data-timer-finish', mission_finish_time.getTime());
+        $('.deck_' + i + '_notification').addClass('CountdownLabel');
       }
     } else {
       if (deck.battle_cell != null) {
@@ -329,7 +343,7 @@ function updateDeckStatus(decks) {
       }
       $('.deck_' + i + '_countdown').removeClass('CountdownLabel');
       $('.deck_' + i + '_countdown').html('');
-      $('.deck_' + i + '_title').removeClass('CountdownLabel');
+      $('.deck_' + i + '_notification').removeClass('CountdownLabel');
     }
     $('.deck_' + i + '_icon').css('background-color', color);
     $('.deck_' + i + '_taiku').html(deck.taiku());
