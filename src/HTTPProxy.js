@@ -115,7 +115,7 @@ class HTTPProxy {
         })();
       case 'api_get_member/questlist':
         return (() => {
-          if (i18n.getLocale() != 'en') {
+          if (i18n.getLocale() == 'ja') {
             return data;
           }
 
