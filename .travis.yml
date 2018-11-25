@@ -11,6 +11,7 @@ branches:
 before_script:
   - bash script/install_cert.sh
 script:
+  - git submodule update --init --recursive
   - nvm install $(cat .node-version)
   - nvm use $(cat .node-version)
   - npm install
