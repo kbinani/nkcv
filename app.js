@@ -26,7 +26,7 @@ var shipWindow = null;
 const mandatoryApiData = ['api_start2/getData', 'api_get_member/require_info', 'api_port/port'];
 var mandatoryData = {};
 var mainWindowClosed = false;
-const config = new Config({});
+let config = null;
 var _numFilesEncoding = 0;
 var _screenRecordingToken = null;
 let _proxy = null;
@@ -352,8 +352,7 @@ function loadConfig() {
     const config_path = path.join(app.getPath('userData'), 'config.json');
     const config_string = fs.readFileSync(config_path);
     const config_json = JSON.parse(config_string);
-    config.patch(config_json, (c) => {
-    });
+    config = new Config(config_json);
   } catch (e) {
   }
 }

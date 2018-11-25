@@ -141,7 +141,7 @@ Ship.prototype.soku = function() {
 
 Ship.prototype.repair_seconds = function() {
   const value = _.get(this._data, ['api_ndock_time'], 0);
-  return value;
+  return value / 1000.0;
 }
 
 Ship.prototype.complete_repair = function() {

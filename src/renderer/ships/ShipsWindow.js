@@ -652,6 +652,7 @@ class ShipsWindow {
       'after_level': ship.after_level(),
       'is_mission': ship.is_mission(),
       'repair_seconds': ship.repair_seconds(),
+      'repair_milliseconds': ship.repair_seconds() * 1000,
       'sally_area': ship.sally_area().id(),
     };
   };

@@ -269,7 +269,7 @@ function onload() {
         $(this).removeAttr('data-timer-complete-message');
         $(this).removeAttr('data-timer-complete-notification-message');
       } else {
-        const label = shared.timeLabel(remaining);
+        const label = shared.timeLabel(remaining / 1000.0);
         $(this).html(label);
       }
     });

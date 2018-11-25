@@ -77,7 +77,7 @@ function shipToString(ship) {
     'sakuteki': ship.sakuteki().toString(),
     'taisen': ship.taisen().toString(),
     'soku': ship.soku().value(),
-    'repair': ship.repair_seconds(),
+    'repair': ship.repair_seconds() * 1000,
     'slotitems': ship.slotitems().map((slotitem) => slotitem.id()).join(','),
     'locked': ship.locked(),
     'sally_area': ship.sally_area().id(),
@@ -142,7 +142,7 @@ function barColor(rat) {
 
 function timeLabel(seconds_) {
   var label = "";
-  var seconds = Math.floor(seconds_ / 1000);
+  var seconds = seconds_;
   const h = Math.floor(seconds / 3600);
   if (h > 0) {
     label += h + ':';

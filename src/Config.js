@@ -17,7 +17,7 @@ const keys = {
   'language': 'string',
 };
 
-const VERSION = 0;
+const VERSION = 1;
 
 const sanitizer_mapping = {
   'rat': function(value) {
@@ -67,6 +67,21 @@ function migrate(data) {
   }
   switch (version) {
     case 0:
+      let presetList = _.get(data, ['sqlPresetList'], {});
+      const ids = Object.keys(presetList);
+      for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        let preset = presetList[id];
+        let sql = _.get(preset, ['sql'], null);
+        if (sql == null) {
+          continue;
+        }
+        preset['sql'] = sql.replace(/repair_seconds/g, 'repair_milliseconds');
+        presetList[id] = preset;
+      }
+      data['version'] = VERSION;
+      return data;
+    case 1:
       return data;
     default:
       return {};
