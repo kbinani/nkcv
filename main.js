@@ -626,14 +626,15 @@ function copyDeckInfo(deck_index) {
     return;
   }
   var lines = [];
-  lines.push('(制空: ' + deck.taiku() + ', 索敵: ' + deck.sakuteki() + ')');
+  lines.push('----');
+  lines.push(`(${i18n.__('Fighter Power')}: ${deck.taiku()}, ${i18n.__('LoS')}: ${deck.sakuteki()})`);
   deck.ships.forEach((ship) => {
     var line = '';
-    line += ship.name() + ship.level();
+    line += i18n.__(ship.name()) + ship.level();
     line += '{cond:' + ship.cond() + ',HP:' + ship.hp().toString() + '}';
-    line += '[' + ship.slotitems().map((slotitem) => slotitem.name() + slotitem.level_description()).join('/') + ']';
+    line += '[' + ship.slotitems().map((slotitem) => i18n.__(slotitem.name()) + slotitem.level_description()).join('/') + ']';
     const ex = ship.ex_slotitem();
-    line += '[' + (ex == null ? [] : [ex]).map((slotitem) => slotitem.name() + slotitem.level_description()).join('/') + ']';
+    line += '[' + (ex == null ? [] : [ex]).map((slotitem) => i18n.__(slotitem.name()) + slotitem.level_description()).join('/') + ']';
     lines.push(line);
   });
   clipboard.writeText(lines.join('\n') + '\n');
