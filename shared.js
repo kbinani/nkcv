@@ -173,8 +173,11 @@ function applyLanguageToView(language) {
     const key = $element.attr('data-i18n');
     let translated = i18n.__(key);
     const format = $element.attr('data-i18n-format');
+    const format_args = $element.attr('data-i18n-translated-key-as-format');
     if (format) {
       translated = sprintf(format, i18n.__(key));
+    } else if (format_args) {
+      translated = sprintf(i18n.__(key), format_args);
     } else {
       translated = i18n.__(key);
     }

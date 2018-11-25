@@ -135,5 +135,15 @@
   "Back to previous page?": "前のページに戻ります。よろしいですか?",
   "Back": "戻る",
   "Encoding media files": "動画をエンコード中です",
-  "Encoding %d media file(s)": "%d 個のファイルをエンコード中"
+  "Encoding %d media file(s)": "%d 個のファイルをエンコード中",
+  "Nth(1) fleet": "第一艦隊",
+  "Nth(2) fleet": "第二艦隊",
+  "Nth(3) fleet": "第三艦隊",
+  "Nth(4) fleet": "第四艦隊",
+  "Nth(1) expedition fleet has returned": "第一艦隊が遠征から帰還しました",
+  "Nth(2) expedition fleet has returned": "第二艦隊が遠征から帰還しました",
+  "Nth(3) expedition fleet has returned": "第三艦隊が遠征から帰還しました",
+  "Nth(4) expedition fleet has returned": "第四艦隊が遠征から帰還しました",
+  "Expedition fleet \"%s\" has returned": "%sが遠征から帰還しました",
+  "Returned": "Returned"
 }

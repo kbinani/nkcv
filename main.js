@@ -264,7 +264,6 @@ function onload() {
 }
 
 function updateDeckStatus(decks) {
-  const kanji = ['一', '二', '三', '四'];
   for (var i = 0; i < decks.length; i++) {
     const deck = decks[i];
     const container = $('#deck_' + i + '_ships');
@@ -288,7 +287,7 @@ function updateDeckStatus(decks) {
         name += ' (' + cell_name + ')';
       }
     }
-    const deck_title = name.length == 0 ? '第' + kanji[i] + '艦隊' : name;
+    const deck_title = name.length == 0 ? sprintf(i18n.__(`Nth(${i}) fleet`), i) : name;
     $('.deck_' + i + '_title').html(deck_title);
 
     const mission_finish_time = deck.mission_finish_time();
@@ -296,12 +295,30 @@ function updateDeckStatus(decks) {
     if (mission_finish_time) {
       color = 'blue';
       $('.deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
-      $('.deck_' + i + '_countdown').attr('data-timer-complete-message', '帰還');
+      $('.deck_' + i + '_countdown').attr('data-timer-complete-message', i18n.__('Returned'));
+      $('.deck_' + i + '_countdown').attr('data-i18n', 'Returned');
+      $('.deck_' + i + '_countdown').attr('data-i18n-attribute', 'data-timer-complete-message');
+      $('.deck_' + i + '_countdown').addClass('CountdownLabel');
+
       const now = new Date();
       if (mission_finish_time > now.getTime()) {
-        $('.deck_' + i + '_countdown').attr('data-timer-complete-notification-message', '[' + i + '] ' + deck_title + 'が遠征から帰還しました');
+        if (name.length == 0) {
+          const format = `[${i}] %s`;
+          const key = `Nth(${i}) expedition fleet has returned`;
+          $('.deck_' + i + '_title').attr('data-timer-complete-notification-message', sprintf(format, i18n.__(key)));
+          $('.deck_' + i + '_title').attr('data-i18n', key);
+          $('.deck_' + i + '_title').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
+          $('.deck_' + i + '_title').attr('data-i18n-format', format);
+          $('.deck_' + i + '_title').removeAttr('data-i18n-translated-key-as-format');
+        } else {
+          const key = 'Expedition fleet "%s" has returned';
+          $('.deck_' + i + '_title').attr('data-timer-complete-notification-message', sprintf(i18n.__(key), name));
+          $('.deck_' + i + '_title').attr('data-i18n', key);
+          $('.deck_' + i + '_title').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
+          $('.deck_' + i + '_title').attr('data-i18n-translated-key-as-format', name);
+        }
+        $('.deck_' + i + '_title').addClass('CountdownLabel');
       }
-      $('.deck_' + i + '_countdown').addClass('CountdownLabel');
     } else {
       if (deck.battle_cell != null) {
         color = 'red';
@@ -312,6 +329,7 @@ function updateDeckStatus(decks) {
       }
       $('.deck_' + i + '_countdown').removeClass('CountdownLabel');
       $('.deck_' + i + '_countdown').html('');
+      $('.deck_' + i + '_title').removeClass('CountdownLabel');
     }
     $('.deck_' + i + '_icon').css('background-color', color);
     $('.deck_' + i + '_taiku').html(deck.taiku());

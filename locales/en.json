@@ -135,5 +135,15 @@
   "Reload page?": "Reload page?",
   "Reload": "Reload",
   "Encoding media files": "Encoding media files",
-  "Encoding %d media file(s)": "Encoding %d media file(s)"
+  "Encoding %d media file(s)": "Encoding %d media file(s)",
+  "Nth(1) fleet": "1st fleet",
+  "Nth(2) fleet": "2nd fleet",
+  "Nth(3) fleet": "3rd fleet",
+  "Nth(4) fleet": "4th fleet",
+  "Nth(1) expedition fleet has returned": "1st expedition fleet has returned",
+  "Nth(2) expedition fleet has returned": "2nd expedition fleet has returned",
+  "Nth(3) expedition fleet has returned": "3rd expedition fleet has returned",
+  "Nth(4) expedition fleet has returned": "4th expedition fleet has returned",
+  "Expedition fleet \"%s\" has returned": "Expedition fleet \"%s\" has returned",
+  "Returned": "Returned"
 }
