@@ -28,11 +28,11 @@ nkcv
 License
 ----
 
-* GPLv3
+* MIT
 
 Acknowledgements
 ----
 
 * [Electron](https://electronjs.org/)
 * [Material Design Icons by Google](https://material.io/tools/icons/)
-* [Kancolle Wiki at wikia.com](http://kancolle.wikia.com/wiki/Kancolle_Wiki)
+* [kc3-translations](https://github.com/KC3Kai/kc3-translations)
