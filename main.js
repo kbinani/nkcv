@@ -172,13 +172,16 @@ function onload() {
     for (var i = 0; i < ships.length; i++) {
       const ndock_ship = ships[i];
       const state = ndock_ship.state();
+      $title = $('.ndock_' + i + '_title');
+      $countdown = $('.ndock_' + i + '_countdown');
+      $notification = $('.ndock_' + i + '_notification');
       switch (state) {
         case 0: {
-          $('.ndock_' + i + '_title').html(i18n.__('Unused'));
-          $('.ndock_' + i + '_title').attr('data-i18n', 'Unused');
-          $('.ndock_' + i + '_countdown').removeClass('CountdownLabel');
-          $('.ndock_' + i + '_countdown').html('');
-          $('.ndock_' + i + '_notification').removeClass('CountdownLabel');
+          $title.html(i18n.__('Unused'));
+          $title.attr('data-i18n', 'Unused');
+          $countdown.removeClass('CountdownLabel');
+          $countdown.html('');
+          $notification.removeClass('CountdownLabel');
           break;
         }
         case 1:
@@ -186,21 +189,21 @@ function onload() {
           const now = new Date();
           const finish_time = ndock_ship.complete_time().getTime();
           const ship = ndock_ship.ship();
-          $('.ndock_' + i + '_title').html(i18n.__(ship.name()));
-          $('.ndock_' + i + '_title').attr('data-i18n', ship.name());
-          $('.ndock_' + i + '_countdown').addClass('CountdownLabel');
-          $('.ndock_' + i + '_countdown').attr('data-timer-finish', finish_time);
-          $('.ndock_' + i + '_countdown').attr('data-timer-complete-message', i18n.__('Complete'));
-          $('.ndock_' + i + '_countdown').attr('data-i18n', 'Complete');
-          $('.ndock_' + i + '_countdown').attr('data-i18n-attribute', 'data-timer-complete-message');
+          $title.html(i18n.__(ship.name()));
+          $title.attr('data-i18n', ship.name());
+          $countdown.addClass('CountdownLabel');
+          $countdown.attr('data-timer-finish', finish_time);
+          $countdown.attr('data-timer-complete-message', i18n.__('Complete'));
+          $countdown.attr('data-i18n', 'Complete');
+          $countdown.attr('data-i18n-attribute', 'data-timer-complete-message');
           if (finish_time > now.getTime()) {
             const key = `Repairs Complete: %s`;
-            $('.ndock_' + i + '_notification').attr('data-timer-finish', finish_time);
-            $('.ndock_' + i + '_notification').attr('data-i18n', key);
-            $('.ndock_' + i + '_notification').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
-            $('.ndock_' + i + '_notification').attr('data-i18n-translated-key-as-format', i18n.__(ship.name()));
-            $('.ndock_' + i + '_notification').attr('data-timer-complete-notification-message', sprintf(key, i18n.__(ship.name())));
-            $('.ndock_' + i + '_notification').addClass('CountdownLabel');
+            $notification.attr('data-timer-finish', finish_time);
+            $notification.attr('data-i18n', key);
+            $notification.attr('data-i18n-attribute', 'data-timer-complete-notification-message');
+            $notification.attr('data-i18n-translated-key-as-format', i18n.__(ship.name()));
+            $notification.attr('data-timer-complete-notification-message', sprintf(key, i18n.__(ship.name())));
+            $notification.addClass('CountdownLabel');
           }
           break;
         }
@@ -304,35 +307,38 @@ function updateDeckStatus(decks) {
     const deck_title = name.length == 0 ? sprintf(i18n.__(`Nth(${i}) fleet`), i) : name;
     $('.deck_' + i + '_title').html(deck_title);
 
+    $countdown = $('.deck_' + i + '_countdown');
+    $notification = $('.deck_' + i + '_notification');
+
     const mission_finish_time = deck.mission_finish_time();
     var color = "";
     if (mission_finish_time) {
       color = 'blue';
-      $('.deck_' + i + '_countdown').attr('data-timer-finish', mission_finish_time.getTime());
-      $('.deck_' + i + '_countdown').attr('data-timer-complete-message', i18n.__('Returned'));
-      $('.deck_' + i + '_countdown').attr('data-i18n', 'Returned');
-      $('.deck_' + i + '_countdown').attr('data-i18n-attribute', 'data-timer-complete-message');
-      $('.deck_' + i + '_countdown').addClass('CountdownLabel');
+      $countdown.attr('data-timer-finish', mission_finish_time.getTime());
+      $countdown.attr('data-timer-complete-message', i18n.__('Returned'));
+      $countdown.attr('data-i18n', 'Returned');
+      $countdown.attr('data-i18n-attribute', 'data-timer-complete-message');
+      $countdown.addClass('CountdownLabel');
 
       const now = new Date();
       if (mission_finish_time > now.getTime()) {
         if (name.length == 0) {
           const format = `[${i}] %s`;
           const key = `Nth(${i}) expedition fleet has returned`;
-          $('.deck_' + i + '_notification').attr('data-timer-complete-notification-message', sprintf(format, i18n.__(key)));
-          $('.deck_' + i + '_notification').attr('data-i18n', key);
-          $('.deck_' + i + '_notification').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
-          $('.deck_' + i + '_notification').attr('data-i18n-format', format);
-          $('.deck_' + i + '_notification').removeAttr('data-i18n-translated-key-as-format');
+          $notification.attr('data-timer-complete-notification-message', sprintf(format, i18n.__(key)));
+          $notification.attr('data-i18n', key);
+          $notification.attr('data-i18n-attribute', 'data-timer-complete-notification-message');
+          $notification.attr('data-i18n-format', format);
+          $notification.removeAttr('data-i18n-translated-key-as-format');
         } else {
           const key = 'Expedition fleet "%s" has returned';
-          $('.deck_' + i + '_notification').attr('data-timer-complete-notification-message', sprintf(i18n.__(key), name));
-          $('.deck_' + i + '_notification').attr('data-i18n', key);
-          $('.deck_' + i + '_notification').attr('data-i18n-attribute', 'data-timer-complete-notification-message');
-          $('.deck_' + i + '_notification').attr('data-i18n-translated-key-as-format', name);
+          $notification.attr('data-timer-complete-notification-message', sprintf(i18n.__(key), name));
+          $notification.attr('data-i18n', key);
+          $notification.attr('data-i18n-attribute', 'data-timer-complete-notification-message');
+          $notification.attr('data-i18n-translated-key-as-format', name);
         }
-        $('.deck_' + i + '_notification').attr('data-timer-finish', mission_finish_time.getTime());
-        $('.deck_' + i + '_notification').addClass('CountdownLabel');
+        $notification.attr('data-timer-finish', mission_finish_time.getTime());
+        $notification.addClass('CountdownLabel');
       }
     } else {
       if (deck.battle_cell != null) {
@@ -342,9 +348,9 @@ function updateDeckStatus(decks) {
       } else {
         color = 'orange';
       }
-      $('.deck_' + i + '_countdown').removeClass('CountdownLabel');
-      $('.deck_' + i + '_countdown').html('');
-      $('.deck_' + i + '_notification').removeClass('CountdownLabel');
+      $countdown.removeClass('CountdownLabel');
+      $countdown.html('');
+      $notification.removeClass('CountdownLabel');
     }
     $('.deck_' + i + '_icon').css('background-color', color);
     $('.deck_' + i + '_taiku').html(deck.taiku());
