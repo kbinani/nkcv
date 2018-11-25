@@ -178,6 +178,7 @@ function onload() {
           $('.ndock_' + i + '_title').attr('data-i18n', 'Unused');
           $('.ndock_' + i + '_countdown').removeClass('CountdownLabel');
           $('.ndock_' + i + '_countdown').html('');
+          $('.ndock_' + i + '_notification').removeClass('CountdownLabel');
           break;
         }
         case 1:
