@@ -360,7 +360,7 @@ function loadConfig() {
 function saveConfig() {
   try {
     const config_path = path.join(app.getPath('userData'), 'config.json');
-    config.save_to(config_path);
+    config.saveTo(config_path);
   } catch (e) {
     console.trace(e);
   }

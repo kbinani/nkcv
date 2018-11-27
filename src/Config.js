@@ -88,83 +88,85 @@ function migrate(data) {
   }
 }
 
-function Config(data) {
-  this._data = {};
-  this.patch(migrate(data));
-}
+class Config {
+  constructor(data) {
+    this._data = {};
+    this.patch(migrate(data));
+  }
 
-Config.prototype.patch = function(data, callback) {
-  for (var key in keys) {
-    const type = keys[key];
-    const sanitizer = sanitizer_mapping[type];
-    if (!sanitizer) {
-      console.trace('sanitizer not specified: type=' + type);
-      continue;
+  patch(data, callback) {
+    for (var key in keys) {
+      const type = keys[key];
+      const sanitizer = sanitizer_mapping[type];
+      if (!sanitizer) {
+        console.trace('sanitizer not specified: type=' + type);
+        continue;
+      }
+      const value = _.get(data, [key], null);
+      if (value == null) {
+        continue;
+      }
+      const sanitized = sanitizer(value);
+      if (sanitized != null) {
+        this._data[key] = value;
+      }
     }
-    const value = _.get(data, [key], null);
-    if (value == null) {
-      continue;
-    }
-    const sanitized = sanitizer(value);
-    if (sanitized != null) {
-      this._data[key] = value;
+    if (callback) {
+      callback(this);
     }
   }
-  if (callback) {
-    callback(this);
+
+  scale() {
+    return _.get(this._data, ['scale'], '1200/1200');
   }
-};
 
-Config.prototype.scale = function() {
-  return _.get(this._data, ['scale'], '1200/1200');
-};
-
-Config.prototype.mainWindowBounds = function() {
-  const bounds = _.get(this._data, ['mainWindow.bounds'], null);
-  return sanitizer_mapping['bounds'](bounds);
-};
-
-Config.prototype.shipWindowBounds = function() {
-  const bounds = _.get(this._data, ['shipWindow.bounds'], null);
-  return sanitizer_mapping['bounds'](bounds);
-};
-
-Config.prototype.shipWindowVisible = function() {
-  return _.get(this._data, ['shipWindowVisible'], false);
-}
-
-Config.prototype.shipWindowSort = function() {
-  return _.get(this._data, ['shipWindowSort'], {});
-};
-
-Config.prototype.shipWindowFilter = function() {
-  return _.get(this._data, ['shipWindowFilter'], {});
-};
-
-Config.prototype.mute = function() {
-  return _.get(this._data, ['mute'], false) == true;
-};
-
-Config.prototype.sqlPresetList = function() {
-  return _.get(this._data, ['sqlPresetList'], {});
-};
-
-Config.prototype.data = function() {
-  const result = {};
-  for (var key in this._data) {
-    result[key] = this._data[key];
+  mainWindowBounds() {
+    const bounds = _.get(this._data, ['mainWindow.bounds'], null);
+    return sanitizer_mapping['bounds'](bounds);
   }
-  result['version'] = VERSION;
-  return result;
-};
 
-Config.prototype.save_to = function(filepath) {
-  fs.writeFile(filepath, JSON.stringify(this.data(), null, 2), () => {
-  });
-};
+  shipWindowBounds() {
+    const bounds = _.get(this._data, ['shipWindow.bounds'], null);
+    return sanitizer_mapping['bounds'](bounds);
+  }
 
-Config.prototype.language = function() {
-  return _.get(this._data, ['language'], 'ja');
+  shipWindowVisible() {
+    return _.get(this._data, ['shipWindowVisible'], false);
+  }
+
+  shipWindowSort() {
+    return _.get(this._data, ['shipWindowSort'], {});
+  }
+
+  shipWindowFilter() {
+    return _.get(this._data, ['shipWindowFilter'], {});
+  }
+
+  mute() {
+    return _.get(this._data, ['mute'], false) == true;
+  }
+
+  sqlPresetList() {
+    return _.get(this._data, ['sqlPresetList'], {});
+  }
+
+  data() {
+    const result = {};
+    for (let key in this._data) {
+      result[key] = this._data[key];
+    }
+    result['version'] = VERSION;
+    return result;
+  }
+
+  saveTo(filepath) {
+    fs.writeFile(filepath, JSON.stringify(this.data(), null, 2), () => {
+    });
+  }
+
+  language() {
+    return _.get(this._data, ['language'], 'ja');
+  }
 }
 
 module.exports = Config;
