@@ -2,42 +2,47 @@
 
 const _ = require('lodash');
 
-function NDock(data, port) {
-  this._data = data;
-  this._port = port;
+class NDockShip {
+  constructor(data, port) {
+    this._data = data;
+    this._port = port;
+  }
+
+  state() {
+    // 0: 未使用
+    // 1: 使用中
+    return _.get(this._data, ['api_state'], 0);
+  }
+
+  complete_time() {
+    const ms = parseInt(_.get(this._data, ['api_complete_time'], 0), 10);
+    return new Date(ms);
+  }
+
+  ship() {
+    const ship_id = parseInt(_.get(this._data, ['api_ship_id'], 0), 10);
+    return this._port.ship(ship_id);
+  }
 }
 
-function NDockShip(data, port) {
-  this._data = data;
-  this._port = port;
+
+class NDock {
+  constructor(data, port) {
+    this._data = data;
+    this._port = port;
+  }
+
+  ships() {
+    const self = this;
+    return this._data.map((data) => {
+      return new NDockShip(data, self._port);
+    });
+  }
+
+  complete(index) {
+    _.set(this._data, [index, 'api_complete_time'], 0);
+    _.set(this._data, [index, 'api_complete_time_str'], '');
+  }
 }
-
-NDockShip.prototype.state = function() {
-  // 0: 未使用
-  // 1: 使用中
-  return _.get(this._data, ['api_state'], 0);
-};
-
-NDockShip.prototype.complete_time = function() {
-  const ms = parseInt(_.get(this._data, ['api_complete_time'], 0), 10);
-  return new Date(ms);
-};
-
-NDockShip.prototype.ship = function() {
-  const ship_id = parseInt(_.get(this._data, ['api_ship_id'], 0), 10);
-  return this._port.ship(ship_id);
-};
-
-NDock.prototype.ships = function() {
-  const self = this;
-  return this._data.map((data) => {
-    return new NDockShip(data, self._port);
-  });
-};
-
-NDock.prototype.complete = function(index) {
-  _.set(this._data, [index, 'api_complete_time'], 0);
-  _.set(this._data, [index, 'api_complete_time_str'], '');
-};
 
 module.exports = NDock;
