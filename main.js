@@ -193,7 +193,7 @@ function onload() {
           $title.attr('data-i18n', ship.name());
           $countdown.addClass('CountdownLabel');
           $countdown.attr('data-timer-finish', finish_time);
-          $countdown.attr('data-timer-complete-message', i18n.__('Complete'));
+          $countdown.attr('data-timer-complete-message', i18n.__('Repair.Complete'));
           $countdown.attr('data-i18n', 'Complete');
           $countdown.attr('data-i18n-attribute', 'data-timer-complete-message');
           if (finish_time > now.getTime()) {

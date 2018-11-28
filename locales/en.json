@@ -148,5 +148,6 @@
   "Returned": "Returned",
   "Repairs Complete: %s": "Repairs Complete: %s",
   "Fail": "Fail",
-  "To be refreshed": "To be refreshed"
+  "To be refreshed": "To be refreshed",
+  "Repair.Complete": "Completed"
 }

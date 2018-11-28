@@ -148,5 +148,6 @@
   "Returned": "帰還",
   "Repairs Complete: %s": "%s の入渠が完了しました",
   "Fail": "失敗",
-  "To be refreshed": "未取得"
+  "To be refreshed": "未取得",
+  "Repair.Complete": "完了"
 }
