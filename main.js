@@ -196,6 +196,7 @@ function onload() {
           $countdown.attr('data-timer-complete-message', i18n.__('Repair.Complete'));
           $countdown.attr('data-i18n', 'Complete');
           $countdown.attr('data-i18n-attribute', 'data-timer-complete-message');
+          $countdown.attr('data-i18n-format', '<span data-i18n="Repair.Complete">%s</span>');
           if (finish_time > now.getTime()) {
             const key = `Repairs Complete: %s`;
             $notification.attr('data-timer-finish', finish_time);
@@ -318,6 +319,7 @@ function updateDeckStatus(decks) {
       $countdown.attr('data-timer-complete-message', i18n.__('Returned'));
       $countdown.attr('data-i18n', 'Returned');
       $countdown.attr('data-i18n-attribute', 'data-timer-complete-message');
+      $countdown.attr('data-i18n-format', '<span data-i18n="Returned">%s</span>');
       $countdown.addClass('CountdownLabel');
 
       const now = new Date();
