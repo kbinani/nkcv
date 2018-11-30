@@ -33,7 +33,7 @@ Deck.prototype.mission_finish_time = function() {
   return new Date(time);
 };
 
-Deck.prototype.is_ready_to_sally = function() {
+Deck.prototype.is_ready_to_sortie = function() {
   const time = _.get(this._data, ['api_mission', 2], 0);
   if (time > 0) {
     return false;
@@ -49,7 +49,7 @@ Deck.prototype.is_ready_to_sally = function() {
     if (bull.numerator() < bull.denominator()) {
       return false;
     }
-    if (hp.value() <= 0.5) {
+    if (hp.value() <= 0.25) {
       return false;
     }
     if (ship.cond() < 40) {

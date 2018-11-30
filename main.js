@@ -345,7 +345,7 @@ function updateDeckStatus(decks) {
     } else {
       if (deck.battle_cell != null) {
         color = 'red';
-      } else if (deck.is_ready_to_sally()) {
+      } else if (deck.is_ready_to_sortie()) {
         color = '#00CC00';
       } else {
         color = 'orange';
