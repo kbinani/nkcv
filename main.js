@@ -203,7 +203,7 @@ function onload() {
             $notification.attr('data-i18n', key);
             $notification.attr('data-i18n-attribute', 'data-timer-complete-notification-message');
             $notification.attr('data-i18n-translated-key-as-format', i18n.__(ship.name()));
-            $notification.attr('data-timer-complete-notification-message', sprintf(key, i18n.__(ship.name())));
+            $notification.attr('data-timer-complete-notification-message', sprintf(i18n.__(key), i18n.__(ship.name())));
             $notification.addClass('CountdownLabel');
           }
           break;
