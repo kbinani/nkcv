@@ -71,7 +71,7 @@ class ShipsWindow {
 
     this._storage = new DataStorage();
     this._ships = [];
-    this._sort_order_key = ['id', 'type', 'name', 'level', 'cond', 'karyoku', 'raisou', 'taiku', 'soukou', 'lucky', 'sakuteki', 'taisen', 'soku', 'sally_area', 'repair_seconds'];
+    this._sort_order_key = ['id', 'type', 'name', 'ship_class', 'level', 'cond', 'karyoku', 'raisou', 'taiku', 'soukou', 'lucky', 'sakuteki', 'taisen', 'soku', 'sally_area', 'repair_seconds'];
     this._sort_order = [
       {'key': 'level', 'is_descending': false},
     ];
@@ -374,6 +374,8 @@ class ShipsWindow {
         contains_id_key = true;
       } else if (key == 'level') {
         order_by.push('next_exp ' + (it.is_descending ? 'ASC' : 'DESC'));
+      } else if (key == 'ship_class') {
+        order_by.push(`CAST(ship_class_order as int) ${it.is_descending ? 'DESC' : 'ASC'}`);
       }
     }
     if (!contains_id_key) {
@@ -533,6 +535,9 @@ class ShipsWindow {
         <div class="ThemeTableCell">{ship_id}</div>
         <div class="ThemeTableCell"><span class="ship_{ship_id}_type" data-i18n="{type_key}">{type}</span></div>
         <div class="ThemeTableCell"><span class="ship_{ship_id}_name" data-i18n="{name}">{localized_name}</span></div>
+        <div class="ThemeTableCell" style="max-width: 80px; overflow: hidden;" title="{class}" data-i18n="{class_key}" data-i18n-attribute="title" data-i18n-format="{class_format}">
+          <span class="ship_{ship_id}_ship_class" data-i18n="{class_key}" data-i18n-format="{class_format}">{class}</span>
+        </div>
         <div class="ThemeTableCell">Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span></div>
         <div class="ThemeTableCell"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond">{cond}</span></div>
         <div class="ThemeTableCell"><span class="ship_{ship_id}_karyoku">{karyoku}</span></div>
@@ -552,10 +557,20 @@ class ShipsWindow {
         <div class="ThemeTableCell ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>
       </div>`;
     const sally_area = ship.sally_area();
+    const order = ship.ship_class_order();
+    let ship_class = i18n.__(`shipclass.${ship.ship_class()}`);
+    let ship_class_format = '%s';
+    if (order != "") {
+      ship_class += `(${order})`;
+      ship_class_format += `(${order})`;
+    }
     return template.replace(/{ship_id}/g, ship.id())
                    .replace(/{level}/, ship.level())
                    .replace(/{type}/g, i18n.__(`shiptype.${ship.type().toString()}`))
                    .replace(/{type_key}/g, `shiptype.${ship.type().toString()}`)
+                   .replace(/{class}/g, ship_class)
+                   .replace(/{class_key}/g, `shipclass.${ship.ship_class()}`)
+                   .replace(/{class_format}/g, ship_class_format)
                    .replace(/{name}/g, ship.name())
                    .replace(/{next_exp}/, ship.next_exp())
                    .replace(/{cond}/, ship.cond())
@@ -627,9 +642,16 @@ class ShipsWindow {
   }
 
   shipToJSON(ship) {
+    let ship_class = ship.ship_class();
+    const ship_class_order = ship.ship_class_order();
+    if (ship_class_order != "") {
+      ship_class += `(${ship_class_order})`;
+    }
     return {
       'id': ship.id(),
       'level': ship.level(),
+      'ship_class': ship.ship_class(),
+      'ship_class_order': ship.ship_class_order(),
       'name': ship.name(),
       'hp': ship.hp().numerator(),
       'maxhp': ship.hp().denominator(),
