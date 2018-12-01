@@ -81,11 +81,13 @@ class ShipsWindow {
     this._filter_config_received = false;
     this._sort_config_received = false;
     this._sql_preset_list_received = false;
+    this._column_resize_capture = null;
 
     this.language = "ja";
     i18n.setLocale(this.language);
 
     this._filterPanel = new FilterPanel();
+    this._initTableHeader();
     this.setQueryEnabled(false);
 
     $('#query').bind('input propertychange', () => {
@@ -146,8 +148,65 @@ class ShipsWindow {
       this._sql_preset_list_received = true;
     });
 
+    window.addEventListener('mousemove', (e) => {
+      this.onMouseMove(e);
+    });
+    window.addEventListener('mouseup', (e) => {
+      this.onMouseUp(e);
+    });
+
     this.subscribe();
     ipcRenderer.send('app.shipWindowDidLoad', {});
+  }
+
+  _initTableHeader() {
+    const template =
+     `<div id="header_{key}" class="ThemeTableHeader column_{key}">
+        <div style="display: flex;">
+          <div class="ColumnResizer ThemeContainerBorderL" onmousedown="_ships_window.onColumnResizeStart(event, '{prev_key}')"></div>
+          <div class="ColumnLabelContainer" onclick="_ships_window.sortOrderClicked('{key}')">
+            <div class="TableHeaderKey" style="flex: 1 1 auto;" data-i18n="{display}">{translated_display}</div>
+            <div id="sort_order_{key}" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
+          </div>
+          <div class="ColumnResizer" onmousedown="_ships_window.onColumnResizeStart(event, '{key}')"></div>
+        </div>
+      </div>`;
+    const $header = $('#ship_table_header');
+    const sort_keys = [
+      {key: 'index',          display: '',                translate: false, sortable: false},
+      {key: 'id',             display: 'ID',              translate: false, sortable: true},
+      {key: 'type',           display: 'Ship.Type',       translate: true,  sortable: true},
+      {key: 'name',           display: 'Ship.Name',       translate: true,  sortable: true},
+      {key: 'ship_class',     display: 'Ship.Class',      translate: true,  sortable: true},
+      {key: 'level',          display: 'Level',           translate: true,  sortable: true},
+      {key: 'cond',           display: 'cond',            translate: false, sortable: true},
+      {key: 'karyoku',        display: 'Ship.Firepower',  translate: true,  sortable: true},
+      {key: 'raisou',         display: 'Ship.Torpedo',    translate: true,  sortable: true},
+      {key: 'taiku',          display: 'Ship.AA',         translate: true,  sortable: true},
+      {key: 'soukou',         display: 'Ship.Armor',      translate: true,  sortable: true},
+      {key: 'lucky',          display: 'Ship.Luck',       translate: true,  sortable: true},
+      {key: 'sakuteki',       display: 'Ship.LoS',        translate: true,  sortable: true},
+      {key: 'taisen',         display: 'Ship.ASW',        translate: true,  sortable: true},
+      {key: 'soku',           display: 'Ship.Speed',      translate: true,  sortable: true},
+      {key: 'sally_area',     display: 'Event Maps',      translate: true,  sortable: false},
+      {key: 'repair_seconds', display: 'Repair duration', translate: true,  sortable: true},
+      {key: 'slotitems',      display: 'Equipments',      translate: true,  sortable: false},
+    ];
+    for (let i = 1; i < sort_keys.length; i++) {
+      const prev = sort_keys[i - 1];
+      const element = sort_keys[i];
+      const html = template.replace(/{key}/g, element.key)
+                           .replace(/{prev_key}/g, prev.key)
+                           .replace(/{display}/g, element.display)
+                           .replace(/{translated_display}/g, element.translate ? i18n.__(element.display) : element.display);
+      $header.append(html);
+      if (element.sortable == false) {
+        $(`#header_${element.key} .ColumnLabelContainer`).removeAttr('onclick');
+      }
+      if (element.translate == false) {
+        $(`#header_${element.key} .TableHeaderKey`).removeAttr('data-i18n');
+      }
+    }
   }
 
   subscribe() {
@@ -531,30 +590,30 @@ class ShipsWindow {
   createShipCell(ship) {
     const template = `
       <div id="ship_{ship_id}_row" class="ThemeTableRow" style="display: table-row;">
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_index"></span></div>
-        <div class="ThemeTableCell">{ship_id}</div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_type" data-i18n="{type_key}">{type}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_name" data-i18n="{name}">{localized_name}</span></div>
-        <div class="ThemeTableCell" style="max-width: 80px; overflow: hidden;" title="{class}" data-i18n="{class_key}" data-i18n-attribute="title" data-i18n-format="{class_format}">
+        <div class="ThemeTableCell column_index" style="overflow: hidden;"><span class="ship_{ship_id}_index"></span></div>
+        <div class="ThemeTableCell column_id" style="overflow: hidden;">{ship_id}</div>
+        <div class="ThemeTableCell column_type" style="overflow: hidden;"><span class="ship_{ship_id}_type" data-i18n="{type_key}">{type}</span></div>
+        <div class="ThemeTableCell column_name" style="overflow: hidden;"><span class="ship_{ship_id}_name" data-i18n="{name}">{localized_name}</span></div>
+        <div class="ThemeTableCell column_ship_class" title="{class}" data-i18n="{class_key}" data-i18n-attribute="title" data-i18n-format="{class_format}">
           <span class="ship_{ship_id}_ship_class" data-i18n="{class_key}" data-i18n-format="{class_format}">{class}</span>
         </div>
-        <div class="ThemeTableCell">Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span></div>
-        <div class="ThemeTableCell"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond">{cond}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_karyoku">{karyoku}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_raisou">{raisou}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_taiku">{taiku}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_soukou">{soukou}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_lucky">{lucky}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_sakuteki">{sakuteki}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_taisen">{taisen}</span></div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_soku" data-i18n="{soku}">{localized_soku}</span></div>
-        <div class="ThemeTableCell" sylte="vertical-align: middle;">
+        <div class="ThemeTableCell column_level" style="overflow: hidden;">Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span></div>
+        <div class="ThemeTableCell column_cond" style="overflow: hidden;"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond">{cond}</span></div>
+        <div class="ThemeTableCell column_karyoku" style="overflow: hidden;"><span class="ship_{ship_id}_karyoku">{karyoku}</span></div>
+        <div class="ThemeTableCell column_raisou" style="overflow: hidden;"><span class="ship_{ship_id}_raisou">{raisou}</span></div>
+        <div class="ThemeTableCell column_taiku" style="overflow: hidden;"><span class="ship_{ship_id}_taiku">{taiku}</span></div>
+        <div class="ThemeTableCell column_soukou" style="overflow: hidden;"><span class="ship_{ship_id}_soukou">{soukou}</span></div>
+        <div class="ThemeTableCell column_lucky" style="overflow: hidden;"><span class="ship_{ship_id}_lucky">{lucky}</span></div>
+        <div class="ThemeTableCell column_sakuteki" style="overflow: hidden;"><span class="ship_{ship_id}_sakuteki">{sakuteki}</span></div>
+        <div class="ThemeTableCell column_taisen" style="overflow: hidden;"><span class="ship_{ship_id}_taisen">{taisen}</span></div>
+        <div class="ThemeTableCell column_soku" style="overflow: hidden;"><span class="ship_{ship_id}_soku" data-i18n="{soku}">{localized_soku}</span></div>
+        <div class="ThemeTableCell column_sally_area" sylte="vertical-align: middle; overflow: hidden;">
           <div style="display: flex; height: 25px; line-height: 25px;">
             <div class="ship_{ship_id}_sally_area FontNormal" style="flex: 1 1 auto; height: 19px; line-height: 19px; margin-top: 3px; margin-bottom: 3px; color: {sally_area_text_color}; background-color: {sally_area_background_color}; text-align: center; vertical-align: middle; padding: 0px 5px 0px 5px;">{sally_area}</div>
           </div>
         </div>
-        <div class="ThemeTableCell"><span class="ship_{ship_id}_repair">{repair}</span></div>
-        <div class="ThemeTableCell ship_{ship_id}_slotitem" style="height: 25px; vertical-align: middle;"></div>
+        <div class="ThemeTableCell column_repair" style="overflow: hidden;"><span class="ship_{ship_id}_repair">{repair}</span></div>
+        <div class="ThemeTableCell ship_{ship_id}_slotitem column_slotitem" style="height: 25px; vertical-align: middle; overflow: hidden;"></div>
       </div>`;
     const sally_area = ship.sally_area();
     const order = ship.ship_class_order();
@@ -790,6 +849,55 @@ class ShipsWindow {
 
   createQueryAlasql() {
     return _QUERY_PREFIX_ALASQL + $('#query').val();
+  }
+
+  onColumnResizeStart(event, key, subkey) {
+    if (this._column_resize_capture != null) {
+      this._column_resize_capture.onAbort();
+    }
+    const $header = $(`#header_${key}`);
+    const offset = $header.offset();
+    this._column_resize_capture = new ColumnResizeCapture(key, $header.width(), event.clientX);
+  }
+
+  onMouseMove(event) {
+    if (this._column_resize_capture == null) {
+      return;
+    }
+    this._column_resize_capture.onMove(event.clientX);
+  }
+
+  onMouseUp(event) {
+    if (this._column_resize_capture == null) {
+      return;
+    }
+    this._column_resize_capture.onEnd(event.clientX);
+    this._column_resize_capture = null;
+  }
+}
+
+class ColumnResizeCapture {
+  constructor(key, initialWidth, initialX) {
+    this.key = key;
+    this.initialWidth = initialWidth;
+    this.initialX = initialX;
+
+    this.$header = $(`#header_${key}`);
+  }
+
+  onMove(x) {
+    const delta = x - this.initialX;
+    const width = Math.max(1, this.initialWidth + delta);
+    $(`.column_${this.key}`).css('min-width', `${width}px`);
+    $(`.column_${this.key}`).css('max-width', `${width}px`);
+  }
+
+  onEnd(x) {
+    this.onMove(x);
+  }
+
+  onAbort() {
+    $(`.column_${this.key}`).css('min-width', `${this.initialWidth}px`);
   }
 }
 

@@ -27,8 +27,23 @@ label, input[type='checkbox'] {
 
 .TableHeaderKey {
   padding-top: 2px;
+  height: 27px;
 }
 
 .FontNormal {
   font-size: 12px;
+}
+
+.ColumnResizer {
+  flex: 0 0 2px;
+  height: 27px;
+  cursor: col-resize;
+  background-color: transparent;
+}
+
+.ColumnLabelContainer {
+  flex: 1 1 auto;
+  display: flex;
+  padding-left: 5px;
+  padding-right: 5px;
 }

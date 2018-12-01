@@ -144,106 +144,10 @@
     <div class="ThemeContainerBorder" style="flex: 1 1 auto; margin: 5px 10px 10px 10px; overflow: scroll;">
       <div id="ship_table" style="display: table; min-width: 100%;">
         <div id="ship_table_header" style="display: table-row; cursor: pointer;">
-          <div class="ThemeTableHeader"></div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('id')">
+          <div id="header_index" class="ThemeTableHeader column_index">
             <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">ID</div>
-              <div id="sort_order_id" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('type')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Type">艦種</div>
-              <div id="sort_order_type" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('name')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Name">艦名</div>
-              <div id="sort_order_name" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('ship_class')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Class">艦級</div>
-              <div id="sort_order_ship_class" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('level')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Level">レベル</div>
-              <div id="sort_order_level" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('cond')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;">cond</div>
-              <div id="sort_order_cond" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('karyoku')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Firepower">火力</div>
-              <div id="sort_order_karyoku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('raisou')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Torpedo">雷装</div>
-              <div id="sort_order_raisou" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('taiku')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.AA">対空</div>
-              <div id="sort_order_taiku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('soukou')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Armor">装甲</div>
-              <div id="sort_order_soukou" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('lucky')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Luck">運</div>
-              <div id="sort_order_lucky" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('sakuteki')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.LoS">索敵</div>
-              <div id="sort_order_sakuteki" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('taisen')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.ASW">対潜</div>
-              <div id="sort_order_taisen" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('soku')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Ship.Speed">速力</div>
-              <div id="sort_order_soku" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Event Maps">出撃海域</div>
-              <div id="sort_order_sally_area" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL" onclick="_ships_window.sortOrderClicked('repair_seconds')">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Repair duration">修復時間</div>
-              <div id="sort_order_repair_seconds" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-            </div>
-          </div>
-          <div class="ThemeTableHeader ThemeContainerBorderL">
-            <div style="display: flex;">
-              <div class="TableHeaderKey" style="flex: 0 0 auto;" data-i18n="Equipments">装備</div>
+              <div style="flex: 1 1 auto;"></div>
+              <div class="ColumnResizer" onmousedown="_ships_window.onColumnResizeStart(event, 'index')"></div>
             </div>
           </div>
         </div>

@@ -64,12 +64,10 @@
 .ThemeTableHeader {
   background-color: #333;
   display: table-cell;
-  height: 25px;
-  padding-left: 5px;
-  padding-right: 5px;
+  height: 27px;
   white-space: nowrap;
   vertical-align: middle;
-  line-height: 25px;
+  line-height: 27px;
   position: sticky;
   top: 0;
 }
@@ -94,4 +92,5 @@
   vertical-align: middle;
   white-space: nowrap;
   vertical-align: middle;
+  overflow: hidden;
 }
