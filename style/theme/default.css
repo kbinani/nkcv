@@ -87,8 +87,6 @@
 .ThemeTableCell {
   height: 25px;
   display: table-cell;
-  padding-left: 5px;
-  padding-right: 5px;
   vertical-align: middle;
   white-space: nowrap;
   vertical-align: middle;

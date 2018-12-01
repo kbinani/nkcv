@@ -590,30 +590,94 @@ class ShipsWindow {
   createShipCell(ship) {
     const template = `
       <div id="ship_{ship_id}_row" class="ThemeTableRow" style="display: table-row;">
-        <div class="ThemeTableCell column_index" style="overflow: hidden;"><span class="ship_{ship_id}_index"></span></div>
-        <div class="ThemeTableCell column_id" style="overflow: hidden;">{ship_id}</div>
-        <div class="ThemeTableCell column_type" style="overflow: hidden;"><span class="ship_{ship_id}_type" data-i18n="{type_key}">{type}</span></div>
-        <div class="ThemeTableCell column_name" style="overflow: hidden;"><span class="ship_{ship_id}_name" data-i18n="{name}">{localized_name}</span></div>
-        <div class="ThemeTableCell column_ship_class" title="{class}" data-i18n="{class_key}" data-i18n-attribute="title" data-i18n-format="{class_format}">
-          <span class="ship_{ship_id}_ship_class" data-i18n="{class_key}" data-i18n-format="{class_format}">{class}</span>
+        <div class="ThemeTableCell column_index" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_index"></span>
+          </div>
         </div>
-        <div class="ThemeTableCell column_level" style="overflow: hidden;">Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span></div>
-        <div class="ThemeTableCell column_cond" style="overflow: hidden;"><div class="ship_{ship_id}_cond_icon"></div><span class="ship_{ship_id}_cond">{cond}</span></div>
-        <div class="ThemeTableCell column_karyoku" style="overflow: hidden;"><span class="ship_{ship_id}_karyoku">{karyoku}</span></div>
-        <div class="ThemeTableCell column_raisou" style="overflow: hidden;"><span class="ship_{ship_id}_raisou">{raisou}</span></div>
-        <div class="ThemeTableCell column_taiku" style="overflow: hidden;"><span class="ship_{ship_id}_taiku">{taiku}</span></div>
-        <div class="ThemeTableCell column_soukou" style="overflow: hidden;"><span class="ship_{ship_id}_soukou">{soukou}</span></div>
-        <div class="ThemeTableCell column_lucky" style="overflow: hidden;"><span class="ship_{ship_id}_lucky">{lucky}</span></div>
-        <div class="ThemeTableCell column_sakuteki" style="overflow: hidden;"><span class="ship_{ship_id}_sakuteki">{sakuteki}</span></div>
-        <div class="ThemeTableCell column_taisen" style="overflow: hidden;"><span class="ship_{ship_id}_taisen">{taisen}</span></div>
-        <div class="ThemeTableCell column_soku" style="overflow: hidden;"><span class="ship_{ship_id}_soku" data-i18n="{soku}">{localized_soku}</span></div>
+        <div class="ThemeTableCell column_id" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">{ship_id}</div>
+        </div>
+        <div class="ThemeTableCell column_type" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_type" data-i18n="{type_key}">{type}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_name" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_name" data-i18n="{name}">{localized_name}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_ship_class" title="{class}" data-i18n="{class_key}" data-i18n-attribute="title" data-i18n-format="{class_format}">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_ship_class" data-i18n="{class_key}" data-i18n-format="{class_format}">{class}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_level" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            Lv. <span class="ship_{ship_id}_level">{level}</span> Next: <span class="ship_{ship_id}_next_exp">{next_exp}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_cond" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <div class="ship_{ship_id}_cond_icon"></div>
+            <span class="ship_{ship_id}_cond">{cond}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_karyoku" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_karyoku">{karyoku}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_raisou" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_raisou">{raisou}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_taiku" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_taiku">{taiku}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_soukou" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_soukou">{soukou}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_lucky" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_lucky">{lucky}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_sakuteki" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_sakuteki">{sakuteki}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_taisen" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_taisen">{taisen}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_soku" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_soku" data-i18n="{soku}">{localized_soku}</span>
+          </div>
+        </div>
         <div class="ThemeTableCell column_sally_area" sylte="vertical-align: middle; overflow: hidden;">
-          <div style="display: flex; height: 25px; line-height: 25px;">
+          <div style="display: flex; height: 25px; line-height: 25px; margin: 0 5px 0 5px;">
             <div class="ship_{ship_id}_sally_area FontNormal" style="flex: 1 1 auto; height: 19px; line-height: 19px; margin-top: 3px; margin-bottom: 3px; color: {sally_area_text_color}; background-color: {sally_area_background_color}; text-align: center; vertical-align: middle; padding: 0px 5px 0px 5px;">{sally_area}</div>
           </div>
         </div>
-        <div class="ThemeTableCell column_repair" style="overflow: hidden;"><span class="ship_{ship_id}_repair">{repair}</span></div>
-        <div class="ThemeTableCell ship_{ship_id}_slotitem column_slotitem" style="height: 25px; vertical-align: middle; overflow: hidden;"></div>
+        <div class="ThemeTableCell column_repair" style="overflow: hidden;">
+          <div style="margin: 0 5px 0 5px;">
+            <span class="ship_{ship_id}_repair">{repair}</span>
+          </div>
+        </div>
+        <div class="ThemeTableCell column_slotitem" style="height: 25px; vertical-align: middle; overflow: hidden;">
+          <div class="ship_{ship_id}_slotitem" style="margin: 0 5px 0 5px;">
+          </div>
+        </div>
       </div>`;
     const sally_area = ship.sally_area();
     const order = ship.ship_class_order();
@@ -856,7 +920,6 @@ class ShipsWindow {
       this._column_resize_capture.onAbort();
     }
     const $header = $(`#header_${key}`);
-    const offset = $header.offset();
     this._column_resize_capture = new ColumnResizeCapture(key, $header.width(), event.clientX);
   }
 
@@ -887,7 +950,7 @@ class ColumnResizeCapture {
 
   onMove(x) {
     const delta = x - this.initialX;
-    const width = Math.max(1, this.initialWidth + delta);
+    const width = Math.max(10, this.initialWidth + delta);
     $(`.column_${this.key}`).css('min-width', `${width}px`);
     $(`.column_${this.key}`).css('max-width', `${width}px`);
   }
