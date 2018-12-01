@@ -6,7 +6,10 @@ const _ = require('lodash'),
       ShipType = require(__dirname + '/ShipType.js'),
       Speed = require(__dirname + '/Speed.js'),
       SallyArea = require(__dirname + '/SallyArea.js'),
-      util = require(__dirname + '/util.js');
+      util = require(__dirname + '/util.js'),
+      json = require(__dirname + '/json.js');
+
+const ship_class_mapping = json.fromFile(__dirname + '/../data/ship_class.hjson');
 
 class Ship {
   constructor(data, master_data, storage) {
@@ -222,6 +225,70 @@ class Ship {
   sally_area() {
     const id = _.get(this._data, ['api_sally_area'], 0);
     return new SallyArea(id);
+  }
+
+  ship_class() {
+    return Ship.ship_class_from_name(this.name());
+  }
+
+  ship_class_order() {
+    return Ship.ship_class_order_from_name(this.name());
+  }
+
+  static name_without_revise_postfix(name) {
+    const suffixes = ['航改二', '乙改', '丁改', '改', ' due', ' zwei', ' drei', ' Mk.II'];
+    for (let i = 0; i < suffixes.length; i++) {
+      const suffix = suffixes[i];
+      const idx = name.indexOf(suffix);
+      if (idx >= 0) {
+        return name.substring(0, idx);
+      }
+    }
+    return name;
+  }
+
+  static original_ship_name(name_) {
+    const name = Ship.name_without_revise_postfix(name_);
+    const special_ship_names = {
+      '龍鳳': '大鯨',
+      '呂500': 'U-511',
+      '千歳甲': '千歳',
+      '千代田甲': '千代田',
+      'Italia': 'Littorio',
+      'Гангут два': 'Гангут',
+      'Октябрьская революция': 'Гангут',
+      '大鷹': '春日丸',
+      'UIT-25': 'Luigi Torelli',
+      '伊504': 'Luigi Torelli',
+      'Верный': '響',
+      '大鷹': '神鷹',
+      '伊504': 'Luigi Torelli',
+      'UIT-25': 'Luigi Torelli',
+    };
+    if (name in special_ship_names) {
+      return special_ship_names[name];
+    }
+    return name;
+  }
+
+  static ship_class_from_name(name) {
+    const original_name = Ship.original_ship_name(name);
+    const klass = _.get(ship_class_mapping, [original_name, 'class'], null);
+    if (klass == null) {
+      return '(不明)';
+    } else {
+      return klass;
+    }
+  }
+
+  static ship_class_order_from_name(name) {
+    const original_name = Ship.original_ship_name(name);
+    const order = _.get(ship_class_mapping, [original_name, 'order'], -1);
+    if (order == -1) {
+      return '';
+    } else {
+      return `${order}`;
+    }
   }
 }
 

@@ -1,0 +1,886 @@
+{
+  "睦月": {
+    "class": "睦月型",
+    "order": 1
+  },
+  "如月": {
+    "class": "睦月型",
+    "order": 2
+  },
+  "長月": {
+    "class": "睦月型",
+    "order": 8
+  },
+  "三日月": {
+    "class": "睦月型",
+    "order": 10
+  },
+  "吹雪": {
+    "class": "吹雪型",
+    "order": 1
+  },
+  "白雪": {
+    "class": "吹雪型",
+    "order": 2
+  },
+  "深雪": {
+    "class": "吹雪型",
+    "order": 4
+  },
+  "磯波": {
+    "class": "吹雪型",
+    "order": 9
+  },
+  "綾波": {
+    "class": "綾波型",
+    "order": 1
+  },
+  "敷波": {
+    "class": "綾波型",
+    "order": 2
+  },
+  "曙": {
+    "class": "綾波型",
+    "order": 8
+  },
+  "潮": {
+    "class": "綾波型",
+    "order": 10
+  },
+  "陽炎": {
+    "class": "陽炎型",
+    "order": 1
+  },
+  "不知火": {
+    "class": "陽炎型",
+    "order": 2
+  },
+  "黒潮": {
+    "class": "陽炎型",
+    "order": 3
+  },
+  "雪風": {
+    "class": "陽炎型",
+    "order": 8
+  },
+  "長良": {
+    "class": "長良型",
+    "order": 1
+  },
+  "五十鈴": {
+    "class": "長良型",
+    "order": 2
+  },
+  "由良": {
+    "class": "長良型",
+    "order": 4
+  },
+  "大井": {
+    "class": "球磨型",
+    "order": 4
+  },
+  "北上": {
+    "class": "球磨型",
+    "order": 3
+  },
+  "扶桑": {
+    "class": "扶桑型",
+    "order": 1
+  },
+  "山城": {
+    "class": "扶桑型",
+    "order": 2
+  },
+  "皐月": {
+    "class": "睦月型",
+    "order": 5
+  },
+  "文月": {
+    "class": "睦月型",
+    "order": 7
+  },
+  "菊月": {
+    "class": "睦月型",
+    "order": 9
+  },
+  "望月": {
+    "class": "睦月型",
+    "order": 11
+  },
+  "初雪": {
+    "class": "吹雪型",
+    "order": 3
+  },
+  "叢雲": {
+    "class": "吹雪型",
+    "order": 5
+  },
+  "暁": {
+    "class": "暁型",
+    "order": 1
+  },
+  "響": {
+    "class": "暁型",
+    "order": 2
+  },
+  "雷": {
+    "class": "暁型",
+    "order": 3
+  },
+  "電": {
+    "class": "暁型",
+    "order": 4
+  },
+  "初春": {
+    "class": "初春型",
+    "order": 1
+  },
+  "子日": {
+    "class": "初春型",
+    "order": 2
+  },
+  "若葉": {
+    "class": "初春型",
+    "order": 3
+  },
+  "初霜": {
+    "class": "初春型",
+    "order": 4
+  },
+  "白露": {
+    "class": "白露型",
+    "order": 1
+  },
+  "時雨": {
+    "class": "白露型",
+    "order": 2
+  },
+  "村雨": {
+    "class": "白露型",
+    "order": 3
+  },
+  "夕立": {
+    "class": "白露型",
+    "order": 4
+  },
+  "五月雨": {
+    "class": "白露型",
+    "order": 6
+  },
+  "涼風": {
+    "class": "白露型",
+    "order": 10
+  },
+  "霰": {
+    "class": "朝潮型",
+    "order": 9
+  },
+  "霞": {
+    "class": "朝潮型",
+    "order": 10
+  },
+  "島風": {
+    "class": "島風型",
+    "order": 1
+  },
+  "天龍": {
+    "class": "天龍型",
+    "order": 1
+  },
+  "龍田": {
+    "class": "天龍型",
+    "order": 2
+  },
+  "名取": {
+    "class": "長良型",
+    "order": 3
+  },
+  "川内": {
+    "class": "川内型",
+    "order": 1
+  },
+  "神通": {
+    "class": "川内型",
+    "order": 2
+  },
+  "那珂": {
+    "class": "川内型",
+    "order": 3
+  },
+  "古鷹": {
+    "class": "古鷹型",
+    "order": 1
+  },
+  "加古": {
+    "class": "古鷹型",
+    "order": 2
+  },
+  "青葉": {
+    "class": "青葉型",
+    "order": 1
+  },
+  "妙高": {
+    "class": "妙高型",
+    "order": 1
+  },
+  "那智": {
+    "class": "妙高型",
+    "order": 2
+  },
+  "足柄": {
+    "class": "妙高型",
+    "order": 3
+  },
+  "羽黒": {
+    "class": "妙高型",
+    "order": 4
+  },
+  "高雄": {
+    "class": "高雄型",
+    "order": 1
+  },
+  "愛宕": {
+    "class": "高雄型",
+    "order": 2
+  },
+  "摩耶": {
+    "class": "高雄型",
+    "order": 3
+  },
+  "鳥海": {
+    "class": "高雄型",
+    "order": 4
+  },
+  "最上": {
+    "class": "最上型",
+    "order": 1
+  },
+  "利根": {
+    "class": "利根型",
+    "order": 1
+  },
+  "筑摩": {
+    "class": "利根型",
+    "order": 2
+  },
+  "祥鳳": {
+    "class": "祥鳳型",
+    "order": 1
+  },
+  "飛鷹": {
+    "class": "飛鷹型",
+    "order": 1
+  },
+  "龍驤": {
+    "class": "龍驤型",
+    "order": 1
+  },
+  "伊勢": {
+    "class": "伊勢型",
+    "order": 1
+  },
+  "金剛": {
+    "class": "金剛型",
+    "order": 1
+  },
+  "榛名": {
+    "class": "金剛型",
+    "order": 3
+  },
+  "長門": {
+    "class": "長門型",
+    "order": 1
+  },
+  "陸奥": {
+    "class": "長門型",
+    "order": 2
+  },
+  "赤城": {
+    "class": "赤城型",
+    "order": 1
+  },
+  "加賀": {
+    "class": "加賀型",
+    "order": 1
+  },
+  "霧島": {
+    "class": "金剛型",
+    "order": 4
+  },
+  "比叡": {
+    "class": "金剛型",
+    "order": 2
+  },
+  "日向": {
+    "class": "伊勢型",
+    "order": 2
+  },
+  "鳳翔": {
+    "class": "鳳翔型",
+    "order": 1
+  },
+  "蒼龍": {
+    "class": "蒼龍型",
+    "order": 1
+  },
+  "飛龍": {
+    "class": "飛龍型",
+    "order": 1
+  },
+  "隼鷹": {
+    "class": "飛鷹型",
+    "order": 2
+  },
+  "朧": {
+    "class": "綾波型",
+    "order": 7
+  },
+  "漣": {
+    "class": "綾波型",
+    "order": 9
+  },
+  "朝潮": {
+    "class": "朝潮型",
+    "order": 1
+  },
+  "大潮": {
+    "class": "朝潮型",
+    "order": 2
+  },
+  "満潮": {
+    "class": "朝潮型",
+    "order": 3
+  },
+  "荒潮": {
+    "class": "朝潮型",
+    "order": 4
+  },
+  "球磨": {
+    "class": "球磨型",
+    "order": 1
+  },
+  "多摩": {
+    "class": "球磨型",
+    "order": 2
+  },
+  "木曾": {
+    "class": "球磨型",
+    "order": 5
+  },
+  "千歳": {
+    "class": "千歳型",
+    "order": 1
+  },
+  "千代田": {
+    "class": "千歳型",
+    "order": 2
+  },
+  "千歳航": {
+    "class": "千歳型",
+    "order": 1
+  },
+  "千代田航": {
+    "class": "千歳型",
+    "order": 2
+  },
+  "翔鶴": {
+    "class": "翔鶴型",
+    "order": 1
+  },
+  "瑞鶴": {
+    "class": "翔鶴型",
+    "order": 2
+  },
+  "鬼怒": {
+    "class": "長良型",
+    "order": 5
+  },
+  "阿武隈": {
+    "class": "長良型",
+    "order": 6
+  },
+  "夕張": {
+    "class": "夕張型",
+    "order": 1
+  },
+  "瑞鳳": {
+    "class": "祥鳳型",
+    "order": 2
+  },
+  "三隈": {
+    "class": "最上型",
+    "order": 2
+  },
+  "舞風": {
+    "class": "陽炎型",
+    "order": 18
+  },
+  "衣笠": {
+    "class": "青葉型",
+    "order": 2
+  },
+  "鈴谷": {
+    "class": "最上型",
+    "order": 3
+  },
+  "熊野": {
+    "class": "最上型",
+    "order": 4
+  },
+  "伊168": {
+    "class": "海大VI型",
+    "order": 1
+  },
+  "伊58": {
+    "class": "巡潜乙型改二",
+    "order": 3
+  },
+  "伊8": {
+    "class": "巡潜３型",
+    "order": 2
+  },
+  "大和": {
+    "class": "大和型",
+    "order": 1
+  },
+  "秋雲": {
+    "class": "陽炎型",
+    "order": 19
+  },
+  "夕雲": {
+    "class": "夕雲型",
+    "order": 1
+  },
+  "巻雲": {
+    "class": "夕雲型",
+    "order": 2
+  },
+  "長波": {
+    "class": "夕雲型",
+    "order": 4
+  },
+  "阿賀野": {
+    "class": "阿賀野型",
+    "order": 1
+  },
+  "能代": {
+    "class": "阿賀野型",
+    "order": 2
+  },
+  "矢矧": {
+    "class": "阿賀野型",
+    "order": 3
+  },
+  "酒匂": {
+    "class": "阿賀野型",
+    "order": 4
+  },
+  "武蔵": {
+    "class": "大和型",
+    "order": 2
+  },
+  "大鳳": {
+    "class": "大鳳型",
+    "order": 1
+  },
+  "香取": {
+    "class": "香取型",
+    "order": 1
+  },
+  "伊401": {
+    "class": "潜特型",
+    "order": 2
+  },
+  "あきつ丸": {
+    "class": "特種船丙型",
+    "order": -1
+  },
+  "神威": {
+    "class": "神威型",
+    "order": 1
+  },
+  "まるゆ": {
+    "class": "三式潜航輸送艇",
+    "order": -1
+  },
+  "弥生": {
+    "class": "睦月型",
+    "order": 3
+  },
+  "卯月": {
+    "class": "睦月型",
+    "order": 4
+  },
+  "磯風": {
+    "class": "陽炎型",
+    "order": 12
+  },
+  "浦風": {
+    "class": "陽炎型",
+    "order": 11
+  },
+  "谷風": {
+    "class": "陽炎型",
+    "order": 14
+  },
+  "浜風": {
+    "class": "陽炎型",
+    "order": 13
+  },
+  "Bismarck": {
+    "class": "ビスマルク級",
+    "order": 1
+  },
+  "Z1": {
+    "class": "Z1型",
+    "order": 1
+  },
+  "Z3": {
+    "class": "Z1型",
+    "order": 3
+  },
+  "Prinz Eugen": {
+    "class": "A・ヒッパー級",
+    "order": 3
+  },
+  "天津風": {
+    "class": "陽炎型",
+    "order": 9
+  },
+  "明石": {
+    "class": "工作艦",
+    "order": -1
+  },
+  "大淀": {
+    "class": "大淀型",
+    "order": 1
+  },
+  "大鯨": {
+    "class": "潜水母艦",
+    "order": 1
+  },
+  "時津風": {
+    "class": "陽炎型",
+    "order": 10
+  },
+  "初風": {
+    "class": "陽炎型",
+    "order": 7
+  },
+  "伊19": {
+    "class": "巡潜乙型",
+    "order": 3
+  },
+  "春雨": {
+    "class": "白露型",
+    "order": 5
+  },
+  "早霜": {
+    "class": "夕雲型",
+    "order": 17
+  },
+  "清霜": {
+    "class": "夕雲型",
+    "order": 19
+  },
+  "朝雲": {
+    "class": "朝潮型",
+    "order": 5
+  },
+  "山雲": {
+    "class": "朝潮型",
+    "order": 6
+  },
+  "野分": {
+    "class": "陽炎型",
+    "order": 15
+  },
+  "秋月": {
+    "class": "秋月型",
+    "order": 1
+  },
+  "天城": {
+    "class": "雲龍型",
+    "order": 2
+  },
+  "葛城": {
+    "class": "雲龍型",
+    "order": 3
+  },
+  "U-511": {
+    "class": "UボートIXC型",
+    "order": -1
+  },
+  "朝霜": {
+    "class": "夕雲型",
+    "order": 16
+  },
+  "高波": {
+    "class": "夕雲型",
+    "order": 6
+  },
+  "照月": {
+    "class": "秋月型",
+    "order": 2
+  },
+  "Libeccio": {
+    "class": "Maestrale級",
+    "order": 3
+  },
+  "瑞穂": {
+    "class": "瑞穂型",
+    "order": 1
+  },
+  "風雲": {
+    "class": "夕雲型",
+    "order": 3
+  },
+  "海風": {
+    "class": "白露型",
+    "order": 7
+  },
+  "江風": {
+    "class": "白露型",
+    "order": 9
+  },
+  "速吸": {
+    "class": "改風早型",
+    "order": 1
+  },
+  "Graf Zeppelin": {
+    "class": "Graf Zeppelin級",
+    "order": 1
+  },
+  "嵐": {
+    "class": "陽炎型",
+    "order": 16
+  },
+  "萩風": {
+    "class": "陽炎型",
+    "order": 17
+  },
+  "鹿島": {
+    "class": "香取型",
+    "order": 2
+  },
+  "初月": {
+    "class": "秋月型",
+    "order": 4
+  },
+  "Zara": {
+    "class": "Zara級",
+    "order": 1
+  },
+  "沖波": {
+    "class": "夕雲型",
+    "order": 14
+  },
+  "Iowa": {
+    "class": "Iowa級",
+    "order": 1
+  },
+  "Pola": {
+    "class": "Zara級",
+    "order": 3
+  },
+  "親潮": {
+    "class": "陽炎型",
+    "order": 4
+  },
+  "春風": {
+    "class": "神風型",
+    "order": 3
+  },
+  "Warspite": {
+    "class": "Queen Elizabeth級",
+    "order": 2
+  },
+  "Aquila": {
+    "class": "Aquila級",
+    "order": 1
+  },
+  "水無月": {
+    "class": "睦月型",
+    "order": 6
+  },
+  "伊26": {
+    "class": "巡潜乙型",
+    "order": 7
+  },
+  "浦波": {
+    "class": "吹雪型",
+    "order": 10
+  },
+  "山風": {
+    "class": "白露型",
+    "order": 8
+  },
+  "朝風": {
+    "class": "神風型",
+    "order": 2
+  },
+  "松風": {
+    "class": "神風型",
+    "order": 4
+  },
+  "Commandant Teste": {
+    "class": "C.Teste級",
+    "order": 1
+  },
+  "藤波": {
+    "class": "夕雲型",
+    "order": 11
+  },
+  "伊13": {
+    "class": "巡潜甲型改二",
+    "order": 1
+  },
+  "伊14": {
+    "class": "巡潜甲型改二",
+    "order": 2
+  },
+  "占守": {
+    "class": "占守型",
+    "order": 1
+  },
+  "国後": {
+    "class": "占守型",
+    "order": 2
+  },
+  "神鷹": {
+    "class": "大鷹型",
+    "order": 4
+  },
+  "択捉": {
+    "class": "択捉型",
+    "order": 1
+  },
+  "松輪": {
+    "class": "択捉型",
+    "order": 2
+  },
+  "佐渡": {
+    "class": "択捉型",
+    "order": 3
+  },
+  "対馬": {
+    "class": "択捉型",
+    "order": 7
+  },
+  "旗風": {
+    "class": "神風型",
+    "order": 5
+  },
+  "天霧": {
+    "class": "綾波型",
+    "order": 5
+  },
+  "狭霧": {
+    "class": "綾波型",
+    "order": 6
+  },
+  "Richelieu": {
+    "class": "Richelieu級",
+    "order": 1
+  },
+  "Ark Royal": {
+    "class": "Ark Royal級",
+    "order": 1
+  },
+  "Jervis": {
+    "class": "J級",
+    "order": 1
+  },
+  "Ташкент": {
+    "class": "Ташкент級",
+    "order": 1
+  },
+  "Gambier Bay": {
+    "class": "Casablanca級",
+    "order": 19
+  },
+  "Intrepid": {
+    "class": "Essex級",
+    "order": 5
+  },
+  "雲龍": {
+    "class": "雲龍型",
+    "order": 1
+  },
+  "Saratoga": {
+    "class": "Lexington級",
+    "order": 2
+  },
+  "Littorio": {
+    "class": "V.Veneto級",
+    "order": 2
+  },
+  "Roma": {
+    "class": "V.Veneto級",
+    "order": 4
+  },
+  "秋津洲": {
+    "class": "飛行艇母艦",
+    "order": 1
+  },
+  "神風": {
+    "class": "神風型",
+    "order": 1
+  },
+  "浜波": {
+    "class": "夕雲型",
+    "order": 13
+  },
+  "伊400": {
+    "class": "潜特型",
+    "order": 1
+  },
+  "Гангут": {
+    "class": "Гангут級",
+    "order": 1
+  },
+  "春日丸": {
+    "class": "春日丸級",
+    "order": 1
+  },
+  "岸波": {
+    "class": "夕雲型",
+    "order": 15
+  },
+  "Luigi Torelli": {
+    "class": "Guglielmo Marconi級",
+    "order": 4
+  },
+  "涼月": {
+    "class": "秋月型",
+    "order": 3
+  },
+  "日振": {
+    "class": "日振型",
+    "order": 1
+  },
+  "大東": {
+    "class": "日振型",
+    "order": 2
+  },
+  "Samuel B.Roberts": {
+    "class": "John C.Butler級",
+    "order": "DE-413"
+  },
+  "福江": {
+    "class": "択捉型",
+    "order": 10
+  },
+  "Nelson": {
+    "class": "Nelson級",
+    "order": 1
+  },
+  "Gotland": {
+    "class": "Gotland級",
+    "order": 1
+  },
+  "Maestrale": {
+    "class": "Maestrale級",
+    "order": 1
+  }
+}
