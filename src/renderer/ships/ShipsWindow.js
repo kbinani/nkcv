@@ -10,57 +10,13 @@ const Port = require(__dirname + '/../../Port.js'),
       QueryHistory = require(__dirname + '/../../QueryHistory.js'),
       QueryPresetList = require(__dirname + '/../../QueryPresetList.js'),
       shared = require(__dirname + '/../../../shared.js'),
-      i18n = require(__dirname + '/../../i18n.js');
+      i18n = require(__dirname + '/../../i18n.js'),
+      ColumnResizeCapture = require(__dirname + '/ColumnResizeCapture.js'),
+      FilterPanel = require(__dirname + '/FilterPanel.js'),
+      ShipsTableHeader = require(__dirname + '/ShipsTableHeader.js');
 const sprintf = require('sprintf'),
       _ = require('lodash'),
       alasql = require('alasql');
-
-class FilterPanel {
-  constructor() {
-    this._initSallyArea();
-    this._initShipType();
-  }
-
-  _initSallyArea() {
-    SallyArea.load_remote_mapping(function() {
-      const $container = $('#sally_area_choices');
-      const template = `
-        <label for="sally_area_{id}" style="display: block; height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap; background-color: {background_color}; color: {text_color}; min-width: 80px; flex: 0 0 auto; vertical-align: middle;">
-          <input id="sally_area_{id}" type="checkbox" onclick="sallyAreaCheckboxClicked()" checked="checked"/><span id="sally_area_{id}" style="margin-right: 10px;">{name}</span>
-        </label>`
-      const allSallyAreas = SallyArea.allCases();
-      $container.empty();
-      if (allSallyAreas.length > 1) {
-        allSallyAreas.forEach((it) => {
-          const name = it.name();
-          const element = template.replace(/{id}/g, it.id())
-                                  .replace(/{name}/g, name.length == 0 ? 'なし' : name)
-                                  .replace(/{background_color}/g, it.background_color())
-                                  .replace(/{text_color}/g, it.text_color());
-          $container.append(element);
-        });
-        $('#sally_area_choices_container').css('display', 'flex');
-      } else {
-        $('#sally_area_choices_container').css('display', 'none');
-      }
-    });
-  }
-
-  _initShipType() {
-    const choices = $('#ship_type_choices');
-    const template = `
-      <label for="ship_type_{id}" style="height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap;">
-        <input id="ship_type_{id}" type="checkbox" onclick="_ships_window.shipTypeCheckboxClicked()" checked="checked"/><span id="ship_type_{id}_label" data-i18n="{name_key}">{name}</span>
-      </label>`
-    ShipType.allCases().forEach(function(type) {
-      const element = template.replace(/{id}/g, type.value())
-                              .replace(/{name}/g, i18n.__(`shiptype.${type.toString()}`))
-                              .replace(/{name_key}/g, `shiptype.${type.toString()}`);
-      choices.append(element);
-    });
-  }
-}
-
 
 const _QUERY_PREFIX_DISPLAY = 'SELECT * FROM ships WHERE ';
 const _QUERY_PREFIX_ALASQL = 'SELECT id FROM ? WHERE ';
@@ -87,7 +43,7 @@ class ShipsWindow {
     i18n.setLocale(this.language);
 
     this._filterPanel = new FilterPanel();
-    this._initTableHeader();
+    this._tableHeader = new ShipsTableHeader();
     this.setQueryEnabled(false);
 
     $('#query').bind('input propertychange', () => {
@@ -157,56 +113,6 @@ class ShipsWindow {
 
     this.subscribe();
     ipcRenderer.send('app.shipWindowDidLoad', {});
-  }
-
-  _initTableHeader() {
-    const template =
-     `<div id="header_{key}" class="ThemeTableHeader column_{key}">
-        <div style="display: flex;">
-          <div class="ColumnResizer ThemeContainerBorderL" onmousedown="_ships_window.onColumnResizeStart(event, '{prev_key}')"></div>
-          <div class="ColumnLabelContainer" onclick="_ships_window.sortOrderClicked('{key}')">
-            <div class="TableHeaderKey" style="flex: 1 1 auto;" data-i18n="{display}">{translated_display}</div>
-            <div id="sort_order_{key}" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
-          </div>
-          <div class="ColumnResizer" onmousedown="_ships_window.onColumnResizeStart(event, '{key}')"></div>
-        </div>
-      </div>`;
-    const $header = $('#ship_table_header');
-    const sort_keys = [
-      {key: 'index',          display: '',                translate: false, sortable: false},
-      {key: 'id',             display: 'ID',              translate: false, sortable: true},
-      {key: 'type',           display: 'Ship.Type',       translate: true,  sortable: true},
-      {key: 'name',           display: 'Ship.Name',       translate: true,  sortable: true},
-      {key: 'ship_class',     display: 'Ship.Class',      translate: true,  sortable: true},
-      {key: 'level',          display: 'Level',           translate: true,  sortable: true},
-      {key: 'cond',           display: 'cond',            translate: false, sortable: true},
-      {key: 'karyoku',        display: 'Ship.Firepower',  translate: true,  sortable: true},
-      {key: 'raisou',         display: 'Ship.Torpedo',    translate: true,  sortable: true},
-      {key: 'taiku',          display: 'Ship.AA',         translate: true,  sortable: true},
-      {key: 'soukou',         display: 'Ship.Armor',      translate: true,  sortable: true},
-      {key: 'lucky',          display: 'Ship.Luck',       translate: true,  sortable: true},
-      {key: 'sakuteki',       display: 'Ship.LoS',        translate: true,  sortable: true},
-      {key: 'taisen',         display: 'Ship.ASW',        translate: true,  sortable: true},
-      {key: 'soku',           display: 'Ship.Speed',      translate: true,  sortable: true},
-      {key: 'sally_area',     display: 'Event Maps',      translate: true,  sortable: false},
-      {key: 'repair_seconds', display: 'Repair duration', translate: true,  sortable: true},
-      {key: 'slotitems',      display: 'Equipments',      translate: true,  sortable: false},
-    ];
-    for (let i = 1; i < sort_keys.length; i++) {
-      const prev = sort_keys[i - 1];
-      const element = sort_keys[i];
-      const html = template.replace(/{key}/g, element.key)
-                           .replace(/{prev_key}/g, prev.key)
-                           .replace(/{display}/g, element.display)
-                           .replace(/{translated_display}/g, element.translate ? i18n.__(element.display) : element.display);
-      $header.append(html);
-      if (element.sortable == false) {
-        $(`#header_${element.key} .ColumnLabelContainer`).removeAttr('onclick');
-      }
-      if (element.translate == false) {
-        $(`#header_${element.key} .TableHeaderKey`).removeAttr('data-i18n');
-      }
-    }
   }
 
   subscribe() {
@@ -915,12 +821,16 @@ class ShipsWindow {
     return _QUERY_PREFIX_ALASQL + $('#query').val();
   }
 
-  onColumnResizeStart(event, key, subkey) {
+  abortColumnResize() {
     if (this._column_resize_capture != null) {
       this._column_resize_capture.onAbort();
+      this._column_resize_capture = null;
     }
-    const $header = $(`#header_${key}`);
-    this._column_resize_capture = new ColumnResizeCapture(key, $header.width(), event.clientX);
+  }
+
+  onColumnResizeStart(event, key) {
+    this.abortColumnResize();
+    this._column_resize_capture = new ColumnResizeCapture(this._tableHeader, key, event.clientX);
   }
 
   onMouseMove(event) {
@@ -936,31 +846,6 @@ class ShipsWindow {
     }
     this._column_resize_capture.onEnd(event.clientX);
     this._column_resize_capture = null;
-  }
-}
-
-class ColumnResizeCapture {
-  constructor(key, initialWidth, initialX) {
-    this.key = key;
-    this.initialWidth = initialWidth;
-    this.initialX = initialX;
-
-    this.$header = $(`#header_${key}`);
-  }
-
-  onMove(x) {
-    const delta = x - this.initialX;
-    const width = Math.max(10, this.initialWidth + delta);
-    $(`.column_${this.key}`).css('min-width', `${width}px`);
-    $(`.column_${this.key}`).css('max-width', `${width}px`);
-  }
-
-  onEnd(x) {
-    this.onMove(x);
-  }
-
-  onAbort() {
-    $(`.column_${this.key}`).css('min-width', `${this.initialWidth}px`);
   }
 }
 
