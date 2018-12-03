@@ -124,6 +124,10 @@ class ShipsWindow {
     this._storage.on('port', (port) => {
       this.update(port.ships);
     });
+
+    ipcRenderer.on('app.shipWindowColumnWidth', (event, data) => {
+      this._tableHeader.columnWidth = data;
+    });
   }
 
   update(ships) {
@@ -188,6 +192,7 @@ class ShipsWindow {
     this._ships = ships.map((it) => it.clone());
     this.applySort();
     this.applyFilter();
+    this._tableHeader.updateWidthAll();
   }
 
   applySort() {
@@ -584,6 +589,9 @@ class ShipsWindow {
           <div class="ship_{ship_id}_slotitem" style="margin: 0 5px 0 5px;">
           </div>
         </div>
+        <div class="ThemeTableCell" style="overflow: hidden; display: flex;">
+          <div style="flex: 1 1 auto;"><!-- spacer --></div>
+        </div>
       </div>`;
     const sally_area = ship.sally_area();
     const order = ship.ship_class_order();
@@ -846,6 +854,8 @@ class ShipsWindow {
     }
     this._column_resize_capture.onEnd(event.clientX);
     this._column_resize_capture = null;
+    const columnWidth = this._tableHeader.columnWidth;
+    ipcRenderer.send('app.patchConfig', {shipWindowColumnWidth: columnWidth});
   }
 }
 

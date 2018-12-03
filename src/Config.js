@@ -15,6 +15,7 @@ const keys = {
   'mute': 'bool',
   'sqlPresetList': 'any',
   'language': 'string',
+  'shipWindowColumnWidth': 'any',
 };
 
 const VERSION = 1;
@@ -166,6 +167,10 @@ class Config {
 
   language() {
     return _.get(this._data, ['language'], 'ja');
+  }
+
+  get shipWindowColumnWidth() {
+    return _.get(this._data, ['shipWindowColumnWidth'], {});
   }
 }
 

@@ -52,7 +52,18 @@ class ShipsTableHeader {
       }
     }
 
-    this._width = {};
+    this._columnWidth = {};
+  }
+
+  get columnWidth() {
+    return this._columnWidth;
+  }
+
+  set columnWidth(columnWidth) {
+    for (let key in columnWidth) {
+      const width = columnWidth[key];
+      this.updateWidth(key, width);
+    }
   }
 
   width(key) {
@@ -62,7 +73,14 @@ class ShipsTableHeader {
   updateWidth(key, width) {
     $(`.column_${key}`).css('min-width', `${width}px`);
     $(`.column_${key}`).css('max-width', `${width}px`);
-    this._width[key] = width;
+    this._columnWidth[key] = width;
+  }
+
+  updateWidthAll() {
+    for (let key in this._columnWidth) {
+      const width = this._columnWidth[key];
+      this.updateWidth(key, width);
+    }
   }
 }
 
