@@ -1,7 +1,10 @@
 'use strict;'
 
 window.jQuery = window.$ = require('jquery');
-const {ipcRenderer, screen} = require('electron');
+const {ipcRenderer, screen, remote} = require('electron');
+const Menu = remote.Menu;
+const MenuItem = remote.MenuItem;
+
 const Port = require(__dirname + '/../../Port.js'),
       Master = require(__dirname + '/../../Master.js'),
       DataStorage = require(__dirname + '/../../DataStorage.js'),
@@ -128,6 +131,10 @@ class ShipsWindow {
     ipcRenderer.on('app.shipWindowColumnWidth', (event, data) => {
       this._tableHeader.columnWidth = data;
     });
+
+    ipcRenderer.on('app.shipWindowColumnVisibility', (event, data) => {
+      this._tableHeader.columnVisibility = data;
+    });
   }
 
   update(ships) {
@@ -193,6 +200,7 @@ class ShipsWindow {
     this.applySort();
     this.applyFilter();
     this._tableHeader.updateWidthAll();
+    this._tableHeader.updateColumnVisibility();
   }
 
   applySort() {

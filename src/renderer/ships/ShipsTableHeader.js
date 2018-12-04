@@ -1,6 +1,11 @@
 'use strict;'
 
+const {ipcRenderer, remote} = require('electron');
+const Menu = remote.Menu;
+const MenuItem = remote.MenuItem;
+
 const i18n = require(__dirname + '/../../i18n.js');
+const _ = require('lodash');
 
 class ShipsTableHeader {
   constructor() {
@@ -16,7 +21,7 @@ class ShipsTableHeader {
         </div>
       </div>`;
     const $header = $('#ship_table_header');
-    const sort_keys = [
+    const sortKeys = [
       {key: 'index',          display: '',                translate: false, sortable: false},
       {key: 'id',             display: 'ID',              translate: false, sortable: true},
       {key: 'type',           display: 'Ship.Type',       translate: true,  sortable: true},
@@ -36,9 +41,10 @@ class ShipsTableHeader {
       {key: 'repair_seconds', display: 'Repair duration', translate: true,  sortable: true},
       {key: 'slotitems',      display: 'Equipments',      translate: true,  sortable: false},
     ];
-    for (let i = 1; i < sort_keys.length; i++) {
-      const prev = sort_keys[i - 1];
-      const element = sort_keys[i];
+    this._sortKeys = sortKeys;
+    for (let i = 1; i < sortKeys.length; i++) {
+      const prev = sortKeys[i - 1];
+      const element = sortKeys[i];
       const html = template.replace(/{key}/g, element.key)
                            .replace(/{prev_key}/g, prev.key)
                            .replace(/{display}/g, element.display)
@@ -50,9 +56,33 @@ class ShipsTableHeader {
       if (element.translate == false) {
         $(`#header_${element.key} .TableHeaderKey`).removeAttr('data-i18n');
       }
+
+      const header = document.getElementById(`header_${element.key}`);
+      header.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        const menu = new Menu();
+        menu.append(new MenuItem({
+          label: i18n.__('Hide this column'),
+          click: (e) => {
+            this.hideColumn(element.key);
+            this.notifyColumnVisibility();
+          },
+        }));
+        menu.append(new MenuItem({type: 'separator'}));
+        menu.append(new MenuItem({
+          label: i18n.__('Show all hidden columns'),
+          click: (e) => {
+            this._columnVisibility = {};
+            this.updateColumnVisibility();
+            this.notifyColumnVisibility();
+          },
+        }));
+        menu.popup(remote.getCurrentWindow());
+      });
     }
 
     this._columnWidth = {};
+    this._columnVisibility = {};
   }
 
   get columnWidth() {
@@ -81,6 +111,36 @@ class ShipsTableHeader {
       const width = this._columnWidth[key];
       this.updateWidth(key, width);
     }
+  }
+
+  get columnVisibility() {
+    return this._columnVisibility;
+  }
+
+  set columnVisibility(columnVisibility) {
+    this._columnVisibility = columnVisibility;
+    this.updateColumnVisibility();
+  }
+
+  hideColumn(key) {
+    $(`.column_${key}`).css('display', 'none');
+    this._columnVisibility[key] = false;
+  }
+
+  updateColumnVisibility() {
+    this._sortKeys.forEach((it) => {
+      const key = it.key;
+      const visible = _.get(this._columnVisibility, [key], true);
+      if (visible) {
+        $(`.column_${key}`).css('display', 'table-cell');
+      } else {
+        $(`.column_${key}`).css('display', 'none');
+      }
+    });
+  }
+
+  notifyColumnVisibility() {
+    ipcRenderer.send('app.patchConfig', {'shipWindow.ColumnVisibility': this._columnVisibility});
   }
 }
 

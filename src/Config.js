@@ -16,6 +16,7 @@ const keys = {
   'sqlPresetList': 'any',
   'language': 'string',
   'shipWindowColumnWidth': 'any',
+  'shipWindow.ColumnVisibility': 'any',
 };
 
 const VERSION = 1;
@@ -171,6 +172,10 @@ class Config {
 
   get shipWindowColumnWidth() {
     return _.get(this._data, ['shipWindowColumnWidth'], {});
+  }
+
+  get shipWindowColumnVisibility() {
+    return _.get(this._data, ['shipWindow.ColumnVisibility'], {});
   }
 }
 

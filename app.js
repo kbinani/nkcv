@@ -247,6 +247,7 @@ ipcMain.on('app.shipWindowDidLoad', function(event, data) {
   shipWindow.webContents.send('app.sqlPresetList', config.sqlPresetList());
   shipWindow.webContents.send('app.languageDidChanged', config.language());
   shipWindow.webContents.send('app.shipWindowColumnWidth', config.shipWindowColumnWidth);
+  shipWindow.webContents.send('app.shipWindowColumnVisibility', config.shipWindowColumnVisibility);
 });
 
 ipcMain.on('app.requestLanguageChange', (event, data) => {
