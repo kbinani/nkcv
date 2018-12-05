@@ -4,7 +4,8 @@ const {ipcRenderer, remote} = require('electron');
 const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 
-const i18n = require(__dirname + '/../../i18n.js');
+const i18n = require(__dirname + '/../../i18n.js'),
+      ColumnResizeCapture = require(__dirname + '/ColumnResizeCapture.js');
 const _ = require('lodash');
 
 class ShipsTableHeader {
@@ -12,12 +13,12 @@ class ShipsTableHeader {
     const template =
      `<div id="header_{key}" class="ThemeTableHeader column_{key}">
         <div style="display: flex;">
-          <div class="ColumnResizer ThemeContainerBorderL" onmousedown="_ships_window.onColumnResizeStart(event, '{prev_key}')"></div>
+          <div class="ColumnResizer ThemeContainerBorderL" onmousedown="_ships_window.onColumnResizeStart(event, '{key}', 'left')"></div>
           <div class="ColumnLabelContainer" onclick="_ships_window.sortOrderClicked('{key}')">
             <div class="TableHeaderKey" style="flex: 1 1 auto;" data-i18n="{display}">{translated_display}</div>
             <div id="sort_order_{key}" class="TableHeaderSortOrder" style="flex: 0 0 auto; display: none;"></div>
           </div>
-          <div class="ColumnResizer" onmousedown="_ships_window.onColumnResizeStart(event, '{key}')"></div>
+          <div class="ColumnResizer" onmousedown="_ships_window.onColumnResizeStart(event, '{key}', 'right')"></div>
         </div>
       </div>`;
     const $header = $('#ship_table_header');
@@ -81,6 +82,7 @@ class ShipsTableHeader {
       });
     }
 
+    this._column_resize_capture = null;
     this._columnWidth = {};
     this._columnVisibility = {};
   }
@@ -141,6 +143,48 @@ class ShipsTableHeader {
 
   notifyColumnVisibility() {
     ipcRenderer.send('app.patchConfig', {'shipWindow.ColumnVisibility': this._columnVisibility});
+  }
+
+  onColumnResizeStart(key, position, x) {
+    this.abortColumnResize();
+    let targetKey = key;
+    if (position == 'left') {
+      const idx = _.findLastIndex(this._sortKeys, (it) => { return it.key == key; });
+      if (idx >= 1) {
+        for (let i = idx - 1; i >= 0; i--) {
+          const searchKey = this._sortKeys[i].key;
+          const visible = _.get(this._columnVisibility, [searchKey], true);
+          if (visible) {
+            targetKey = searchKey;
+            break;
+          }
+        }
+      }
+    }
+    this._column_resize_capture = new ColumnResizeCapture(this, targetKey, x);
+  }
+
+  onMouseMove(x) {
+    if (this._column_resize_capture == null) {
+      return;
+    }
+    this._column_resize_capture.onMove(x);
+  }
+
+  onMouseUp(x) {
+    if (this._column_resize_capture == null) {
+      return;
+    }
+    this._column_resize_capture.onEnd(x);
+    this._column_resize_capture = null;
+    ipcRenderer.send('app.patchConfig', {shipWindowColumnWidth: this._columnWidth});
+  }
+
+  abortColumnResize() {
+    if (this._column_resize_capture != null) {
+      this._column_resize_capture.onAbort();
+      this._column_resize_capture = null;
+    }
   }
 }
 

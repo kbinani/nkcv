@@ -1,10 +1,7 @@
 'use strict;'
 
 window.jQuery = window.$ = require('jquery');
-const {ipcRenderer, screen, remote} = require('electron');
-const Menu = remote.Menu;
-const MenuItem = remote.MenuItem;
-
+const {ipcRenderer, screen} = require('electron');
 const Port = require(__dirname + '/../../Port.js'),
       Master = require(__dirname + '/../../Master.js'),
       DataStorage = require(__dirname + '/../../DataStorage.js'),
@@ -14,7 +11,6 @@ const Port = require(__dirname + '/../../Port.js'),
       QueryPresetList = require(__dirname + '/../../QueryPresetList.js'),
       shared = require(__dirname + '/../../../shared.js'),
       i18n = require(__dirname + '/../../i18n.js'),
-      ColumnResizeCapture = require(__dirname + '/ColumnResizeCapture.js'),
       FilterPanel = require(__dirname + '/FilterPanel.js'),
       ShipsTableHeader = require(__dirname + '/ShipsTableHeader.js');
 const sprintf = require('sprintf'),
@@ -40,7 +36,6 @@ class ShipsWindow {
     this._filter_config_received = false;
     this._sort_config_received = false;
     this._sql_preset_list_received = false;
-    this._column_resize_capture = null;
 
     this.language = "ja";
     i18n.setLocale(this.language);
@@ -838,32 +833,19 @@ class ShipsWindow {
   }
 
   abortColumnResize() {
-    if (this._column_resize_capture != null) {
-      this._column_resize_capture.onAbort();
-      this._column_resize_capture = null;
-    }
+    this._tableHeader.abortColumnResize();
   }
 
-  onColumnResizeStart(event, key) {
-    this.abortColumnResize();
-    this._column_resize_capture = new ColumnResizeCapture(this._tableHeader, key, event.clientX);
+  onColumnResizeStart(event, key, position) {
+    this._tableHeader.onColumnResizeStart(key, position, event.clientX);
   }
 
   onMouseMove(event) {
-    if (this._column_resize_capture == null) {
-      return;
-    }
-    this._column_resize_capture.onMove(event.clientX);
+    this._tableHeader.onMouseMove(event.clientX);
   }
 
   onMouseUp(event) {
-    if (this._column_resize_capture == null) {
-      return;
-    }
-    this._column_resize_capture.onEnd(event.clientX);
-    this._column_resize_capture = null;
-    const columnWidth = this._tableHeader.columnWidth;
-    ipcRenderer.send('app.patchConfig', {shipWindowColumnWidth: columnWidth});
+    this._tableHeader.onMouseUp(event.clientX);
   }
 }
 
