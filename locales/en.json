@@ -237,5 +237,6 @@
   "shipclass.Nelson級": "Nelson",
   "Ship.Class": "Class",
   "Hide this column": "Hide this column",
-  "Show all hidden columns": "Show all hidden columns"
+  "Show all hidden columns": "Show all hidden columns",
+  "Show '%s' column": "Show '%s' column"
 }

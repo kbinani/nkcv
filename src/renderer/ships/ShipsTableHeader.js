@@ -6,7 +6,8 @@ const MenuItem = remote.MenuItem;
 
 const i18n = require(__dirname + '/../../i18n.js'),
       ColumnResizeCapture = require(__dirname + '/ColumnResizeCapture.js');
-const _ = require('lodash');
+const _ = require('lodash'),
+      sprintf = require('sprintf');
 
 class ShipsTableHeader {
   constructor() {
@@ -70,6 +71,26 @@ class ShipsTableHeader {
           },
         }));
         menu.append(new MenuItem({type: 'separator'}));
+        let hiddenColumnExists = false;
+        for (let i = 1; i < this._sortKeys.length; i++) {
+          const it = this._sortKeys[i];
+          const key = it.key;
+          const visible = _.get(this._columnVisibility, [key], true);
+          if (!visible) {
+            hiddenColumnExists = true;
+            const name = it.translate ? i18n.__(it.display) : it.display;
+            menu.append(new MenuItem({
+              label: sprintf(i18n.__(`Show '%s' column`), name),
+              click: (e) => {
+                this.showColumn(it.key);
+                this.notifyColumnVisibility();
+              },
+            }));
+          }
+        }
+        if (hiddenColumnExists) {
+          menu.append(new MenuItem({type: 'separator'}));
+        }
         menu.append(new MenuItem({
           label: i18n.__('Show all hidden columns'),
           click: (e) => {
@@ -127,6 +148,11 @@ class ShipsTableHeader {
   hideColumn(key) {
     $(`.column_${key}`).css('display', 'none');
     this._columnVisibility[key] = false;
+  }
+
+  showColumn(key) {
+    $(`.column_${key}`).css('display', 'table-cell');
+    this._columnVisibility[key] = true;
   }
 
   updateColumnVisibility() {
