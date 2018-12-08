@@ -52,9 +52,6 @@ Deck.prototype.is_ready_to_sortie = function() {
     if (hp.value() <= 0.25) {
       return false;
     }
-    if (ship.cond() < 40) {
-      return false;
-    }
   }
   return true;
 };
