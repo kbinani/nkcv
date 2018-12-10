@@ -41,7 +41,7 @@ class ShipsTableHeader {
       {key: 'soku',           display: 'Ship.Speed',      translate: true,  sortable: true},
       {key: 'sally_area',     display: 'Event Maps',      translate: true,  sortable: false},
       {key: 'repair_seconds', display: 'Repair duration', translate: true,  sortable: true},
-      {key: 'slotitem',      display: 'Equipments',      translate: true,  sortable: false},
+      {key: 'slotitem',       display: 'Equipments',      translate: true,  sortable: false},
     ];
     this._sortKeys = sortKeys;
     for (let i = 1; i < sortKeys.length; i++) {
