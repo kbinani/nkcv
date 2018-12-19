@@ -26,14 +26,7 @@ class BattleCell {
   }
 
   static load_remote_mapping() {
-    try {
-      const local_file_path = __dirname + '/../data/battle_cell_mapping.hjson';
-      const buffer = fs.readFileSync(local_file_path);
-      const local = HJSON.parse(buffer.toString());
-      _.merge(mapping, local);
-    } catch (e) {
-      console.trace(e);
-    }
+    this.load_local_mapping();
 
     const url = 'https://gist.githubusercontent.com/kbinani/ac6e84a846385537f951c362b8b2f8c4/raw/kc_map_cell_name.hjson';
     const req = https.request(url, (res) => {
@@ -44,12 +37,26 @@ class BattleCell {
       res.on('end', (res) => {
         const data = HJSON.parse(body);
         _.merge(mapping, data);
+        if (is_dev) {
+          this.load_local_mapping();
+        }
       });
     });
     req.on('error', (e) => {
       console.trace(e);
     });
     req.end();
+  }
+
+  static load_local_mapping() {
+    try {
+      const local_file_path = __dirname + '/../data/battle_cell_mapping.hjson';
+      const buffer = fs.readFileSync(local_file_path);
+      const local = HJSON.parse(buffer.toString());
+      _.merge(mapping, local);
+    } catch (e) {
+      console.trace(e);
+    }
   }
 }
 
