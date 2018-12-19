@@ -629,6 +629,8 @@ function copyDeckInfo(deck_index) {
   }
   var lines = [];
   lines.push('----');
+  const now = new Date();
+  lines.push(sprintf('%d-%02d-%02d %02d:%02d:%02d', now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()));
   lines.push(`(${i18n.__('Fighter Power')}: ${deck.taiku()}, ${i18n.__('LoS')}: ${deck.sakuteki()})`);
   deck.ships.forEach((ship) => {
     var line = '';
