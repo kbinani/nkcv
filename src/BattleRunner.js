@@ -171,6 +171,17 @@ class BattleRunner {
       this._edam_list(edam);
     }
 
+    // 支援
+    const support = _.get(api_data, ['api_data', 'api_support_flag'], 0);
+    if (support == 0) {
+      // 支援なし
+    } else if (support == 2) {
+      // 砲撃支援
+      this.add_performance_seconds('砲撃支援', 143 / 24.0);
+    } else {
+      console.trace(`Unknown support flag: ${support}`);
+    }
+
     // 開幕対潜
     if (_.get(api_data, ['api_data', 'api_opening_taisen_flag'], 0) != 0) {
       const attack = _.get(api_data, ['api_data', 'api_opening_taisen'], null);
