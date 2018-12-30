@@ -15,7 +15,7 @@ class FilterPanel {
       const $container = $('#sally_area_choices');
       const template = `
         <label for="sally_area_{id}" style="display: block; height: 25px; line-height: 25px; margin-right: 10px; white-space: nowrap; background-color: {background_color}; color: {text_color}; min-width: 80px; flex: 0 0 auto; vertical-align: middle;">
-          <input id="sally_area_{id}" type="checkbox" onclick="sallyAreaCheckboxClicked()" checked="checked"/><span id="sally_area_{id}" style="margin-right: 10px;">{name}</span>
+          <input id="sally_area_{id}" type="checkbox" onclick="_ships_window.sallyAreaCheckboxClicked()" checked="checked"/><span id="sally_area_{id}" style="margin-right: 10px;">{name}</span>
         </label>`;
       const allSallyAreas = SallyArea.allCases();
       $container.empty();

@@ -847,6 +847,10 @@ class ShipsWindow {
   onMouseUp(event) {
     this._tableHeader.onMouseUp(event.clientX);
   }
+
+  sallyAreaCheckboxClicked(event) {
+    this.applyFilter();
+  }
 }
 
 module.exports = ShipsWindow;
