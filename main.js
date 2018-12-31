@@ -715,8 +715,7 @@ function startScreenRecording(token) {
           stopped = true;
           setRecording(false);
         };
-        const timeslice_milli_sec = 1000;
-        _recorder.start(timeslice_milli_sec);
+        _recorder.start();
       }).catch((e) => {
         setRecording(false);
       });

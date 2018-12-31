@@ -10,7 +10,8 @@ const electron = require('electron'),
       Transcoder = require('stream-transcoder'),
       tmp = require('tmp'),
       uuidv4 = require('uuid/v4'),
-      sprintf = require('sprintf');
+      sprintf = require('sprintf'),
+      which = require('which');
 const HTTPProxy = require(__dirname + '/src/HTTPProxy.js'),
       Port = require(__dirname + '/src/Port.js'),
       Master = require(__dirname + '/src/Master.js'),
@@ -193,6 +194,22 @@ ipcMain.on('app.recorded', function(event, input_filepath) {
   const width = 1200 * scale.value();
   const height = 720 * scale.value();
 
+  const fallback = () => {
+    const result = path.join(app.getPath('pictures'), filename_without_ext + '.webm');
+    fs.rename(input_filepath, result, (err) => {
+      if (err) {
+        console.trace(err);
+      }
+    });
+  };
+
+  try {
+    which.sync('ffmpeg');
+  } catch (e) {
+    fallback();
+    return;
+  }
+
   const temporary_mp4_file = tmp.fileSync({postfix: '.mp4'}, (err) => {
     if (err) console.trace(err);
   });
@@ -213,10 +230,7 @@ ipcMain.on('app.recorded', function(event, input_filepath) {
     })
     .on('error', function() {
       decrementNumFilesEncoding();
-      const result = path.join(app.getPath('pictures'), filename_without_ext + '.webm');
-      fs.rename(input_filepath, result, (err) => {
-        if (err) console.trace(err);
-      });
+      fallback();
       fs.unlink(temporary_mp4_file.name, (err) => {
         if (err) console.trace(err);
       });
