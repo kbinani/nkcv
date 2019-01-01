@@ -238,5 +238,9 @@
   "Ship.Class": "艦級",
   "Hide this column": "この列を非表示にする",
   "Show all hidden columns": "非表示の列を全て表示する",
-  "Show '%s' column": "'%s' を表示"
+  "Show '%s' column": "'%s' を表示",
+  "Config": "設定",
+  "View": "表示",
+  "Capture": "キャプチャ",
+  "Transcode webm to mp4": "webm ファイルを mp4 にエンコードする"
 }

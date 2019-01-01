@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="ThemeContainer ThemeContainerBorderT" style="flex: 1 1 auto; display: flex;">
-        <div id="menu_container" class="ThemeContainer" style="flex: 0 0 100px; display: flex; flex-direction: column;">
+        <div id="menu_container" class="ThemeContainer" style="flex: 0 0 80px; display: flex; flex-direction: column;">
           <div class="MenuItem ThemeContainer ThemeContainerActive ThemeContainerBorderB" style="cursor: default;" onclick="menuItemClicked(this)" data-menu-id="general_tool">
             <span data-i18n="General">総合</span>
           </div>
@@ -60,7 +60,7 @@
             <span data-i18n="Fleet">編成</span>
           </div>
           <div class="MenuItem ThemeContainer ThemeContainerBorderB ThemeContainerBorderR" style="cursor: pointer;" onclick="menuItemClicked(this)" data-menu-id="browser_tool">
-            <span data-i18n="Browser">ブラウザ</span>
+            <span data-i18n="Config">設定</span>
           </div>
           <div role="spacer" class="ThemeContainerBorderR" style="flex: 1 1 auto; cursor: default;"></div>
         </div>
@@ -294,6 +294,7 @@
             <table id="deck_3_ships" class="DeckTable ThemeContainerActive" style="flex: 1 1 auto; border-collapse: collapse; padding: 5px;" cellpadding="0" cellpadding="0" border="0"></table>
           </div>
           <div id="browser_tool" class="ThemeContainerActive ToolPanel" style="flex-direction: column;">
+            <div style="flex: 0 0 auto; background-color: gray; height: 25px; line-height: 25px; padding-left: 10px;"><span data-i18n="Browser">ブラウザ</span></div>
             <div style="flex: 0 0 auto; margin-left: 5px; display: flex;">
               <input id="browser_url" type="text" class="ThemeContainerActive ThemeContainerBorder" readonly="readonly" style="flex: 1 0 auto; margin: 5px 5px 5px 5px; padding: 0px 5px 0px 5px; height: 30px; line-height: 30px; cursor: text; display: flex;"/>
               <div class="ThemeCircleButton" style="flex: 0 0 30px; height: 30px; width: 30px; margin: 5px; line-height: 30px; background-image: url('img/baseline-arrow_back-24px.svg'); background-repeat: no-repeat; background-position: 50%;" onclick="browserBackClicked(this)"></div>
@@ -309,7 +310,8 @@
                 <option value="1200/1200">100%</option>
               </select>
             </div>
-            <div style="flex: 0 0 auto; display: flex;">
+            <div class="ThemeContainerBorderT" style="flex: 0 0 auto; background-color: gray; height: 25px; line-height: 25px; padding-left: 10px; margin-top: 10px;"><span data-i18n="View">表示</span></div>
+            <div style="flex: 0 0 auto; display: flex; margin-top: 5px;">
               <div style="flex: 0 0 auto; height: 30px; line-height: 30px; margin: 0px 5px 5px 15px;">
                 <span data-i18n="Language">言語</span>
               </div>
@@ -317,6 +319,13 @@
                 <option value="ja">日本語</option>
                 <option value="en">English</option>
               </select>
+            </div>
+            <div class="ThemeContainerBorderT" style="flex: 0 0 auto; background-color: gray; height: 25px; line-height: 25px; padding-left: 10px; margin-top: 10px;"><span data-i18n="Capture">キャプチャ</span></div>
+            <div style="flex: 0 0 auto; display: flex; padding: 5px 10px 5px 10px; height: 25px; line-height: 25px;">
+              <label for="option_capture_encode_video">
+                <input type="checkbox" id="option_capture_encode_video" onchange="_main_window.onEncodeVideoChanged()">
+                <span data-i18n="Transcode webm to mp4">webm ファイルを mp4 にエンコードする</span>
+              </label>
             </div>
             <div style="flex: 1 1 auto;"><!-- spacer --></div>
           </div>

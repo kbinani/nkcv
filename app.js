@@ -105,6 +105,7 @@ app.on('ready', function() {
       openShipList();
     }
     mainWindow.webContents.send('app.mute', config.mute());
+    mainWindow.webContents.send('app.configDidPatched', config.data());
   });
 
   mainWindow.on('close', function(event) {
@@ -165,6 +166,12 @@ ipcMain.on('app.scale', function(event, scale_rat_string) {
 ipcMain.on('app.patchConfig', function(event, data) {
   config.patch(data, (c) => {
     saveConfig();
+    [mainWindow, shipWindow].forEach((it) => {
+      if (!it) {
+        return;
+      }
+      it.webContents.send('app.configDidPatched', config.data());
+    });
   });
 });
 
@@ -202,6 +209,11 @@ ipcMain.on('app.recorded', function(event, input_filepath) {
       }
     });
   };
+
+  if (!config.encodeCapturedVideo) {
+    fallback();
+    return;
+  }
 
   try {
     which.sync('ffmpeg');
@@ -360,6 +372,10 @@ function openShipList() {
     config.patch({'shipWindowVisible': false}, (c) => {
       saveConfig();
     });
+  });
+
+  shipWindow.webContents.on('dom-ready', () => {
+    shipWindow.webContents.send('app.configDidPatched', config.data());
   });
 }
 

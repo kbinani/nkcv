@@ -17,6 +17,7 @@ const keys = {
   'language': 'string',
   'shipWindowColumnWidth': 'any',
   'shipWindow.ColumnVisibility': 'any',
+  'encodeCapturedVideo': 'bool',
 };
 
 const VERSION = 1;
@@ -176,6 +177,10 @@ class Config {
 
   get shipWindowColumnVisibility() {
     return _.get(this._data, ['shipWindow.ColumnVisibility'], {});
+  }
+
+  get encodeCapturedVideo() {
+    return _.get(this._data, ['encodeCapturedVideo'], false);
   }
 }
 

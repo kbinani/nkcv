@@ -7,6 +7,7 @@ class MainWindow {
   constructor() {
     this.webview = document.querySelector("webview");
     this.language = "ja";
+    this.configData = {};
     i18n.setLocale(this.language);
 
     this.subscribe();
@@ -18,6 +19,16 @@ class MainWindow {
       const language = data;
       $('#language').val(language);
       this.setLanguage(language);
+    });
+
+    ipcRenderer.on('app.configDidPatched', (event, data) => {
+      const encodeCapturedVideo = _.get(data, ['encodeCapturedVideo'], false);
+      const checkbox = document.querySelector('#option_capture_encode_video');
+      if (checkbox) {
+        checkbox.checked = encodeCapturedVideo;
+      }
+
+      this.configData = data;
     });
   }
 
@@ -31,6 +42,14 @@ class MainWindow {
   onLanguageSelected() {
     const language = $('#language').val();
     ipcRenderer.send('app.requestLanguageChange', language);
+  }
+
+  onEncodeVideoChanged() {
+    const checkbox = document.querySelector('#option_capture_encode_video');
+    if (!checkbox) {
+      return;
+    }
+    ipcRenderer.send('app.patchConfig', {'encodeCapturedVideo': checkbox.checked});
   }
 }
 
