@@ -18,7 +18,7 @@ class Notification {
         const n = new NativeNotification({'title': 'nkcv', 'body': message});
         n.show();
       } else {
-        ipcRenderer.send('app._notification', message);
+        ipcRenderer.send('app.notification', message);
       }
     }
   }
