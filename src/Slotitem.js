@@ -331,4 +331,16 @@ Slotitem.prototype.sakuteki_proficiency_coefficient = function() {
   return _.get(coeff_mapping, [title], 0);
 };
 
+Slotitem.prototype.hp_recovery_rate = function() {
+  const name = this.name();
+  switch (this.name()) {
+    case '応急修理要員':
+      return 0.2;
+    case '応急修理女神':
+      return 1;
+    default:
+      return 0;
+  }
+};
+
 module.exports = Slotitem;

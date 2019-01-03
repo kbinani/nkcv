@@ -235,6 +235,42 @@ class Ship {
     return Ship.ship_class_order_from_name(this.name());
   }
 
+  _recover_hp(rate) {
+    const current = this.hp();
+    const next = Math.floor(current.numerator() * rate);
+    this.set_hp(new Rat(next, current.denominator()));
+  }
+
+  // return: 実際にダメコンを消費したかどうか
+  consume_damage_controller() {
+    const current = this.hp();
+    if (current.numerator() > 0) {
+      return;
+    }
+    const ex = this.ex_slotitem();
+    if (ex != null) {
+      const rate = ex.hp_recovery_rate();
+      if (rate > 0) {
+        this._recover_hp(rate);
+        _.set(this._data, ['api_slot_ex'], -1);
+        return true;
+      }
+    }
+
+    const slotitems = this.slotitems();
+    for (let i = 0; i < slotitems.length; i++) {
+      const item = slotitems[i];
+      const rate = item.hp_recovery_rate();
+      if (rate > 0) {
+        this._recover_hp(rate);
+        _.set(this._data, ['api_slot', i], -1);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   static name_without_revise_postfix(name) {
     const suffixes = ['航改二', '乙改', '丁改', '改', ' due', ' zwei', ' drei', ' Mk.II'];
     for (let i = 0; i < suffixes.length; i++) {

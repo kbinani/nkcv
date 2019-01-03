@@ -82,6 +82,12 @@ class BattleRunner {
 
     switch (api) {
       case 'api_req_sortie/battle':
+      case 'api_req_combined_battle/battle':
+      case 'api_req_combined_battle/battle_water':
+      case 'api_req_combined_battle/each_battle':
+      case 'api_req_combined_battle/each_battle_water':
+      case 'api_req_combined_battle/ec_battle':
+      case 'api_req_combined_battle/ld_airbattle':
         this.battle(data);
         break;
     }
@@ -101,39 +107,51 @@ class BattleRunner {
   _battle(api_data) {
     if (this._enemies.length == 0) {
       // 敵艦の HP 初期値を取得
-      const nowhps = _.get(api_data, ["api_data", "api_e_nowhps"], []);
-      const maxhps = _.get(api_data, ["api_data", "api_e_maxhps"], []);
-      const enemy_ship_ids = _.get(api_data, ['api_data', 'api_ship_ke'], []);
-      if (nowhps.length == maxhps.length && nowhps.length == enemy_ship_ids.length) {
-        for (let i = 0; i < nowhps.length; i++) {
-          const ship_id = enemy_ship_ids[i];
-          const nowhp = nowhps[i];
-          const maxhp = maxhps[i];
-          const data = {
-            api_nowhp: nowhp,
-            api_maxhp: maxhp,
-          };
-          const master = this._storage.master.ship(ship_id);
-          const enemy = new Ship(data, master, this.storage);
-          this._enemies.push(enemy);
+      ['', '_combined'].forEach((it) => {
+        const nowhps = _.get(api_data, ['api_data', `api_e_nowhps${it}`], []);
+        const maxhps = _.get(api_data, ['api_data', `api_e_maxhps${it}`], []);
+        const enemy_ship_ids = _.get(api_data, ['api_data', `api_ship_ke${it}`], []);
+        if (nowhps.length == maxhps.length && nowhps.length == enemy_ship_ids.length) {
+          for (let i = 0; i < nowhps.length; i++) {
+            const ship_id = enemy_ship_ids[i];
+            const nowhp = nowhps[i];
+            const maxhp = maxhps[i];
+            const data = {
+              api_nowhp: nowhp,
+              api_maxhp: maxhp,
+            };
+            const master = this._storage.master.ship(ship_id);
+            const enemy = new Ship(data, master, this.storage);
+            this._enemies.push(enemy);
+          }
         }
-      }
+      })
     }
     if (this._friends_hp.length == 0) {
       const deck_id = _.get(api_data, ['api_data', 'api_deck_id'], 0);
       const deck_index = deck_id - 1;
-      const nowhps = _.get(api_data, ['api_data', 'api_f_nowhps'], []);
-      const maxhps = _.get(api_data, ['api_data', 'api_f_maxhps'], []);
-      if (nowhps.length == maxhps.length && 0 <= deck_index && deck_index < this._storage.port.decks.length) {
-        const deck = this._storage.port.decks[deck_index];
-        for (let i = 0; i < nowhps.length; i++) {
-          const nowhp = nowhps[i];
-          const maxhp = maxhps[i];
-          this._friends_hp.push(new Rat(nowhp, maxhp));
-          this._friends.push(deck.ships[i]);
+      ['', '_combined'].forEach((it) => {
+        const nowhps = _.get(api_data, ['api_data', `api_f_nowhps${it}`], []);
+        const maxhps = _.get(api_data, ['api_data', `api_f_maxhps${it}`], []);
+        if (nowhps.length == maxhps.length && 0 <= deck_index && deck_index < this._storage.port.decks.length) {
+          const deck = this._storage.port.decks[deck_index];
+          for (let i = 0; i < nowhps.length; i++) {
+            const nowhp = nowhps[i];
+            const maxhp = maxhps[i];
+            this._friends_hp.push(new Rat(nowhp, maxhp));
+            this._friends.push(deck.ships[i]);
+          }
         }
-      }
+      });
     }
+
+    // 基地航空隊
+    const api_air_base_attack = _.get(api_data, ['api_data', 'api_air_base_attack'], []);
+    api_air_base_attack.forEach((it) => {
+      const edam = _.get(it, ['api_stage3', 'api_edam'], []);
+      this.add_performance_seconds('基地航空隊の攻撃', 7.38); //TODO: もうちょっと正確に. 録画した動画のフレーム数を元に時間を設定する.
+      this._edam_list(edam);
+    });
 
     const include_submarine = _.findIndex(this._enemies, (enemy) => [13, 14].indexOf(enemy.type().value()) >= 0) >= 0;
     if (include_submarine) {
@@ -151,25 +169,29 @@ class BattleRunner {
       // 対空カットインが発生している
       this.add_performance_seconds('対空カットイン', 86 / 29.167);
     }
-    const kouku_stage3 = _.get(api_data, ["api_data", "api_kouku", "api_stage3"], null);
-    if (kouku_stage3 != null) {
-      let stage3_occur = false;
-      const keys = ['api_frai_flag', 'api_erai_flag', 'api_fbak_flag', 'api_ebak_flag'];
-      keys.forEach((key) => {
-        const flags = kouku_stage3[key];
-        stage3_occur = stage3_occur || flags.indexOf(1) >= 0;
-      });
+    ['', '_combined'].forEach((it) => {
+      const kouku_stage3 = _.get(api_data, ['api_data', 'api_kouku', `api_stage3${it}`], null);
+      if (kouku_stage3 != null) {
+        let stage3_occur = false;
+        const keys = ['api_frai_flag', 'api_erai_flag', 'api_fbak_flag', 'api_ebak_flag'];
+        keys.forEach((key) => {
+          if (key in kouku_stage3) {
+            const flags = kouku_stage3[key];
+            stage3_occur = stage3_occur || flags.indexOf(1) >= 0;
+          }
+        });
 
-      if (stage3_occur) {
-        this.add_performance_seconds("開幕航空戦", 328 / 29.167);
+        if (stage3_occur) {
+          this.add_performance_seconds("開幕航空戦", 328 / 29.167);
+        }
+
+        const fdam = _.get(kouku_stage3, ['api_fdam'], []);
+        const edam = _.get(kouku_stage3, ['api_edam'], []);
+
+        this._fdam_list(fdam);
+        this._edam_list(edam);
       }
-
-      const fdam = _.get(kouku_stage3, ['api_fdam'], []);
-      const edam = _.get(kouku_stage3, ['api_edam'], []);
-
-      this._fdam_list(fdam);
-      this._edam_list(edam);
-    }
+    });
 
     // 支援
     const support = _.get(api_data, ['api_data', 'api_support_flag'], 0);
@@ -179,7 +201,8 @@ class BattleRunner {
       // 砲撃支援
       this.add_performance_seconds('砲撃支援', 143 / 24.0);
     } else {
-      console.trace(`Unknown support flag: ${support}`);
+      //TODO: 他の支援の場合の秒数を設定する
+      this.add_performance_seconds('支援', 143 / 24.0);
     }
 
     // 開幕対潜
@@ -299,7 +322,7 @@ class BattleRunner {
     for (let i = 0; i < fdam.length; i++) {
       let seconds = this._fdam(i, fdam[i]);
       if (seconds > 0) {
-        damaged_f_ships.push(i + i);
+        damaged_f_ships.push(i + 1);
         max_seconds = Math.max(max_seconds, seconds);
       }
     }
@@ -326,7 +349,17 @@ class BattleRunner {
     }
     const current = this._friends_hp[index];
     const nowhp = Math.max(0, current.numerator() - Math.floor(amount));
-    const next = new Rat(nowhp, current.denominator());
+    const ship = this._friends[index];
+    ship.set_hp(new Rat(nowhp, current.denominator()));
+    if (nowhp == 0) {
+      if (ship.consume_damage_controller()) {
+        // ダメコンを使用した
+         //応急修理要員, 応急修理女神, どちらの場合も大体この時間
+        return 14.53;
+      }
+    }
+    const next = ship.hp();
+    this._friends_hp[index] = new Rat(next.numerator(), next.denominator());
     if (current.value() > 0.5 && next.value() <= 0.5) {
       // 通常から中破大破になった
       return 136 / 29.167;
