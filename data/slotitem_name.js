@@ -308,6 +308,8 @@ module.exports = {
   "GFCS Mk.37": "GFCS Mk.37",
   "5inch単装砲 Mk.30改+GFCS Mk.37": "5inch Single Gun Mount Mk.30 Kai + GFCS Mk.37",
   "甲標的 丙型": "Type C Kouhyouteki",
+  "533mm五連装魚雷(初期型)": "533mm Quintuple Torpedo Mount (Initial Model)",
+
   "5inch単装砲": "5inch単装砲",
   "5inch連装砲": "5inch連装砲",
   "3inch単装高角砲": "3inch単装高角砲",

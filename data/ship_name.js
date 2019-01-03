@@ -545,6 +545,9 @@ module.exports = {
   "Gotland": "Gotland",
   "Maestrale": "Maestrale",
   "Luigi Torelli改": "Luigi Torelli Kai",
+  "峯雲": "Minegumo",
+  "日進": "Nisshin",
+  "Johnston": "Johnston",
   "駆逐イ級": "Destroyer I-Class",
   "駆逐ロ級": "Destroyer Ro-Class",
   "駆逐ハ級": "Destroyer Ha-Class",
@@ -657,4 +660,8 @@ module.exports = {
   "戦艦仏棲姫-壊 バカンスmode": "French Battleship Princess-Damaged Vacation mode",
   "欧州水姫": "欧州水姫",
   "欧州水姫-壊": "欧州水姫-壊",
+  "駆逐ニ級改後期型": "駆逐ニ級改後期型",
+  "駆逐ニ級改": "駆逐ニ級改",
+  "深海雨雲姫": "深海雨雲姫",
+  "深海雨雲姫-壊": "深海雨雲姫-壊",
 };
