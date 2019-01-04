@@ -59,6 +59,7 @@ function updateShipStatus(ships) {
 }
 
 function shipToString(ship) {
+  const ex_slotitem = ship.ex_slotitem();
   const json = {
     // 'id': ship.id(),
     'level': ship.level(),
@@ -79,6 +80,7 @@ function shipToString(ship) {
     'soku': ship.soku().value(),
     'repair': ship.repair_seconds() * 1000,
     'slotitems': ship.slotitems().map((slotitem) => slotitem.id()).join(','),
+    'ex_slotitem': ex_slotitem == null ? -1 : ex_slotitem.id(),
     'locked': ship.locked(),
     'sally_area': ship.sally_area().hash(),
   };
