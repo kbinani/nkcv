@@ -80,7 +80,7 @@ function shipToString(ship) {
     'repair': ship.repair_seconds() * 1000,
     'slotitems': ship.slotitems().map((slotitem) => slotitem.id()).join(','),
     'locked': ship.locked(),
-    'sally_area': ship.sally_area().id(),
+    'sally_area': ship.sally_area().hash(),
   };
   return JSON.stringify(json);
 };

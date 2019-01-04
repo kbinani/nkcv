@@ -2,7 +2,8 @@
 
 const _ = require('lodash'),
       https = require('https'),
-      HJSON = require('hjson');
+      HJSON = require('hjson'),
+      crypto = require('crypto');
 
 function SallyArea(id) {
   this._id = id;
@@ -27,6 +28,11 @@ SallyArea.prototype.background_color = function() {
 
 SallyArea.prototype.text_color = function() {
   return _.get(mapping, [this._id, 'text-color'], 'white');
+};
+
+SallyArea.prototype.hash = function() {
+  const source = [this.id(), this.name(), this.background_color(), this.text_color()].join('\n');
+  return crypto.createHash('sha256').update(source).digest().toString();
 };
 
 SallyArea.load_remote_mapping = function(completion) {

@@ -23,6 +23,10 @@ const _QUERY_PREFIX_ALASQL = 'SELECT id FROM ? WHERE ';
 class ShipsWindow {
   constructor() {
     require('electron-disable-file-drop');
+    SallyArea.load_remote_mapping(() => {
+      const ships = this._ships.filter((it) => it.sally_area().id() != 0);
+      shared.updateShipStatus(ships);
+    });
 
     this._storage = new DataStorage();
     this._ships = [];
