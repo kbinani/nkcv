@@ -548,6 +548,7 @@ module.exports = {
   "峯雲": "Minegumo",
   "日進": "Nisshin",
   "Johnston": "Johnston",
+  "早波": "Hayanami",
   "駆逐イ級": "Destroyer I-Class",
   "駆逐ロ級": "Destroyer Ro-Class",
   "駆逐ハ級": "Destroyer Ha-Class",
