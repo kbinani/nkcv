@@ -82,6 +82,7 @@ class BattleRunner {
 
     switch (api) {
       case 'api_req_sortie/battle':
+      case 'api_req_sortie/airbattle':
       case 'api_req_combined_battle/battle':
       case 'api_req_combined_battle/battle_water':
       case 'api_req_combined_battle/each_battle':
