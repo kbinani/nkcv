@@ -169,7 +169,9 @@ class HTTPProxy {
       let requestBody = null;
 
       let serverRequest = http.request(options, (serverResponse) => {
-        if (kcsapiIndex >= 0) {
+        const statusCode = serverResponse.statusCode;
+        const statsuCodeMajor = statusCode - (statusCode % 100);
+        if (kcsapiIndex >= 0 && statsuCodeMajor == 200) {
           const api = clientRequest.url.substring(kcsapiIndex + "/kcsapi/".length);
           let headers = serverResponse.headers;
           let isGzip = false;
@@ -188,6 +190,9 @@ class HTTPProxy {
             }
           });
           serverResponse.on('end', () => {
+            if (data == null) {
+              data = Buffer.alloc(0);
+            }
             try {
               let prefix = '';
               let json = null;
