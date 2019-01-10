@@ -235,8 +235,14 @@
   "shipclass.John C.Butler級": "John C.Butler",
   "shipclass.Gotland級": "Gotland",
   "shipclass.Nelson級": "Nelson",
+  "shipclass.Fletcher級": "Fletcher",
+  "shipclass.日進型": "Nisshin",
   "Ship.Class": "Class",
   "Hide this column": "Hide this column",
   "Show all hidden columns": "Show all hidden columns",
-  "Show '%s' column": "Show '%s' column"
+  "Show '%s' column": "Show '%s' column",
+  "Config": "Config",
+  "View": "View",
+  "Capture": "Capture",
+  "Transcode webm to mp4": "Transcode webm to mp4"
 }

@@ -882,5 +882,21 @@
   "Maestrale": {
     "class": "Maestrale級",
     "order": 1
+  },
+  "峯雲": {
+    "class": "朝潮型",
+    "order": 8
+  },
+  "早波": {
+    "class": "夕雲型",
+    "order": 12
+  },
+  "Johnston": {
+    "class": "Fletcher級",
+    "order": "DD-557"
+  },
+  "日進": {
+    "class": "日進型",
+    "order": 1
   }
 }
