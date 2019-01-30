@@ -602,9 +602,12 @@ function takeScreenshot(sender) {
   const screenScale = screen.getPrimaryDisplay().scaleFactor;
   const totalScale = screenScale;
   const rect = {x: 0, y: 0, width: width * totalScale, height: height * totalScale};
-  webview.capturePage(rect, function(image) {
-    ipcRenderer.send('app.screenshot', image.resize({width: width}).toPNG());
-  });
+  const options = {
+    rect: rect,
+    width: width,
+    height: height
+  };
+  ipcRenderer.send('app.takeScreenshot', options);
 }
 
 function showShipList(sender) {

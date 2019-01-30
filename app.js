@@ -144,13 +144,22 @@ app.on('ready', function() {
   });
 });
 
-ipcMain.on('app.screenshot', function(event, data) {
-  const now = new Date();
-  const filename = app.getName() + '_' + strftime('%Y%m%d-%H%M%S-%L', now) + '.png';
-  const fullpath = path.join(app.getPath('pictures'), filename);
-  const stream = fs.createWriteStream(fullpath);
-  stream.write(data);
-  stream.end();
+ipcMain.on('app.takeScreenshot', (event, data) => {
+  const rect = data.rect;
+  const width = data.width;
+  const height = data.height;
+  if (!mainWindow) {
+    return;
+  }
+  mainWindow.webContents.capturePage(rect, (image) => {
+    const resized = image.resize({width: width}).crop({x: 0, y: 0, width: width, height: height});
+    const now = new Date();
+    const filename = app.getName() + '_' + strftime('%Y%m%d-%H%M%S-%L', now) + '.png';
+    const fullpath = path.join(app.getPath('pictures'), filename);
+    const stream = fs.createWriteStream(fullpath);
+    stream.write(resized.toPNG());
+    stream.end();
+  });
 });
 
 ipcMain.on('app.openShipList', function(event, data) {
