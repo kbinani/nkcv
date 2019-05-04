@@ -557,6 +557,7 @@ module.exports = {
   "日進甲": "Nisshin A",
   "陸奥改二": "Mutsu Kai Ni",
   "日向改二": "Hyuuga Kai Ni",
+  "金剛改二丙": "Kongou Kai Ni C",
 
   "駆逐イ級": "Destroyer I-Class",
   "駆逐ロ級": "Destroyer Ro-Class",
@@ -674,4 +675,6 @@ module.exports = {
   "駆逐ニ級改": "駆逐ニ級改",
   "深海雨雲姫": "深海雨雲姫",
   "深海雨雲姫-壊": "深海雨雲姫-壊",
+  "深海日棲姫": "深海日棲姫",
+  "深海日棲姫-壊": "深海日棲姫-壊",
 };
