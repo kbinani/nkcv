@@ -91,8 +91,6 @@ class HTTPProxy {
   }
 
   _filter(api, data) {
-    return data;
-
     switch (api) {
       case 'api_start2/getData':
         return (() => {
