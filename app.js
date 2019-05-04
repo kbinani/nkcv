@@ -395,6 +395,8 @@ function loadConfig() {
     const config_json = JSON.parse(config_string);
     config = new Config(config_json);
   } catch (e) {
+    console.trace(e);
+    config = new Config({});
   }
 }
 
