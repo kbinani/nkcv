@@ -3,6 +3,13 @@
 const sprintf = require('sprintf');
 const i18n = require(__dirname + '/src/i18n.js');
 
+function promiseUpdateShipStatus(ships) {
+  return new Promise((resolve) => {
+    updateShipStatus(ships);
+    resolve();
+  });
+}
+
 function updateShipStatus(ships) {
   ships.forEach((ship) => {
     const id = ship.id();
@@ -86,6 +93,13 @@ function shipToString(ship) {
   };
   return JSON.stringify(json);
 };
+
+function promiseUpdateSlotitemStatus(slotitems) {
+  return new Promise((resolve) => {
+    updateSlotitemStatus(slotitems);
+    resolve();
+  });
+}
 
 function updateSlotitemStatus(slotitems) {
   slotitems.forEach((slotitem) => {
@@ -195,8 +209,10 @@ function applyLanguageToView(language) {
 
 const container = {};
 container.updateShipStatus = updateShipStatus;
+container.promiseUpdateShipStatus = promiseUpdateShipStatus;
 container.shipToString = shipToString;
 container.updateSlotitemStatus = updateSlotitemStatus;
+container.promiseUpdateSlotitemStatus = promiseUpdateSlotitemStatus;
 container.barColor = barColor;
 container.timeLabel = timeLabel;
 container.createLocalizationLabel = createLocalizationLabel;

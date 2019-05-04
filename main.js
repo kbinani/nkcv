@@ -51,7 +51,9 @@ function onload() {
     _port = port;
 
     updateDeckStatus(port.decks);
-    shared.updateShipStatus(port.ships);
+    shared.promiseUpdateShipStatus(port.ships).catch((e) => {
+      console.error(e);
+    });
     port.ships.forEach(function(ship) {
       const slotitems = ship.slotitems();
       const slotitem_ids = slotitems.map((it) => it.id());
@@ -69,7 +71,9 @@ function onload() {
         $('#deck_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it, size_normal));
         $('#general_ship_' + ship.id() + '_slotitem').append(createDeckShipSlotitemCell(it, size_small));
       });
-      shared.updateSlotitemStatus(slotitems);
+      shared.promiseUpdateSlotitemStatus(slotitems).catch((e) => {
+        console.error(e);
+      });
     });
 
     $('#user_name').html(port.nickname());

@@ -25,7 +25,9 @@ class ShipsWindow {
     require('electron-disable-file-drop');
     SallyArea.load_remote_mapping(() => {
       const ships = this._ships.filter((it) => it.sally_area().id() != 0);
-      shared.updateShipStatus(ships);
+      shared.promiseUpdateShipStatus(ships).catch((e) => {
+        console.error(e);
+      });
     });
 
     this._storage = new DataStorage();
@@ -190,10 +192,14 @@ class ShipsWindow {
       slotitem_ids.forEach((id) => {
         slotitem_container.append(this.createSlotitemCell(id));
       });
-      shared.updateSlotitemStatus(slotitems);
+      shared.promiseUpdateSlotitemStatus(slotitems).catch((e) => {
+        console.error(e);
+      });
     });
 
-    shared.updateShipStatus(updated_ships);
+    shared.promiseUpdateShipStatus(updated_ships).catch((e) => {
+      console.error(e);
+    });
 
     this._ships = ships.map((it) => it.clone());
     this.applySort();
