@@ -300,6 +300,7 @@ class Ship {
       '大鷹': '神鷹',
       '伊504': 'Luigi Torelli',
       'UIT-25': 'Luigi Torelli',
+      '日進甲': '日進',
     };
     if (name in special_ship_names) {
       return special_ship_names[name];
