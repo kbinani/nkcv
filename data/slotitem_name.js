@@ -309,6 +309,11 @@ module.exports = {
   "5inch単装砲 Mk.30改+GFCS Mk.37": "5inch Single Gun Mount Mk.30 Kai + GFCS Mk.37",
   "甲標的 丙型": "Type C Kouhyouteki",
   "533mm五連装魚雷(初期型)": "533mm Quintuple Torpedo Mount (Initial Model)",
+  "Re.2001 CB改": "Re.2001 CB Kai",
+  "試製烈風 後期型": "Prototype Reppuu Late Model",
+  "烈風 一一型": "Reppuu Model 11",
+  "オ号観測機改": "O Type Observation Autogyro Kai",
+  "三式弾改": "Type 3 Shell Kai",
 
   "5inch単装砲": "5inch単装砲",
   "5inch連装砲": "5inch連装砲",
