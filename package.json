@@ -19,7 +19,7 @@
     "find-free-port": "^2.0.0",
     "hjson": "^3.1.2",
     "jquery": "^3.4.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "mkdirp": "^0.5.1",
     "sprintf": "^0.1.5",
     "stream-transcoder": "0.0.5",
